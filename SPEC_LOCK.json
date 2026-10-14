@@ -2,8 +2,8 @@
   "product": "Judgment Transfer",
   "owner": "SOLIFAN",
   "spec_version": "1.0",
-  "package_version": "1.0.17",
-  "app_version": "1.0.17",
+  "package_version": "1.0.18",
+  "app_version": "1.0.18",
   "baseline_spec": {
     "path": "baseline/Judgment_Transfer_Development_Spec_v1.0_20261010.docx",
     "sha256": "8585fe58d7fdf3511771c0214e960ee7c4091209f7cf60ab5826ca984fb82e07"
@@ -148,5 +148,18 @@
     "source": "shared preparation human_text verified against source_metadata.version_hash",
     "model_calls": 0,
     "judgment_logic": "unchanged"
+  },
+  "product_experience_118": {
+    "category": "user-authorized product presentation and usability revision",
+    "primary_purpose": "Use the current task owner’s materials and explanations to examine which parts of a job AI can handle in tested cases.",
+    "secondary_purpose": "Review the completeness of instructions for the next person doing the work.",
+    "screens": "Sources / Teach / Results semantics retained; readable labels and case entry added.",
+    "demo": "Read-only guided presentation of existing recorded results, separate from the operational application.",
+    "evidence_version": "1.0.15",
+    "new_model_calls": 0,
+    "formal_replays": 0,
+    "preserved": "Original sources, contracts, rules, approvals, frozen cases, all 216 saved decisions including four failures, receipts, traces, code provenance, .jt state, grant 251, session 509, retries 6 and cumulative USD 20 budget.",
+    "backend_change": "Displayed VERSION only; no judgment, API, model, prompt, dependency or budget behavior changes.",
+    "claim_boundary": "Results describe the tested examples. They do not establish whole-job automation, superiority to explanation-only input or award readiness."
   }
 }

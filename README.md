@@ -1,27 +1,28 @@
 # Judgment Transfer — by SOLIFAN
 
-An expert criterion becomes a reviewed rule, an evidence-checked decision and an inspectable state-change receipt.
+Use the current task owner’s instructions and explanations to examine which parts of a job AI can handle. Review the conditions, test example cases, and see where a person must still decide. The same review can reveal gaps in instructions for the next person.
 
-**Open the application:** https://judgment-transfer-unql76xapq-an.a.run.app  
+**Open the application:** https://judgment-transfer-unql76xapq-an.a.run.app
+**Guided demo (1.0.18, after deployment):** https://judgment-transfer-unql76xapq-an.a.run.app/assets/demo/index.html
 **Read-only measured evidence:** https://judgment-transfer-unql76xapq-an.a.run.app/assets/review/index.html
 
-The evidence walkthrough requires no token and makes no model calls. It displays the actual saved Google Cloud results, source text, prior human approval, case facts and before/after receipts. The live application retains its separate Sources / Teach / Results workflow. All sample data are fictional; actions affect only isolated case state.
+The guided demo and evidence walkthrough are read-only and make no model calls. It displays the actual saved Google Cloud results, source text, prior human approval, case facts and before/after receipts. The operational application retains its separate Sources / Teach / Results workflow; starting a LIVE operation can make a model call within the existing limits. All sample data are fictional; actions affect only isolated case state.
 
-## Measured result — 1.0.15 execution, 1.0.17 viewer
+## Measured result — 1.0.15 execution, 1.0.18 presentation
 
 | Condition | Correct autonomous completion | Correct decision, including hold | Failed decisions | Critical errors |
 |---|---:|---:|---:|---:|
 | A: Original sources | 24/72 (33.3%) | 48/72 (66.7%) | 1 | 0 |
-| B: Same expert explanation as text | 48/72 (66.7%) | 72/72 (100%) | 0 | 0 |
+| B: Same task owner explanation as text | 48/72 (66.7%) | 72/72 (100%) | 0 | 0 |
 | C: Approved structured rules | 48/72 (66.7%) | 69/72 (95.8%) | 3 | 0 |
 
 24 synthetic cases × 3 conditions × 3 repeats = 216 nominal decisions. All four failed decisions remain in the denominator. C − A is +33.3 percentage points; C − B is zero. This result does **not** demonstrate C-over-B accuracy superiority. Policies were previously exposed; this is fresh-record revalidation, not independent blind validation or proof of production reliability.
 
 Median latency among 212 completed decisions: 4.2 seconds. Recorded comparison model cost: USD 3.3286. All completed responses used Standard after a Priority request; failed unknown-usage calls retain conservative cost reservations. Infrastructure costs are separate. Approval and execution receipts, rather than an unproven accuracy claim, make the structured-rule behavior inspectable.
 
-The completed study and original results are immutable. The exhausted authorized call grant is not reset by this release. Historical recovery commands remain for provenance and are not a request to repeat the experiment. For the completed deployment, `python3 ~/jt_release_117.py --deploy` installs only the reviewed UI release.
+The completed study and original results are immutable. The exhausted authorized call grant is not reset by this release. Historical recovery commands remain for provenance and are not a request to repeat the experiment. For the completed deployment, `python3 ~/jt_release_118.py --deploy` installs only the reviewed UI release.
 
-The prototype reads source evidence, proposes a declarative workflow, runs isolated cases, asks a targeted question about blocked development cases, and turns the expert's answer into an **inactive rule proposal**. Human approval creates a new immutable workflow version. Replaying starts from independent copies of the same initial state. Declared state effects and receipts make the difference inspectable.
+The prototype reads source evidence, proposes a declarative workflow, runs isolated cases, asks a targeted question about blocked development cases, and turns the task owner’s explanation into an **inactive rule proposal**. Human approval creates a new immutable workflow version. Replaying starts from independent copies of the same initial state. Declared state effects and receipts make the difference inspectable.
 
 ## Run
 
@@ -41,7 +42,7 @@ Open `http://127.0.0.1:8080`. MOCK is a simulation and cannot substantiate perfo
 
 | Layer | Responsibility |
 |---|---|
-| `app/web/` | English Sources / Teach / Results UI, approval controls, read-only recorded evidence |
+| `app/web/` | Readable Sources / Teach / Results UI, typed case entry, approval controls, guided demo and recorded evidence |
 | `app/main.py` | Same-origin Flask API; session ownership, CSRF, idempotency and error envelopes |
 | `app/service.py` | Workflow versions, teaching, run leases, atomic state/receipt commits and exports |
 | `app/core/models.py` | Business-agnostic contracts, three-valued conditions, declared state effects and deterministic scoring |
@@ -86,12 +87,12 @@ Stop prevents new case steps; it does not abort or refund an already dispatched 
 
 Public sessions expire after 60 minutes and allow 12 judgment calls / 24 total model calls. The completed, explicitly authorized recovery has used all 251 grant attempts and all 509 total owner-session model calls, including prior preparation. Its shared six-retry allowance is exhausted. These counters and the cumulative USD 20 model budget are preserved. Infrastructure is billed separately; budget alerts do not stop billing.
 
-### ## Evaluation and honesty
+## Evaluation and honesty
 
-- A: original source material. B: the same expert answer added as text. C: approved structured rules and the execution guard.
+- A: original source material. B: the same task owner explanation added as text. C: approved structured rules and the execution guard.
 - 2 fictional domains × 12 unique holdout cases × 3 arms × 3 repeats = 216 nominal judgments. There are 24 unique holdout cases, not 72.
 - Labels stay outside model prompts. Development feedback precedes a freeze of cases, labels, source versions, rules, model settings and code hash. Failures stay in the denominator.
-- The target is C − A ≥25 percentage points, zero critical sample errors, and no more than three total expert corrections. These are goals, not delivered results or an award guarantee.
+- The target is C − A ≥25 percentage points, zero critical sample errors, and no more than three total task owner corrections. These are goals, not delivered results or an award guarantee.
 - B can match or beat C. The report says so. Rule approval, traceability and execution control can be examined independently of completion rates.
 - `domain_v1_reference.json` and `teaching_response_mock.json` are offline references. They are excluded from the LIVE Docker image. The public source includes them to reproduce offline tests; neither is read by the LIVE adapter.
 
@@ -105,15 +106,15 @@ The fixed suite has 23 offline checks mapped to the accepted P0 conditions. Actu
 
 ## Reuse with another workflow
 
-Use New workspace, add material and a goal, analyse, review/approve the proposed DomainSpec, then import case data using the same contract. Fields and actions are declared as data; core code does not select by business name. No external validation material is needed to start building. Custom materials and cases require review; the prototype does not claim universal autonomous correctness.
+Choose **Use my own instructions**, add material and a goal, organize the instructions, and review/approve the proposed workflow. Add example cases using the generated fields before the first run. Blank fields remain unknown; starting state is supplied by the person entering the case. Technical JSON import remains available. Fields and actions are declared as data; core code does not select by business name. No external validation material is needed to start building. Custom materials and cases require review; the prototype does not claim universal autonomous correctness.
 
 Do not commit `.jt/`, `.venv/`, tokens, personal source data or raw cloud logs. `bash jt 08` produces a public-source ZIP without those local files. Public hosting and repository publication are separate explicit actions.
 
 
 ## Completed study and release provenance
 
-The final study is `watchdog115`, phase `COMPLETE`, cursor `216`. Its evaluation code hash is `b5ffd242d8256902e309bbe816e631da4c932e93c324a85a1a6edc36af6aa8d4`. The viewer is 1.0.17 and does not reclassify old results as a new execution. Its only Python change is the displayed version; source, prompt, model adapter, budget checks and judgment logic are unchanged.
+The final study is `watchdog115`, phase `COMPLETE`, cursor `216`. Its evaluation code hash is `b5ffd242d8256902e309bbe816e631da4c932e93c324a85a1a6edc36af6aa8d4`. The presentation release is 1.0.18 and does not reclassify old results as a new execution. Its only Python change is the displayed version; source, prompt, model adapter, budget checks and judgment logic are unchanged.
 
 A recorded continuation preserved all 181 already-terminal task and trace records and all 180 already-committed receipts. It retained failed judgments and exhausted retry counters, and processed only the remaining 35 nominal decisions. See `evaluation/continuation-provenance.json`, `evaluation/EVALUATION_REPORT.md` and the six byte-exact exports in `app/web/review/`.
 
-Historical recovery implementation and instructions in the changelog are provenance, not current operating instructions. Do not rerun recovery or reset its counters to reproduce a presentation. The completed evidence walkthrough is the no-cost review path. This public-source documentation revision does not modify the separately supplied Cloud Shell installer or deployed application.
+Historical recovery implementation and instructions in the changelog are provenance, not current operating instructions. Do not rerun recovery or reset its counters to reproduce a presentation. The completed evidence walkthrough is the no-cost review path. The 1.0.18 installer is a separate, reviewed update from 1.0.17. Local preparation does not establish that a cloud deployment has completed.
