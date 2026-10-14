@@ -1,3 +1,15 @@
+## 1.0.19 — 2026-10-14 — Align the product screens and separate past work
+
+Category: user-authorized product presentation and usability revision. The 1.0.18 guided demo did not finish the wording and entry experience across the operational product. Historical evidence must remain available for traceability without becoming the default context for a new assessment.
+
+The user-confirmed product statement is: “Verify the task owner’s information. Test whether their judgment is reproducible and effective.” The primary use remains assessing AI automation in tested cases; handover review is secondary.
+
+Changed: the operational application starts without automatically reopening a previous workspace; continuing saved work requires an explicit action. Current-task-owner, AI and next-person wording is used consistently. Verified sample definitions receive readable field, action and state labels; custom definitions and values remain verbatim. User-facing errors explain the problem and next action, with original diagnostic details retained separately. The record viewer identifies itself as past evaluation records and places raw identifiers in technical details. Historical cases and failures are not recomputed, reclassified or represented as a new assessment.
+
+Scope: frontend presentation, config VERSION, existing operator documents, specification change record and package manifest. The 1.0.19 installer accepts the exact completed 1.0.17 or 1.0.18 package, records the selected baseline and permits resumption only against that same baseline and payload. It applies the final package directly in at most one deployment. Original .jt records, sources, rules, approvals, frozen cases, all 216 saved results and their four failures, receipts and exhausted limits remain unchanged. No model, API, judgment, schema, dependency, budget or customer-system behavior is changed.
+
+Verification: the established 1.0.18 state-preservation, read-only remote snapshot and deployment verification are reused unchanged. Additional bounded checks cover both baseline selections, mixed-state and cross-baseline rejection, interruption resumption and exact payload integrity. Current frontend checks are recorded in verification/product_experience_119.json. Cloud deployment and rendered browser acceptance remain unexecuted in the preparation session.
+
 ## 1.0.18 — 2026-10-14 — Make the automation question understandable
 
 Category: user-authorized product presentation and usability revision. The earlier UI exposed implementation terms and aggregate errors before explaining the job. The primary purpose is now explicit: use the current task owner's material and explanation to examine which parts of a job AI can handle. Checking instructions for the next person is a secondary use.

@@ -2,8 +2,8 @@
   "product": "Judgment Transfer",
   "owner": "SOLIFAN",
   "spec_version": "1.0",
-  "package_version": "1.0.18",
-  "app_version": "1.0.18",
+  "package_version": "1.0.19",
+  "app_version": "1.0.19",
   "baseline_spec": {
     "path": "baseline/Judgment_Transfer_Development_Spec_v1.0_20261010.docx",
     "sha256": "8585fe58d7fdf3511771c0214e960ee7c4091209f7cf60ab5826ca984fb82e07"
@@ -161,5 +161,26 @@
     "preserved": "Original sources, contracts, rules, approvals, frozen cases, all 216 saved decisions including four failures, receipts, traces, code provenance, .jt state, grant 251, session 509, retries 6 and cumulative USD 20 budget.",
     "backend_change": "Displayed VERSION only; no judgment, API, model, prompt, dependency or budget behavior changes.",
     "claim_boundary": "Results describe the tested examples. They do not establish whole-job automation, superiority to explanation-only input or award readiness."
+  },
+  "product_experience_119": {
+    "category": "user-authorized product-wide wording and data-entry presentation correction",
+    "primary_purpose": "Use the current task owner’s materials and explanations to examine which parts of a job AI can handle in tested cases.",
+    "secondary_purpose": "Review the completeness of handover materials for the next person.",
+    "entry": "No automatic reopening of a prior workspace; explicit continuation only.",
+    "sample_copy": "Readable labels apply only to verified unchanged sample definitions. Custom definitions and values remain verbatim.",
+    "errors": "Plain problem and next action with original diagnostic details separately available.",
+    "history": "Past evaluation records remain separate and immutable. They are not new assessment results.",
+    "installer_baselines": [
+      "1.0.17",
+      "1.0.18"
+    ],
+    "new_model_calls": 0,
+    "formal_replays": 0,
+    "backend_change": "VERSION only; API, judgment, model, prompt, schema, dependency and budget behavior unchanged.",
+    "preserved": "Original .jt state, source and approval provenance, frozen cases, 216 saved decisions including four failures, receipts, traces and all usage counters.",
+    "product_statement": {
+      "ja": "担当者が確認・提供した内容を検証し、その判断の再現性と有効性を確かめる。",
+      "en": "Verify the task owner’s information. Test whether their judgment is reproducible and effective."
+    }
   }
 }
