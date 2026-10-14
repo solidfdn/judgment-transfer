@@ -53,6 +53,24 @@ def object_schema(properties):
 EXTRACT_SCHEMA = object_schema({'observations': {'type': 'array', 'items': schema('Observation')}})
 RULES_SCHEMA = object_schema({'rules': {'type': 'array', 'minItems': 1, 'items': schema('Rule')}})
 
+def extraction_response_schema(contract):
+    """Keep the provider grammar small; the original contract still validates returns.
+
+    Repeated bounded arrays in the source review can exceed the provider's
+    structured-output complexity limit. Length/count/pattern constraints remain
+    mandatory in Draft202012Validator, after generation and before any save.
+    """
+    limits = {'minItems', 'maxItems', 'minLength', 'maxLength', 'pattern'}
+    if isinstance(contract, dict):
+        result = {k: ({name: extraction_response_schema(value) for name, value in v.items()}
+                      if k in ('properties', '$defs') else extraction_response_schema(v))
+                  for k, v in contract.items() if k not in limits}
+        if 'enum' in result and 'type' not in result and all(isinstance(v, str) for v in result['enum']):
+            result['type'] = 'string'
+        return result
+    if isinstance(contract, list): return [extraction_response_schema(v) for v in contract]
+    return contract
+
 def diagnostic_text(value, limit=1200):
     # Only the bounded provider message; never serialize a response or request.
     text = str(value or '')
@@ -274,8 +292,11 @@ class LiveAdapter:
         payload = {'task': purpose, **payload}
         parts = self.parts(payload, sources)
         content = self.types.Content(role='user', parts=parts)
-        instruction = SYSTEM if purpose == 'decide' else SYSTEM + '\nJSON contract: ' + json.dumps(output_schema, separators=(',', ':'))
-        fingerprint = digest({'system': instruction, 'payload': payload, 'sources': [(s['source_id'], s['version_hash']) for s in sources]})
+        response_schema = extraction_response_schema(output_schema) if purpose == 'extract' else output_schema
+        instruction = SYSTEM if purpose in ('decide', 'extract') else SYSTEM + '\nJSON contract: ' + json.dumps(output_schema, separators=(',', ':'))
+        prompt = {'system': instruction, 'payload': payload, 'sources': [(s['source_id'], s['version_hash']) for s in sources]}
+        if purpose == 'extract': prompt.update(response_schema=response_schema, validation_schema=output_schema)
+        fingerprint = digest(prompt)
         started, attempts = time.monotonic(), []
         trace_id = 'trace_' + uuid.uuid4().hex
         trace = {'trace_id': trace_id, 'mode': 'LIVE', 'purpose': purpose, 'settings': config.SETTINGS,
@@ -292,6 +313,10 @@ class LiveAdapter:
             trace['runtime']['generation_client_scope'] = 'per_attempt_async_client'
         trace['settings'] = {**config.SETTINGS, 'attempts': maximum_attempts, 'model_window_seconds': window, 'call_limit_seconds': call_limit,
                              'retry_policy': config.SETTINGS['retry_policy'] if purpose == 'decide' else 'existing_purpose_policy'}
+        if purpose == 'extract':
+            trace['settings'].update(response_schema_policy='compact_extraction_v124', schema_location='api_only',
+                transport='generateContent', response_schema_hash=digest(response_schema),
+                validation_schema_hash=digest(output_schema), code_hash=config.CODE_HASH)
         estimate = None
         for number in range(maximum_attempts):
             if number and purpose == 'decide':
@@ -328,7 +353,7 @@ class LiveAdapter:
                 entry.update(stage='generate_content', generation_timeout_ms=options.timeout)
                 phase_started = time.monotonic()
                 generation_config = self.types.GenerateContentConfig(system_instruction=instruction,
-                        response_mime_type='application/json', response_json_schema=output_schema,
+                        response_mime_type='application/json', response_json_schema=response_schema,
                         max_output_tokens=8192, thinking_config=self.types.ThinkingConfig(thinking_level='LOW'),
                         http_options=options)
                 if purpose == 'decide':
@@ -362,7 +387,9 @@ class LiveAdapter:
                     raise ValueError('Incomplete response; no decision may be executed.')
                 value = json.loads(response.text or '')
                 errors = list(Draft202012Validator(output_schema).iter_errors(value))
-                if errors: raise ValueError('The model response did not match the JSON contract.')
+                if errors:
+                    entry['validation_errors'] = [{'path': list(e.absolute_path), 'constraint': e.validator} for e in errors[:8]]
+                    raise ValueError('The model response did not match the JSON contract.')
                 entry.update(status='OK', elapsed_ms=round((time.monotonic()-elapsed)*1000))
                 trace.update(result=value, elapsed_ms=round((time.monotonic()-started)*1000))
                 self.repo.put('traces', trace_id, trace)

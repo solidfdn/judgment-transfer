@@ -71,9 +71,20 @@ def create_app(repo=None, adapter=None, blobs=None, testing=False):
             'X-Request-ID':getattr(g,'request_id','')})
         return response
 
+    def error_body(error):
+        detail = {'code':error.code,'message':error.message,'retryable':error.retryable,'request_id':getattr(g,'request_id','req_unknown')}
+        trace = getattr(error, 'trace', None)
+        if trace and getattr(g, 'ctx', {}).get('admin'):
+            # This request's bounded diagnostics only; no prompt, source text,
+            # model output, credentials or arbitrary trace lookup is exposed.
+            detail['diagnostic'] = {'trace_id':trace['trace_id'], 'attempts':[
+                {k:a[k] for k in ('attempt','stage','status','provider_code','error_type','validation_errors') if k in a}
+                for a in trace.get('attempts', [])[:2]]}
+        return {'error': detail}
+
     @app.errorhandler(JTError)
     def named_error(error):
-        return jsonify({'error':{'code':error.code,'message':error.message,'retryable':error.retryable,'request_id':getattr(g,'request_id','req_unknown')}}),error.status
+        return jsonify(error_body(error)),error.status
     @app.errorhandler(HTTPException)
     def http_error(error):return named_error(JTError('HTTP_'+str(error.code),error.description,error.code))
     @app.errorhandler(Exception)
@@ -101,7 +112,7 @@ def create_app(repo=None, adapter=None, blobs=None, testing=False):
             if cached is not None:return jsonify(cached)
             try:value=fn(*args,**kwargs)
             except JTError as error:
-                def fail(values):values[key]['result']={'error':{'code':error.code,'message':error.message,'retryable':error.retryable,'request_id':g.request_id}}
+                def fail(values):values[key]['result']=error_body(error)
                 repo.atomic([key],fail);raise
             def save(values):values[key]['result']=value
             repo.atomic([key],save);return jsonify(value)

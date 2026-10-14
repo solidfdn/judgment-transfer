@@ -198,11 +198,13 @@ class API:
         try:
             with urllib.request.urlopen(req,timeout=170) as response:value=json.load(response)
         except urllib.error.HTTPError as error:
+            detail={}
             try:detail=json.loads(error.read()).get('error',{});message=detail.get('code','HTTP_'+str(error.code))+': '+detail.get('message','Request stopped.')
             except (ValueError,AttributeError):message='HTTP_'+str(error.code)+'。Cloud Runの権限またはポリシーを確認してください。'
-            raise Stop('APP_REQUEST_FAILED',message)
+            failure=Stop('APP_REQUEST_FAILED',message);failure.detail=detail;raise failure
         except (urllib.error.URLError,TimeoutError):raise Stop('NETWORK_INTERRUPTED','通信が中断されました。保存済みrun IDと同じrequest IDで再開できます。')
-        if 'error' in value:raise Stop('APP_REQUEST_FAILED',value['error']['code']+': '+value['error']['message'])
+        if 'error' in value:
+            failure=Stop('APP_REQUEST_FAILED',value['error']['code']+': '+value['error']['message']);failure.detail=value['error'];raise failure
         return value
 
 def step05():

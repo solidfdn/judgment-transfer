@@ -2,8 +2,8 @@
   "product": "Judgment Transfer",
   "owner": "SOLIFAN",
   "spec_version": "1.0",
-  "package_version": "1.0.23",
-  "app_version": "1.0.23",
+  "package_version": "1.0.24",
+  "app_version": "1.0.24",
   "baseline_spec": {
     "path": "baseline/Judgment_Transfer_Development_Spec_v1.0_20261010.docx",
     "sha256": "8585fe58d7fdf3511771c0214e960ee7c4091209f7cf60ab5826ca984fb82e07"
@@ -317,5 +317,13 @@
     },
     "preserved": "Original216 decisions, source evidence, approvals, recovery allowance history and prior installer bytes. No old comparison rerun.",
     "pending": "LIVE end-to-end validation and rendered browser acceptance. Proposed implementation/code/architecture export is not part of this release."
+  },
+  "source_review_fix_124": {
+    "category": "Defect fix and bounded deployed verification",
+    "observed_failure": "1.0.23 source review: provider400 INVALID_ARGUMENT; exact field undisclosed. Not a budget-limit error.",
+    "change": "Compact extraction-only provider schema; unchanged original strict server contract and evidence validation. Extraction schema is provided only through the API.",
+    "preserved": "Business semantics, six review aspects, model, dependencies, decision path, approvals, earlier source evidence and all usage/grant counters.",
+    "deployment_gate": "Explicit --verify-source: one real source-review invocation, at most two generations through existing policy, named verification record, no workflow approval/judgment/replay. Same idempotency key on resume.",
+    "provider_acceptance": "Pending execution in deployed environment."
   }
 }

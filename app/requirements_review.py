@@ -50,6 +50,8 @@ def review_requirements(service, body, ctx):
         'invented integrations, approvals or claims of automation readiness. If the job cannot yet be represented as a '
         'bounded practice workflow, still provide a useful requirements review. These are review findings, not numerical scores. '
         'Use OBSERVED for explicit content only, INFERRED for interpretation and UNRESOLVED with null for unavailable/conflicting facts. '
+        'Keep at most 60 observations. Use at most 8 source references per check or question. '
+        'Character limits: summary 400, each finding 500, each question 250, each why_needed 350. '
         'Never use hidden cases, expected answers or reference rules.'), 'goal': goal, 'aspects': list(ASPECTS)}
     if not hasattr(service.adapter, 'invoke'): raise JTError('LIVE_REQUIRED', 'Requirements review needs LIVE mode. No synthetic review was substituted.', 409)
     result, trace = service.adapter.invoke('extract', payload, REVIEW_SCHEMA, sources, ctx['owner'], ctx['admin'])

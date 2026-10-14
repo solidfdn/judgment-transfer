@@ -1,3 +1,11 @@
+## 1.0.24 — 2026-10-14 — Correct the source-review request and verify its real result
+
+Category: defect fix and bounded verification. The owner’s read-only diagnostic established one provider 400 / INVALID_ARGUMENT during the new source review, not quota exhaustion. Google did not identify the exact invalid argument. Its documented schema-complexity limitation is the working diagnosis, not a proven individual-field cause.
+
+Affected code: `app/adapters/model.py` simplifies extraction response schemas only, removes duplicate extraction schema text from the system prompt, records provider/validator hashes and bounded validation paths, and retains the original strict validator. `app/requirements_review.py` states the existing response size limits in the extraction instruction. `app/main.py` exposes only the current request’s bounded diagnostics to its administrator, including cached errors. `steps/runbook.py` retains those diagnostics for the CLI. `steps/verify_source124.py` supplies an explicit one-review, at-most-two-generation deployed gate with saved success/failure and no fresh request on resume. The versioned installer preserves old exports and counters before running this separately journalled gate. No IAM, dependency, model, approval, rule-control, budget or quota expansion is introduced.
+
+Verification: 22 actual adapter/service/validator checks using provider doubles and 24 installer/gate checks using HTTP doubles. Google acceptance remains pending the deployed gate; no real model calls were made during preparation. The old 216 results, including four failures, and all previous installers are retained. See verification/RELEASE124_STATUS.md. Source: https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/control-generated-output (checked 2026-10-14).
+
 ## 1.0.23 — 2026-10-14 — Review real documents and preserve named decisions
 
 Category: user-authorized requirement extension, evidence-intake defect fixes and presentation cleanup. The owner requested fictional expense documents that can actually be uploaded and checked, useful requirements questions for any business domain, named non-editable decision history with explicit deletion/reset, and a cumulative model ceiling of USD 100.
