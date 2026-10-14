@@ -49,14 +49,14 @@ class API:
             'requirements_review':{'trace_id':m.SOURCE_TRACE,'source_hashes':{m.SOURCE:self.source_hash},
                 'goal':'Check supplied expense evidence.','questions':[{'question':'When is a company-addressed folio accepted?'}]}}
         if hasattr(m, 'PREVIOUS_DRAFT_ID'):
-            live=json.loads((ROOT/'verification/LIVE126_GATE.json').read_text())
+            live=json.loads((ROOT/('verification/LIVE'+m.PREVIOUS_VERSION.split('.')[0]+m.PREVIOUS_VERSION.split('.')[-1]+'_GATE.json')).read_text())
             old_domain={**copy.deepcopy(live['workflow_preview']), 'schema_version':'1.0',
                 'domain_id':'test_previous_workflow','version':0,'source_hashes':{m.SOURCE:self.source_hash}}
             self.previous={'draft_id':m.PREVIOUS_DRAFT_ID,'workspace_id':m.WORKSPACE,'base_version':-1,
                 'origin':'LIVE','domain':old_domain,'trace_ids':m.PREVIOUS_TRACE_IDS}
             self.ws.update(draft=copy.deepcopy(self.previous),draft_id=m.PREVIOUS_DRAFT_ID)
             self.ws['shared_trace_ids']+=m.PREVIOUS_TRACE_IDS
-            r.save(root/'.jt/upgrades/1.0.26/workflow-prepare.json', {'status':'DRAFT_READY_FOR_REVIEW',
+            r.save(root/f'.jt/upgrades/{m.PREVIOUS_VERSION}/workflow-prepare.json', {'status':'DRAFT_READY_FOR_REVIEW',
                 'code_hash':m.PREVIOUS_CODE_HASH,'workspace_id':m.WORKSPACE,
                 'source_review_trace_id':m.SOURCE_TRACE,'draft_id':m.PREVIOUS_DRAFT_ID,'trace_ids':m.PREVIOUS_TRACE_IDS})
         self.ledger={'session':{'calls':512,'decisions':498},
@@ -69,7 +69,9 @@ class API:
         if path=='/workspaces/'+m.WORKSPACE:return copy.deepcopy(self.ws)
         if path=='/recovery115':return copy.deepcopy(self.ledger)
         if path!='/domains/draft':raise AssertionError(path)
-        assert data == {'workspace_id':m.WORKSPACE,'goal':self.ws['goal']}, 'Fixture/reference leaked into model input'
+        expected_payload={'workspace_id':m.WORKSPACE,'goal':self.ws['goal']}
+        if getattr(m,'REVISE_EXISTING',False):expected_payload['revise_draft_id']=m.PREVIOUS_DRAFT_ID
+        assert data == expected_payload, 'Fixture/reference leaked into model input'
         assert key==m.REQUEST_KEY
         self.posts.append(key)
         if key not in self.requests:
@@ -86,6 +88,9 @@ class API:
                     for ref in rule['source_refs']:ref['source_id']=m.SOURCE
                 self.requests[key]={'draft_id':'draft_test','workspace_id':m.WORKSPACE,'base_version':-1,
                     'origin':'LIVE','domain':domain,'trace_ids':['trace_test']}
+                if getattr(m,'REVISE_EXISTING',False):
+                    self.requests[key].update(revision_of=m.PREVIOUS_DRAFT_ID,input_review_issues=[])
+                    if self.mode=='flagged':self.requests[key]['input_review_issues']=[{'field_id':'test_flag','message':'Needs correction'}]
                 self.ws['draft']=copy.deepcopy(self.requests[key]);self.ws['draft_id']='draft_test'
                 self.ws['shared_trace_ids'].append('trace_test')
                 if self.mode=='rollover':self.ledger['budget'].update(day='2026-10-15',decisions=0)
@@ -138,19 +143,28 @@ for mode in ('source_changed','wrong_source_trace','existing_draft','missing_gat
 if hasattr(m, 'PREVIOUS_DRAFT_ID'):
     with tempfile.TemporaryDirectory() as folder, contextlib.redirect_stdout(io.StringIO()):
         root=Path(folder);api=API(root);previous=copy.deepcopy(api.previous)
-        old_gate=r.load(root/'.jt/upgrades/1.0.26/workflow-prepare.json')
+        old_gate=r.load(root/f'.jt/upgrades/{m.PREVIOUS_VERSION}/workflow-prepare.json')
         gate_run(api,root)
         ok('previous complete draft archived before a new generation',r.load(root/f'deliverables/{OUTPUT}/workflow-previous-draft.json')==previous)
-        ok('previous completed gate remains unchanged',r.load(root/'.jt/upgrades/1.0.26/workflow-prepare.json')==old_gate)
+        ok('previous completed gate remains unchanged',r.load(root/f'.jt/upgrades/{m.PREVIOUS_VERSION}/workflow-prepare.json')==old_gate)
     for mutation in ('body','trace','approval','missing_checkpoint'):
         with tempfile.TemporaryDirectory() as folder, contextlib.redirect_stdout(io.StringIO()):
             root=Path(folder);api=API(root)
             if mutation=='body':api.ws['draft']['domain']['input_fields'][0]['description']='Altered'
             elif mutation=='trace':api.ws['draft']['trace_ids']=['other']
             elif mutation=='approval':api.ws['draft']['domain']['rules'][0]['approved_by']='someone'
-            else:(root/'.jt/upgrades/1.0.26/workflow-prepare.json').unlink()
+            else:(root/f'.jt/upgrades/{m.PREVIOUS_VERSION}/workflow-prepare.json').unlink()
             rejects('previous '+mutation+' stops before a new generation',lambda:gate_run(api,root),'PREVIOUS_DRAFT_CHANGED')
             ok('previous '+mutation+' produces no model calls',api.generations==0)
+
+if getattr(m,'REVISE_EXISTING',False):
+    with tempfile.TemporaryDirectory() as folder, contextlib.redirect_stdout(io.StringIO()):
+        root=Path(folder);api=API(root,'flagged')
+        rejects('flagged revised answer cannot pass the gate',lambda:gate_run(api,root),'WORKFLOW_PREPARE_FAILED')
+        report=r.load(root/f'.jt/upgrades/{APP_VERSION}/workflow-prepare.json')
+        ok('flagged revised answer stays available without approval',report['error_code']=='DRAFT_INPUT_REVIEW_REQUIRED' and report['input_review_issues'] and report['workflow_preview'] and not report['approval_created'])
+        rejects('flagged revised answer is not automatically regenerated',lambda:gate_run(api,root),'WORKFLOW_PREPARE_FAILED')
+        ok('flagged revision uses only one generation',api.generations==1)
 
 if hasattr(m, 'daily_counter_unchanged'):
     with tempfile.TemporaryDirectory() as folder, contextlib.redirect_stdout(io.StringIO()):

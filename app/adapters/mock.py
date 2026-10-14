@@ -15,7 +15,8 @@ class MockAdapter:
         return value, trace
     def extract(self, sources, owner, admin, fields=None):
         return self.out('extract', {'observations':[]}, {'sources':[s['source_id'] for s in sources], 'note':'MOCK does not read media.'})
-    def draft_domain(self, goal, domain_id, version, sources, observations, owner, admin):
+    def draft_domain(self, goal, domain_id, version, sources, observations, owner, admin, revision=None):
+        if revision is not None:raise JTError('LIVE_REQUIRED','Draft revision requires LIVE mode; no synthetic revision was substituted.')
         path = ROOT/'fixtures'/domain_id/'domain_v0.json'
         if not path.exists(): raise JTError('MOCK_CUSTOM_WORKFLOW', 'For custom material, enter a workflow in Advanced or use the deployed LIVE app.')
         domain = json.loads(path.read_text()); domain['version']=version

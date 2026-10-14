@@ -1,3 +1,11 @@
+## 1.0.28 — 2026-10-15 JST — Correct absence conditions and review draft inputs
+
+Category: condition-evaluation and draft-validation defect fixes. The owner-reported 1.0.27 generation succeeded but retained a policy acceptance flag and a conditional amount. Its `exists:false` condition also exposed an evaluator defect: the operand was ignored. The actual faulty rule is reproduced in bounded tests; no live case used the draft.
+
+Changed: `app/core/models.py` now distinguishes absence from presence, preserves legacy null-as-presence and rejects invalid existence operands. `app/workflow_review.py` adds conservative generic checks for common policy-verdict/conditional-amount inputs; this is not a complete semantic verifier. `app/service.py` recomputes these issues before approval and supports explicit revision of the current same-owner/source/version draft, retaining its record and trace with a parent link and concurrent-change protection. `app/adapters/model.py` sends that previous answer and specific findings in one existing streamed generation; no fixture or expected answer is supplied. `app/adapters/mock.py` refuses synthetic revisions. The English UI shows flagged fields and one revision button, blocks approval of flagged drafts, and correctly labels absence conditions.
+
+The schema, model, dependencies, transport limits, existing budgets, approvals, prior rule versions and 216 historical decisions remain intact. `steps/prepare_workflow128.py` performs one pinned revision after the incremental deployment and fails if input issues remain. Verification: 57 core/service/request-building checks, 58 controller checks and 11 actual-JS/DOM-double checks; 47 existing PDF/approval checks reused on the affected path. No new LIVE success or deployment is claimed. See `verification/RELEASE128_STATUS.md` and the owner-reported `verification/LIVE127_GATE.json`.
+
 ## 1.0.27 — 2026-10-15 JST — Separate source facts from policy judgments
 
 Category: condition-generation defect fix. The actual 1.0.26 workflow was generated successfully but asks for an `is_receipt_accepted` input while omitting the receipt addressee, and reduces a party-specific payment status to an ambiguous boolean. It remains unapproved. `verification/LIVE126_GATE.json` retains the owner-provided result and semantic findings.

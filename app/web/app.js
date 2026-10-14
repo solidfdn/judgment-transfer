@@ -126,6 +126,7 @@ function updateNextStep(){
  let message='Add a file or explanation, then organize the work.';
  if(ws){
   if(ws.status==='STALE')message='Next: review the changed instructions and approve an updated guide.';
+  else if(ws.draft?.base_version===ws.version&&ws.draft?.input_review_issues?.length)message='Next: revise the flagged inputs. The previous draft stays saved; nothing is approved.';
   else if(ws.draft&&ws.draft.base_version===ws.version)message='Next: check the work and its conditions below, then approve the conditions if they reflect the job.';
   else if(!ws.domain)message=ws.requirements_review?'Review the questions below. Add an explanation, or prepare a practice test.':'Add a file or explanation, then choose “Organize the work”.';
   else if(!ws.dev_cases.length)message='Next: add at least one example case to test what AI can do with these instructions.';
@@ -146,14 +147,14 @@ function updateNextStep(){
   if(!ws)primary='analyse';
   else if(ws.frozen)primary=null;
   else if(ws.status==='STALE')primary='analyse';
-  else if(ws.draft&&ws.draft.base_version===ws.version)primary='approve-workflow';
+  else if(ws.draft&&ws.draft.base_version===ws.version)primary=ws.draft.input_review_issues?.length?'revise-workflow':'approve-workflow';
   else if(!ws.domain)primary=ws.requirements_review?'prepare-test':'analyse';
   else if(!ws.dev_cases.length)primary='add-case';
   else if(!currentRun)primary='baseline';
  }else if(activeTab==='teach'&&ws&&!ws.frozen&&!recorded&&currentRun){
   primary=teaching?.approval_state==='DRAFT'?'approve-teaching':teaching?.approval_state==='APPROVED'?'replay':question?'propose':'ask';
  }else if(activeTab==='results'&&ws&&!ws.frozen&&!recorded&&currentRun)primary='next-teach';
- for(const id of ['new','upload','analyse','prepare-test','approve-workflow','add-case','baseline','ask','propose','approve-teaching','replay','next-teach'])$(id)?.classList.toggle('primary-action',id===primary);
+ for(const id of ['new','upload','analyse','prepare-test','revise-workflow','approve-workflow','add-case','baseline','ask','propose','approve-teaching','replay','next-teach'])$(id)?.classList.toggle('primary-action',id===primary);
 }
 
 function renderRequirements(){
@@ -203,8 +204,10 @@ function renderWorkspace(preserveInputs=false){
  $('admin-workspace').textContent=admin?'Workspace ID for the runbook: '+ws.workspace_id:'';$('goal').value=preserveInputs?enteredGoal:ws.goal;
  $('source-list').innerHTML=ws.sources.map(s=>`<li><strong>${escapeText(s.name)}</strong> <span class="muted">${(s.size/1024).toFixed(1)} KiB</span><details><summary>File details</summary><p class="muted">${escapeText(s.mime)}<br>Source: ${escapeText(s.source_id)}<br>Content hash: ${escapeText(s.version_hash)}</p></details></li>`).join('');
  $('stale').hidden=ws.status!=='STALE';const isDraft=Boolean(ws.draft&&ws.draft.base_version===ws.version),d=isDraft?ws.draft.domain:ws.domain;
- $('approve-workflow').hidden=!isDraft;
- if(d){$('workflow').innerHTML=workflowGuide(d,isDraft);$('domain-json').value=JSON.stringify(d,null,2);}else{$('workflow').textContent='Add instructions and organize them to create a guide for review.';$('domain-json').value='';}
+ const inputIssues=isDraft?(ws.draft.input_review_issues||[]):[];
+ $('approve-workflow').hidden=!isDraft||inputIssues.length>0;
+ $('revise-workflow').hidden=!isDraft||!inputIssues.length;
+ if(d){$('workflow').innerHTML=(inputIssues.length?'<div class="guide-stop"><h3>Revise these inputs first</h3>'+inputIssues.map(x=>'<p>'+escapeText(x.message)+'</p>').join('')+'</div>':'')+workflowGuide(d,isDraft);$('domain-json').value=JSON.stringify(d,null,2);}else{$('workflow').textContent='Add instructions and organize them to create a guide for review.';$('domain-json').value='';}
  $('observations').innerHTML=observationsGuide(ws.draft?.observations,d,ws.sources||[]);
  $('dev-cases').innerHTML='<p class="muted">'+ws.dev_cases.length+' example cases ready.</p>'+ws.dev_cases.map((c,i)=>`<details><summary>Case ${i+1}: ${escapeText(caseSummary(c,'Example case'))}</summary>${caseFacts(c,d)}<p><strong>Starting state:</strong> ${escapeText(stateDescription(c.initial_state,d))}</p><details><summary>Original case data</summary><pre>${escapeText(JSON.stringify(c,null,2))}</pre></details></details>`).join('');
  question=ws.questions.at(-1)?.question||null;teaching=ws.teachings.at(-1)?.teaching||null;renderTeaching();renderRequirements();renderCaseEditor();updateNextStep();
@@ -252,6 +255,7 @@ bind('analyse',async()=>{
  notify('Reviewing your materials and explanation…');await api('/requirements/review',{workspace_id:ws.workspace_id,goal});await refresh();notify('Review ready. Read the questions, add any missing explanation, or prepare a practice test.');
 });
 bind('save-domain',async()=>{await api('/domains/draft',{workspace_id:ws.workspace_id,domain:JSON.parse($('domain-json').value)});await refresh();notify('Edited conditions saved as a draft. Review them before approving.');});
+bind('revise-workflow',async()=>{notify('Revising the flagged inputs from your sources…');await api('/domains/draft',{workspace_id:ws.workspace_id,revise_draft_id:ws.draft.draft_id});await refresh();notify(ws.draft.input_review_issues?.length?'The revised draft still needs correction. Review the flagged inputs.':'Revised draft saved. Review all conditions before approving.');});
 bind('approve-workflow',async()=>{await api('/domains/approve',{draft_id:ws.draft.draft_id,base_version:ws.version,...recordPerson()});clearRecordNote();await refresh();notify('Conditions approved. Try the original instructions on the example cases.');});
 bind('import-cases',async()=>{await api('/cases/import',{workspace_id:ws.workspace_id,cases:JSON.parse($('cases-json').value),...recordPerson()});clearRecordNote();await refresh();notify('Cases imported.');});
 bind('rollback',async()=>{await api('/domains/rollback',{workspace_id:ws.workspace_id,target_version:Number($('rollback-version').value),base_version:ws.version,...recordPerson()});clearRecordNote();await refresh();notify('The earlier guidance is now saved as a new approved version.');});

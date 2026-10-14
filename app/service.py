@@ -5,6 +5,7 @@ import time
 import uuid
 from pathlib import Path
 import config
+from workflow_review import input_issues
 from adapters.evidence import inspect_file, validate_ref
 from core.models import ROOT, JTError, check, digest, execute, score, validate_case, validate_domain
 
@@ -92,7 +93,9 @@ class Service:
         value={k:v for k,v in ws.items() if k not in ('owner','leases')}
         value['sources']=[{k:v for k,v in s.items() if k!='blob_id'} for s in self.sources(ws)]
         value['domain']=self.domain(ws) if ws['version']>=0 else None
-        value['draft']=self.repo.get('drafts',ws['draft_id']) if ws.get('draft_id') else None
+        value['draft']=copy.deepcopy(self.repo.get('drafts',ws['draft_id'])) if ws.get('draft_id') else None
+        if value['draft']:
+            value['draft']['input_review_issues']=input_issues(value['draft']['domain'])
         value['dev_cases']=[self.case(wid,cid) for cid in ws['case_ids'] if self.case(wid,cid)['split']=='dev']
         value['questions']=[self.repo.get('questions',qid) for qid in ws['question_ids']]
         value['teachings']=[self.repo.get('teachings',tid) for tid in ws['teaching_ids']]
@@ -108,7 +111,17 @@ class Service:
         if not sources: raise JTError('SOURCE_REQUIRED','Add source material first.')
         draft_id=ident('draft',ctx); old=self.repo.get('drafts',draft_id)
         if old:return old
-        traces=[]; observations=[]
+        traces=[]; observations=[]; revision=None
+        if body.get('revise_draft_id') is not None:
+            if body.get('domain') is not None:
+                raise JTError('INVALID_INPUT','Choose either a model revision or an edited draft.')
+            prior=self.owned('drafts',body['revise_draft_id'],ctx)
+            if (prior['workspace_id']!=wid or prior['draft_id']!=ws.get('draft_id') or prior['base_version']!=ws['version'] or
+                    prior['domain']['source_hashes']!={s['source_id']:s['version_hash'] for s in sources}):
+                raise JTError('STALE','Open the current unapproved draft before revising it.',409)
+            findings=input_issues(prior['domain'])
+            if not findings:raise JTError('INVALID_INPUT','This draft has no flagged input issues to revise.')
+            revision={'draft_id':prior['draft_id'],'domain':copy.deepcopy(prior['domain']),'input_review_issues':findings}
         if body.get('domain') is not None:
             domain=copy.deepcopy(body['domain']); origin='HUMAN_EDIT'
         else:
@@ -120,7 +133,7 @@ class Service:
                 check('Observation',observation)
                 for ref in observation['source_refs']: self.source_check(wid,ref)
             domain_id=self.domain(ws)['domain_id'] if ws['version']>=0 else ws['sample'] or ident('workflow',ctx)
-            domain,trace=self.adapter.draft_domain(str(body.get('goal') or ws['goal'])[:2000],domain_id,ws['version']+1,sources,observations,ctx['owner'],ctx['admin'])
+            domain,trace=self.adapter.draft_domain(str(body.get('goal') or ws['goal'])[:2000],domain_id,ws['version']+1,sources,observations,ctx['owner'],ctx['admin'],**({'revision':revision} if revision else {}))
             domain=copy.deepcopy(domain)  # Keep the provider answer unchanged in its trace.
             traces.append(trace['trace_id']); origin=self.adapter.mode
         domain['version']=ws['version']+1
@@ -134,10 +147,13 @@ class Service:
                 error.trace=trace
                 error.validation={'stage':'workflow_validation','path':'domain'}
             raise
-        draft={'draft_id':draft_id,'workspace_id':wid,'base_version':ws['version'],'domain':domain,'observations':observations,'origin':origin,'trace_ids':traces}
+        draft={'draft_id':draft_id,'workspace_id':wid,'base_version':ws['version'],'domain':domain,'observations':observations,'origin':origin,'trace_ids':traces,
+               'input_review_issues':input_issues(domain),'revision_of':revision['draft_id'] if revision else None}
         wk,dk=('workspaces',wid),('drafts',draft_id)
         def commit(values):
             if values[wk]['version']!=ws['version']:raise JTError('VERSION_CONFLICT','The workflow changed; reopen it.',409)
+            if revision and values[wk].get('draft_id')!=revision['draft_id']:
+                raise JTError('VERSION_CONFLICT','Another draft replaced this one. Reopen the latest draft.',409)
             values[dk]=draft;values[wk]['draft_id']=draft_id;values[wk]['shared_trace_ids']+=traces
             return draft
         return self.repo.atomic([wk,dk],commit)
@@ -160,6 +176,8 @@ class Service:
     def approve_domain(self,body,ctx):
         draft=self.owned('drafts',required(body,'draft_id'),ctx);wid=draft['workspace_id'];ws=self.workspace(wid,ctx)
         base=required(body,'base_version');domain=copy.deepcopy(draft['domain'])
+        if input_issues(domain):
+            raise JTError('INVALID_INPUT','Revise the flagged input fields before approving these conditions.')
         if base!=draft['base_version']:raise JTError('VERSION_CONFLICT','The draft is based on a different version.',409)
         domain['version']=base+1
         for rule in domain['rules']:rule['approved_by']='human:'+digest(ctx['owner'])[:12]

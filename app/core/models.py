@@ -72,6 +72,8 @@ def validate_domain(domain, source_check=None):
                     raise JTError('INVALID_INPUT', 'Compared fields require matching types; ordered comparisons require numbers.')
                 continue
             value = condition['value']
+            if op == 'exists' and value is not None and type(value) is not bool:
+                raise JTError('INVALID_INPUT', 'Exists requires true for presence or false for absence; null retains the legacy presence check.')
             if op in ('gt', 'gte', 'lt', 'lte') and (f['type'] != 'number' or value is None or not scalar_ok(value, 'number')):
                 raise JTError('INVALID_INPUT', 'Ordered comparisons require numbers.')
             if op == 'in' and (not isinstance(value, list) or not value or any(v is None or not scalar_ok(v, f['type']) for v in value)):
@@ -119,7 +121,9 @@ def compare(c, values):
     else:
         b = c['value']
     if op == 'exists':
-        return a is not None
+        if b is not None and type(b) is not bool:
+            raise JTError('INVALID_INPUT', 'Exists requires a boolean or legacy null.')
+        return a is None if b is False else a is not None
     if a is None:
         return None
     if op in ('gt', 'gte', 'lt', 'lte'):

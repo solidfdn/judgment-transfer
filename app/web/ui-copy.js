@@ -29,7 +29,7 @@ globalThis.JTUiCopy=(()=>{
  function goal(domain){const p=sample(domain)?.goal;return p&&domain.goal===p[0]?p[1]:domain?.goal||'';}
  function state(domain,id,v){const s=sample(domain),f=definition(domain,id),p=s?.fields[id];return id==='status'&&typeof v==='string'&&s?.states[v]&&f&&p&&f.label===p[0]&&f.description===p[1]?s.states[v]:value(v);}
  function action(domain,id){const a=domain?.actions?.find(a=>a.action_id===id),p=sample(domain)?.actions[id];if(a&&p&&a.label===p[0]&&a.effects?.length===1&&a.effects[0].field_id==='status'&&a.effects[0].value===p[1])return p[2];return a?.label||humanize(id||'No action');}
- function condition(domain,c){const label=field(domain,c.field_id).label,op={eq:'is',ne:'is not',gt:'is more than',gte:'is at least',lt:'is less than',lte:'is at most',in:'is one of'};return c.operator==='exists'?label+' must be known':label+' '+(op[c.operator]||c.operator)+' '+(c.rhs_field_id?field(domain,c.rhs_field_id).label:value(c.value));}
+ function condition(domain,c){const label=field(domain,c.field_id).label,op={eq:'is',ne:'is not',gt:'is more than',gte:'is at least',lt:'is less than',lte:'is at most',in:'is one of'};return c.operator==='exists'?label+(c.value===false?' is not supplied':' must be known'):label+' '+(op[c.operator]||c.operator)+' '+(c.rhs_field_id?field(domain,c.rhs_field_id).label:value(c.value));}
  function summary(c,fallback){if(!c)return fallback;return String(c.raw_text||'').replace(/\s*Recorded facts are authoritative; null means unknown\.\s*$/,'').split(/The recorded facts below|\s*\{/)[0].trim()||fallback;}
  return Object.freeze({field,title,goal,state,action,condition,summary,value,humanize});
 })();
