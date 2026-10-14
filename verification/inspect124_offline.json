@@ -1,0 +1,13 @@
+{
+  "checks": [
+    "Valid saved answer passes actual validators without changing inputs",
+    "Bad locator yields exact failing path and matching original line",
+    "Non-null unresolved observation identified with original validator",
+    "Duplicate perspective detected without model regeneration",
+    "Read-only request lookup matches application idempotency key hashing"
+  ],
+  "passed": 5,
+  "new_model_calls": 0,
+  "cloud_writes": 0,
+  "recorded_answers": "explicit local synthetic test data; live answer not yet available"
+}
