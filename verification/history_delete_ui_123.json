@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "checks": [
+    "history exposes delete and reset actions",
+    "opening history makes no mutation",
+    "both finalized records can be opened before deletion",
+    "cancel selected deletion makes no request",
+    "confirmation identifies selected person and time",
+    "cancel reset makes no request",
+    "reset confirmation names scope and count",
+    "OK deletes only the selected record",
+    "deleted comparison cleared and history reloaded",
+    "failed reset retains remaining history",
+    "OK resets only the displayed history identifiers",
+    "empty state after reset",
+    "no model, approval, source or run mutations"
+  ],
+  "test_mode": "actual handlers with explicit DOM/API stubs",
+  "real_model_calls": 0,
+  "cloud_writes": 0
+}

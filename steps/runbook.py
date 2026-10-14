@@ -180,6 +180,11 @@ class API:
         if admin:self.headers['X-JT-Admin']=gc('secrets','versions','access','latest','--secret=jt-admin',sensitive=True)
         if private:self.headers['Authorization']='Bearer '+gc('auth','print-identity-token',project=False,sensitive=True)
     def call(self,path,data=None,key=None,files=None):
+        named = path in ('/domains/approve','/domains/rollback','/cases/import','/cases/confirm','/runs','/workspaces/freeze','/history/fix') or path.startswith('/teachings/') and path.endswith('/approve')
+        if data is not None and named:
+            data=dict(data)
+            if not data.get('reviewer_name'):data['reviewer_name']=os.getenv('JT_REVIEWER_NAME','').strip()
+            if not data['reviewer_name']:raise Stop('REVIEWER_REQUIRED','記録を確定する担当者名を JT_REVIEWER_NAME に設定してください。自動で別の氏名は補いません。')
         headers=dict(self.headers);headers['Idempotency-Key']=key or str(uuid.uuid4())
         if files:
             boundary='jt'+hashed(key or str(uuid.uuid4()))[:24];chunks=[]

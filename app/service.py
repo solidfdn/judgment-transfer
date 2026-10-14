@@ -160,16 +160,19 @@ class Service:
         for cid in ws['case_ids']:validate_case(self.case(wid,cid),domain)
         source_keys=[('sources',wid+'-'+sid) for sid in domain['source_hashes']]
         wk,dk=('workspaces',wid),('domains',wid+'-v'+str(base+1))
+        from history import prepared
+        hk,record,fix=prepared(self,ws,ctx,body,'workflow_approval',{'domain':domain},[self.source(wid,sid) for sid in domain['source_hashes']])
         def commit(values):
             w=values[wk]
             if w['version']!=base:raise JTError('VERSION_CONFLICT','Another approval changed the workflow. Reload before approving.',409)
             if w['frozen']:raise JTError('FROZEN','Workspace is frozen.',409)
             for sid,hashed in domain['source_hashes'].items():
                 if not values[('sources',wid+'-'+sid)] or values[('sources',wid+'-'+sid)]['version_hash']!=hashed:raise JTError('STALE','Source changed. Draft and review again.',409)
-            values[dk]={'domain':domain,'approved_at':now(),'origin':draft['origin']}
+            fix(values)
+            values[dk]={'domain':domain,'approved_at':record['recorded_at'],'origin':draft['origin'],'record_id':record['record_id'],'reviewer_name':record['reviewer_name'],'memo':record['memo']}
             w.update(version=base+1,status='READY',goal=domain['goal'])
             return {'version':base+1,'domain':domain}
-        return self.repo.atomic([wk,dk]+source_keys,commit)
+        return self.repo.atomic([wk,dk,hk]+source_keys,commit)
 
     def rollback(self,body,ctx):
         wid=required(body,'workspace_id');ws=self.workspace(wid,ctx)
@@ -179,19 +182,24 @@ class Service:
         domain=copy.deepcopy(self.domain(ws,target));domain['version']=base+1
         validate_domain(domain,lambda ref:self.source_check(wid,ref))
         wk,dk=('workspaces',wid),('domains',wid+'-v'+str(base+1))
+        from history import prepared
+        hk,record,fix=prepared(self,ws,ctx,body,'workflow_reuse',{'domain':domain,'reused_version':target},[self.source(wid,sid) for sid in domain['source_hashes']])
         def commit(values):
             if values[wk]['version']!=base:raise JTError('VERSION_CONFLICT','Reload the current version.',409)
             if values[wk]['status']=='STALE':raise JTError('STALE','Review changed sources before rollback.',409)
-            values[dk]={'domain':domain,'approved_at':now(),'origin':'HUMAN_ROLLBACK','cloned_from':target}
+            fix(values)
+            values[dk]={'domain':domain,'approved_at':record['recorded_at'],'origin':'HUMAN_ROLLBACK','cloned_from':target,'record_id':record['record_id'],'reviewer_name':record['reviewer_name'],'memo':record['memo']}
             values[wk]['version']=base+1
             return {'domain':domain,'version':base+1}
-        return self.repo.atomic([wk,dk],commit)
+        return self.repo.atomic([wk,dk,hk],commit)
 
     def import_cases(self,body,ctx):
         wid=required(body,'workspace_id');ws=self.workspace(wid,ctx);domain=self.domain(ws)
         if ws['frozen'] or ws['run_ids']:raise JTError('FROZEN','Import cases before the first run. Use a new workspace for another dataset.',409)
         cases=required(body,'cases')
         if not isinstance(cases,list) or not 1<=len(cases)<=40:raise JTError('INVALID_INPUT','Import 1–40 cases.')
+        if body.get('append') is True:cases=[self.case(wid,cid) for cid in ws['case_ids']]+cases
+        if len(cases)>40:raise JTError('INPUT_TOO_LARGE','Maximum 40 cases.',413)
         if len({c['case_id'] for c in cases})!=len(cases):raise JTError('INVALID_INPUT','Duplicate case ID.')
         for case in cases:validate_case(case,domain)
         labels=body.get('expected',[])
@@ -200,11 +208,16 @@ class Service:
             check('Expected',item)
             if item['case_id'] not in {c['case_id'] for c in cases}:raise JTError('INVALID_INPUT','Label has no case.')
         wk=('workspaces',wid);keys=[wk]+[('cases',wid+'-'+c['case_id']) for c in cases]+[('expected',wid+'-'+x['case_id']) for x in labels]
+        from history import prepared
+        hk,record,fix=prepared(self,ws,ctx,body,'manual_case_change',{'cases':body['cases'],'input_fields':domain['input_fields'],'append':body.get('append') is True},[])
+        keys.append(hk)
         def commit(values):
             if values[wk]['run_ids'] or values[wk]['frozen']:raise JTError('FROZEN','Dataset already in use.',409)
+            if values[wk]['case_ids']!=ws['case_ids'] or values[wk]['version']!=ws['version']:raise JTError('VERSION_CONFLICT','Cases or conditions changed. Reload before importing.',409)
             for case in cases:values[('cases',wid+'-'+case['case_id'])]=case
             for item in labels:values[('expected',wid+'-'+item['case_id'])]=item
             values[wk]['case_ids']=[c['case_id'] for c in cases]
+            fix(values)
             return {'count':len(cases),'dataset_hash':digest(cases)}
         return self.repo.atomic(keys,commit)
 
@@ -274,16 +287,20 @@ class Service:
         human=self.source(wid,doc['source_id']);domain['source_hashes'][human['source_id']]=human['version_hash'];domain['version']=base+1
         validate_domain(domain,lambda ref:self.source_check(wid,ref))
         wk,tk,dk=('workspaces',wid),('teachings',tid),('domains',wid+'-v'+str(base+1))
+        from history import prepared
+        hk,record,fix=prepared(self,ws,ctx,body,'teaching_approval',{'domain':domain,'explanation':doc['teaching']['human_text'],'question':self.repo.get('questions',doc['teaching']['question_id'])},[self.source(wid,sid) for sid in domain['source_hashes']])
         def commit(values):
             w=values[wk]
             if w['frozen']:raise JTError('FROZEN','Evaluation is frozen.',409)
             if w['version']!=base or values[tk]['teaching']['approval_state']!='DRAFT':raise JTError('VERSION_CONFLICT','This approval is no longer current.',409)
             if w['status']=='STALE':raise JTError('STALE','Re-approve current sources first.',409)
-            values[dk]={'domain':domain,'approved_at':now(),'origin':self.adapter.mode,'teaching_id':tid}
+            fix(values)
+            values[dk]={'domain':domain,'approved_at':record['recorded_at'],'origin':self.adapter.mode,'teaching_id':tid,'record_id':record['record_id'],'reviewer_name':record['reviewer_name'],'memo':record['memo']}
+            values[tk]['record_id']=record['record_id']
             values[tk]['teaching'].update(approval_state='APPROVED',proposed_rules=rules)
             w.update(version=base+1,status='READY',approved_count=w['approved_count']+1);w['human_source_ids'].append(doc['source_id'])
             return {'version':base+1,'domain':domain}
-        return self.repo.atomic([wk,tk,dk],commit)
+        return self.repo.atomic([wk,tk,dk,hk],commit)
 
     def freeze(self,body,ctx):
         if not ctx['admin']:raise JTError('ADMIN_REQUIRED','Evaluation freeze requires administrator access.',403)
@@ -294,16 +311,22 @@ class Service:
         if any(x is None for x in labels):raise JTError('LABELS_REQUIRED','Expected labels must be frozen before the benchmark.',409)
         frozen={'frozen_at':now(),'dataset_hash':digest(cases),'label_hash':digest(labels),'version':ws['version'],'domain_hash':digest(self.domain(ws)),
                 'source_hashes':{s['source_id']:s['version_hash'] for s in self.sources(ws,True)},'model_settings':config.SETTINGS,'code_hash':config.CODE_HASH}
+        from history import prepared
+        hk,record,fix=prepared(self,ws,ctx,body,'evaluation_lock',frozen,self.sources(ws,True))
         def commit(values):
             current=values[('workspaces',wid)]
             if current['version']!=ws['version'] or current['status']!='READY':raise JTError('VERSION_CONFLICT','Workspace changed.',409)
             if current['frozen']:return current['freeze']
+            fix(values)
             current['frozen']=True;current['freeze']=frozen
+            frozen.update(record_id=record['record_id'],reviewer_name=record['reviewer_name'],memo=record['memo'])
             return frozen
-        return self.repo.atomic([('workspaces',wid)],commit)
+        return self.repo.atomic([('workspaces',wid),hk],commit)
 
     def create_run(self,body,ctx):
         wid=required(body,'workspace_id');ws=self.workspace(wid,ctx)
+        from history import actor
+        person=actor(body)
         if ws.get('recovery_study') and not ctx.get('_recovery111'):
             raise JTError('CONTROLLED_STUDY','This frozen study is advanced through its bounded controller only.',409)
         if ws['status']!='READY':raise JTError('STALE','Review the workflow and source changes before running.',409)
@@ -339,10 +362,11 @@ class Service:
                 task_id='task_'+digest([run_id,arm,case['case_id'],repeat])[:40];task_ids.append(task_id)
                 tasks[('tasks',task_id)]={'task_id':task_id,'run_id':run_id,'workspace_id':wid,'case_id':case['case_id'],'arm':arm,'repeat':repeat,
                     'status':'PENDING','lease_token':None,'lease_until':0,'attempts':0,'state':copy.deepcopy(case['initial_state']),'step_index':0,'receipt_ids':[],'trace_ids':[]}
-        run={'run_id':run_id,'workspace_id':wid,'domain':domain,'domain_hash':digest(domain),'dataset_hash':digest(cases),'prompt_hash':digest({'settings':config.SETTINGS,'arm':arm}),
+        run={**person,'run_id':run_id,'workspace_id':wid,'domain':domain,'domain_hash':digest(domain),'dataset_hash':digest(cases),'prompt_hash':digest({'settings':config.SETTINGS,'arm':arm}),
              'code_hash':config.CODE_HASH,'mode':self.adapter.mode,'model_settings':config.SETTINGS,'arm':arm,'split':split,'repeats':repeats,'case_ids':[c['case_id'] for c in cases],
              'task_ids':task_ids,'created_at':now(),'cancelled':False,'active_version':ws['version'],'human_text':'\n\n'.join(texts),'source_ids':[s['source_id'] for s in sources],
-             'source_hashes':{s['source_id']:s['version_hash'] for s in self.sources(ws,True)},'human_inputs':ws['approved_count'],'shared_trace_ids':list(ws['shared_trace_ids'])}
+             'source_hashes':{s['source_id']:s['version_hash'] for s in self.sources(ws,True)},'evidence_sources_snapshot':copy.deepcopy(self.sources(ws,True)),
+             'human_inputs':ws['approved_count'],'shared_trace_ids':list(ws['shared_trace_ids'])}
         wk,rk=('workspaces',wid),('runs',run_id)
         def commit(values):
             if values[wk]['version']!=ws['version'] or values[wk]['status']!='READY':raise JTError('VERSION_CONFLICT','Workflow changed before the run began.',409)
@@ -466,6 +490,9 @@ class Service:
         if export:
             value.update(export_version='1.0',exported_at=now(),receipts=[self.repo.get('receipts',rid) for t in tasks for rid in t['receipt_ids']],
                 traces=traces,shared_preparation_traces=[self.repo.get('traces',i) for i in run['shared_trace_ids']],
-                frozen_evaluation=ws.get('freeze'),source_metadata=self.sources(ws,True),
+                frozen_evaluation=ws.get('freeze'),source_metadata=copy.deepcopy(run.get('evidence_sources_snapshot',self.sources(ws,True))),
                 caveat='MOCK is synthetic and cannot support performance claims.' if run['mode']=='MOCK' else 'Results apply only to this frozen sample; no award or generalization is guaranteed.')
+            from case_intake import case_evidence
+            evidence=case_evidence(self,run['workspace_id'],run['case_ids'])
+            if evidence:value['case_evidence']=evidence
         return value

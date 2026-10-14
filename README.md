@@ -5,14 +5,14 @@
 Identify missing information and decisions that need a person, and use the findings to improve the handover to the next task owner.
 
 **Open the application:** https://judgment-transfer-unql76xapq-an.a.run.app
-**Guided demo (1.0.22, after deployment):** https://judgment-transfer-unql76xapq-an.a.run.app/assets/demo/index.html
+**Historical guided demo:** https://judgment-transfer-unql76xapq-an.a.run.app/assets/demo/index.html
 **Read-only measured evidence:** https://judgment-transfer-unql76xapq-an.a.run.app/assets/review/index.html
 
 The guided demo follows three stages: find the missing explanation, compare what the explanation changes, and improve the handover material. The demo and evidence walkthrough are read-only and make no model calls. They display the actual saved Google Cloud results, source text, prior human approval, case facts and before/after receipts. The working application remains English; Japanese in the demo is an optional explanatory aid. The operational application starts with file and task-owner explanation inputs. The explanation uses the existing TXT-source path; model operations still require an explicit action. A previous workspace opens only when the user chooses to continue it. It retains its separate materials / explanation / results workflow; starting a LIVE operation can make a model call within the existing limits. All sample data are fictional; actions affect only isolated case state.
 
-The six instruction-review perspectives are prompts for a person, not automated scores. Four result groups summarize the observed case records; they do not score a future task owner. Evaluation details count approved supplements, deduplicated input/output/thinking usage including retries, and cumulative decision-trace time. Unreported usage remains unknown and shared preparation is listed separately.
+The new requirements review returns six source-grounded findings and concrete clarification questions. These are not numerical readiness scores. Four result groups summarize the observed case records; they do not score a future task owner. Evaluation details count approved supplements, deduplicated input/output/thinking usage including retries, and cumulative decision-trace time. Unreported usage remains unknown and shared preparation is listed separately.
 
-## Measured result — 1.0.15 execution, 1.0.22 presentation
+## Historical measured result — 1.0.15 execution
 
 | Condition | Correct autonomous completion | Correct decision, including hold | Failed decisions | Critical errors |
 |---|---:|---:|---:|---:|
@@ -24,11 +24,13 @@ The six instruction-review perspectives are prompts for a person, not automated 
 
 Median latency among 212 completed decisions: 4.2 seconds. Recorded comparison model cost: USD 3.3286. All completed responses used Standard after a Priority request; failed unknown-usage calls retain conservative cost reservations. Infrastructure costs are separate. Approval and execution receipts, rather than an unproven accuracy claim, make the structured-rule behavior inspectable.
 
-Past evaluation records are kept as evidence of what was actually tested, including incomplete calls. They are not automatically loaded into a new assessment and do not establish that a new job can be automated. The original sources, approvals and results retain their provenance. The completed study and original results are immutable. The exhausted authorized call grant is not reset by this release. Historical recovery commands remain for provenance and are not a request to repeat the experiment. For the completed deployment, `python3 ~/jt_release_122.py --deploy` installs the reviewed entry flow and demo presentation, retaining the 1.0.20 source-extraction defect fix.
+Past evaluation records are kept as evidence of what was actually tested, including incomplete calls. They are not automatically loaded into a new assessment and do not establish that a new job can be automated. The original sources, approvals and results retain their provenance. The completed study and original results are immutable. The exhausted authorized call grant is not reset by this release. Historical recovery commands remain for provenance and are not a request to repeat the experiment. Version 1.0.23 adds document intake and named non-editable records with confirmed deletion/reset. Its fictional expense cases have no claimed LIVE results yet. See `verification/RELEASE123_STATUS.md` for what passed and what remains. A separate, explicitly authorized bounded allowance retains earlier counters and uses the owner-approved cumulative USD 100 model ceiling.
 
 The prototype reads source evidence, proposes a declarative workflow, runs isolated cases, asks a targeted question about blocked development cases, and turns the task owner’s explanation into an **inactive rule proposal**. Human approval creates a new immutable workflow version. Replaying starts from independent copies of the same initial state. Declared state effects and receipts make the difference inspectable.
 
 ## Run
+
+Finalization and new tests require a responsible person’s name. In the UI, use the Responsible person field; CLI callers can set `JT_REVIEWER_NAME`. Notes are optional. Fixed records retain their evidence versions and can be compared without overwriting them.
 
 For the full Google Cloud Shell deployment, start with `START_HERE_ja.md`. Upload the ZIP once; run `bash jt 00` through `bash jt 08`. Progress and action receipts stay in `.jt/` under Cloud Shell's persistent HOME. The runbook never changes source code while running.
 

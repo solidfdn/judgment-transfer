@@ -31,7 +31,17 @@ Every business operation only updates the isolated, declared state. Human approv
 def schema(name):
     def expand(value):
         if isinstance(value, dict):
-            if '$ref' in value: return expand(CONTRACT['$defs'][value['$ref'].split('/')[-1]])
+            if '$ref' in value:
+                name = value['$ref'].split('/')[-1]
+                if name == 'Condition':
+                    condition = CONTRACT['$defs']['Condition']
+                    # The provider treats oneOf as anyOf. Disjoint object shapes
+                    # retain value-versus-field exclusivity in both validators.
+                    return {'anyOf': [
+                        {'type': 'object', 'properties': {k: expand(condition['properties'][k]) for k in ('field_id', 'operator', operand)},
+                         'required': ['field_id', 'operator', operand], 'additionalProperties': False}
+                        for operand in ('value', 'rhs_field_id')]}
+                return expand(CONTRACT['$defs'][name])
             return {k: expand(v) for k, v in value.items()}
         if isinstance(value, list): return [expand(v) for v in value]
         return value
@@ -89,6 +99,7 @@ class Budget:
         today = dt.datetime.now(dt.timezone.utc).date().isoformat()
         g, s = ('budget', 'global'), ('budget', digest(owner)[:40])
         grant_key = ('budget', 'recovery111')
+        validation_key = ('budget', 'validation123')
         amount = (input_tokens * config.INPUT_PRICE + output_tokens * config.OUTPUT_PRICE) / 1e6
         def reserve(values):
             global_ = values[g] or {'spent_usd': 0, 'day': today, 'decisions': 0, 'calls': 0}
@@ -97,6 +108,8 @@ class Budget:
             limit = 320 if admin else 12
             session_limit = 500 if admin else 24
             grant = values[grant_key]
+            validation = values[validation_key]
+            new_validation = bool(admin and validation and validation.get('authorized') is True and validation['owner'] == owner)
             replacement = (grant or {}).get('recovery115', {})
             replacement_retry = bool(admin and grant and grant['owner'] == owner and purpose == 'decide' and
                 replacement.get('pending_replacement') and decision_key == replacement.get('decision_key'))
@@ -109,11 +122,16 @@ class Budget:
                 recovery = grant.get('recovery113', {})
                 if recovery.get('authorized') is True:
                     limit = grant['base_decisions'] + 242
-                    if charge_retry and recovery['retry_used'] >= 6:
+                    if charge_retry and not new_validation and recovery['retry_used'] >= 6:
                         raise JTError('RETRY_LIMIT', 'The six-attempt recovery reserve is exhausted. No extra request was sent.', 429)
                 if grant.get('streamed114', {}).get('authorized') is True:
                     limit = grant['base_decisions'] + 251
                     session_limit = 509
+            if new_validation:
+                limit = max(limit, validation['base_decisions'] + validation['additional_decisions'])
+                session_limit = max(session_limit, validation['base_calls'] + validation['additional_calls'])
+                if retry and validation['retry_used'] >= validation['retry_limit']:
+                    raise JTError('RETRY_LIMIT', 'The bounded validation retry reserve is exhausted. No extra request was sent.', 429)
             if global_['spent_usd'] + amount > config.MAX_COST:
                 raise JTError('COST_LIMIT', 'The model budget is exhausted. No model call was made.', 429)
             if purpose == 'decide' and (session['decisions'] >= limit or global_['decisions'] >= 600):
@@ -122,7 +140,10 @@ class Budget:
                 raise JTError('CALL_LIMIT', 'The session model-call limit is reached.', 429)
             global_['spent_usd'] += amount; global_['calls'] += 1; session['calls'] += 1
             if purpose == 'decide': global_['decisions'] += 1; session['decisions'] += 1
-            if charge_retry and admin and grant and grant['owner'] == owner and grant.get('recovery113', {}).get('authorized') is True:
+            if retry and new_validation:
+                validation['retry_used'] += 1
+                values[validation_key] = validation
+            elif charge_retry and not new_validation and admin and grant and grant['owner'] == owner and grant.get('recovery113', {}).get('authorized') is True:
                 grant['recovery113']['retry_used'] += 1
                 if replacement_retry:
                     grant['recovery115']['pending_replacement'] = False
@@ -130,7 +151,7 @@ class Budget:
                 values[grant_key] = grant
             values[g], values[s] = global_, session
             return amount
-        return self.repo.atomic([g, s, grant_key], reserve)
+        return self.repo.atomic([g, s, grant_key, validation_key], reserve)
 
     def settle(self, reserved, actual):
         # If a provider never returns usage, keep the conservative reservation.
@@ -373,7 +394,7 @@ class LiveAdapter:
         return self.invoke('extract', {'instruction': 'Inspect every supplied source, including text documents and video. List source-specific verifiable observations with exact source references from each source that contains readable evidence; label uncertainty. OBSERVED and INFERRED observations must each have at least one valid source reference. Every UNRESOLVED observation must have value null. If a source is unreadable or has no verifiable content, report an UNRESOLVED observation with source_refs [] when no valid location can be identified; never invent a location or quotation. If sources contradict each other about the same field, leave that field UNRESOLVED with value null and include the valid references to the conflicting evidence in source_refs; do not silently choose one as fact. Do not invent a workflow or approvals.', 'fields': fields or []}, EXTRACT_SCHEMA, sources, owner, admin)
 
     def draft_domain(self, goal, domain_id, version, sources, observations, owner, admin):
-        return self.invoke('draft_domain', {'instruction': 'Propose a small generic workflow for human review. Use only declared scalar fields and isolated state effects. Include an explicit terminal hold action. Set every approved_by to null. Do not resolve UNRESOLVED observations.', 'goal': goal, 'domain_id': domain_id, 'version': version, 'schema_version': '1.0', 'observations': observations, 'source_hashes': {s['source_id']:s['version_hash'] for s in sources}}, schema('DomainSpec'), sources, owner, admin)
+        return self.invoke('draft_domain', {'instruction': 'Propose a small generic workflow for human review. Use only declared scalar fields and isolated state effects. Include an explicit terminal hold action. Set every approved_by to null. Do not resolve UNRESOLVED observations. Declare raw input facts that can be read from case evidence; do not replace comparisons with precomputed match or verified flags. Conditions compare a field to either a literal value or rhs_field_id, never both. Field-to-field equality requires matching scalar types; ordered comparisons require numbers. Preserve missing conditions as reasons to hold. Keep final business approval with a person unless the source explicitly grants it.', 'goal': goal, 'domain_id': domain_id, 'version': version, 'schema_version': '1.0', 'observations': observations, 'source_hashes': {s['source_id']:s['version_hash'] for s in sources}}, schema('DomainSpec'), sources, owner, admin)
 
     def decide(self, domain, case, state, arm, human_text, sources, owner, admin):
         workflow = copy.deepcopy(domain)

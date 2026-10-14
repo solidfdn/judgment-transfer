@@ -169,6 +169,56 @@ def create_app(repo=None, adapter=None, blobs=None, testing=False):
     @app.post('/api/v1/sources/extract')
     @mutation
     def source_extract():return service.extract_sources(body(),g.ctx)
+    @app.post('/api/v1/requirements/review')
+    @mutation
+    def requirements_review():
+        from requirements_review import review_requirements
+        return review_requirements(service,body(),g.ctx)
+    @app.post('/api/v1/cases/read')
+    @mutation
+    def case_read():
+        from case_intake import read_case
+        file=request.files.get('file')
+        if file is None:raise JTError('INVALID_INPUT','Choose a case file.')
+        return read_case(service,request.form,file.filename,file.read(),file.mimetype,g.ctx)
+    @app.post('/api/v1/cases/confirm')
+    @mutation
+    def case_confirm():
+        from case_intake import confirm_case
+        return confirm_case(service,body(),g.ctx)
+    @app.post('/api/v1/history/fix')
+    @mutation
+    def history_fix():
+        from history import fix_review,fix_result
+        data=body()
+        return fix_result(service,data,g.ctx) if data.get('run_id') else fix_review(service,data,g.ctx)
+    @app.post('/api/v1/history/delete')
+    @mutation
+    def history_delete():
+        from history import remove
+        return remove(service,body(),g.ctx)
+    @app.post('/api/v1/history/reset')
+    @mutation
+    def history_reset():
+        from history import remove
+        return remove(service,body(),g.ctx,reset=True)
+    @app.get('/api/v1/workspaces/<wid>/history')
+    def history_list(wid):
+        from history import records
+        return jsonify({'records':records(service,wid,g.ctx)})
+    @app.get('/api/v1/history/<rid>')
+    def history_get(rid):return jsonify(service.owned('history',rid,g.ctx))
+    @app.get('/api/v1/history/<rid>/sources/<sid>')
+    def history_source(rid,sid):
+        record=service.owned('history',rid,g.ctx)
+        source=next((s for s in record['source_metadata'] if s['source_id']==sid),None)
+        if not source:raise JTError('NOT_FOUND','Source is not part of this finalized record.',404)
+        return send_file(io.BytesIO(blobs.get(source['blob_id'])),mimetype=source['mime'],download_name=source['name'],as_attachment=True)
+    @app.post('/api/v1/validation123/authorize')
+    @mutation
+    def validation_authorize():
+        from validation123 import authorize
+        return authorize(service,body(),g.ctx)
     @app.post('/api/v1/domains/approve')
     @mutation
     def domain_approve():return service.approve_domain(body(),g.ctx)

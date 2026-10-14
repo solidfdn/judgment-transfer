@@ -2,15 +2,15 @@
   "product": "Judgment Transfer",
   "owner": "SOLIFAN",
   "spec_version": "1.0",
-  "package_version": "1.0.22",
-  "app_version": "1.0.22",
+  "package_version": "1.0.23",
+  "app_version": "1.0.23",
   "baseline_spec": {
     "path": "baseline/Judgment_Transfer_Development_Spec_v1.0_20261010.docx",
     "sha256": "8585fe58d7fdf3511771c0214e960ee7c4091209f7cf60ab5826ca984fb82e07"
   },
   "contracts": {
     "path": "app/contracts/jt_contracts.schema.json",
-    "sha256": "d90b53ce33b856f156214bd437e5d789b0b4e4d5e5abd43af236465982586af4"
+    "sha256": "fd1cde811044a19a89e4090d17f62e18e010e4b6b272abdf57b7a6f767a10648"
   },
   "fixed": {
     "delivery": "one ZIP with complete code and numbered Google Cloud Shell runbook",
@@ -299,5 +299,23 @@
     "formal_replays": 0,
     "preserved": "All source facts and hashes, original approvals, 216 archived decisions including four failures, .jt records, call counters, budgets and previously issued installers.",
     "main_language": "English; no Japanese localization of the working application."
+  },
+  "document_validation_123": {
+    "category": "User-authorized requirement extension and defect fixes",
+    "requirements_review": "Six source-grounded perspectives plus concrete owner questions; no numerical readiness score. Any job can be submitted; useful model behavior remains to be verified per job.",
+    "case_intake": "One case file per read; up to40 draft files /20MiB separately from five shared policy sources. OBSERVED values only populate draft facts. Explicit named confirmation required.",
+    "conditions": "value XOR rhs_field_id; same-type scalar equality and numeric ordering; UNKNOWN remains HOLD. Existing literal conditions retained.",
+    "history": "Named non-editable finalized snapshots, optional note, automatic UTC timestamp, evidence versions retained, previous record linkage and side-by-side viewing. Owner-confirmed single deletion or current-workspace history reset is supported. Current materials, approved workflows and run results remain. Prior missing actor names are not invented.",
+    "sample": "Six wholly fictional expense claim PDFs; four development/two reserved cases. Labels and reference rules excluded from public input pack and LIVE prompts.",
+    "authorization": "User instruction on2026-10-14: necessary meaningful validation, cumulative USD100 maximum.",
+    "validation_limits": {
+      "additional_generation_attempts": 40,
+      "additional_judgment_attempts": 24,
+      "retry_attempts": 4,
+      "cumulative_model_budget_usd": 100,
+      "reset_counters": false
+    },
+    "preserved": "Original216 decisions, source evidence, approvals, recovery allowance history and prior installer bytes. No old comparison rerun.",
+    "pending": "LIVE end-to-end validation and rendered browser acceptance. Proposed implementation/code/architecture export is not part of this release."
   }
 }

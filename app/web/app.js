@@ -2,6 +2,7 @@
 const $=id=>document.getElementById(id);
 let csrf='',admin='',ws=null,currentRun=null,beforeRun=null,afterRun=null,question=null,teaching=null,busy=false,recorded=false;
 let operation=null,executingRun=false,stopRequested=false,cancelRequest=null,displayedWorkspace=null,savedWork=null,activeTab='sources';
+let caseDraft=null,caseEdits=null;
 const escapeText=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function paintNotice(){const n=$('notice');n.textContent=operation.message+(operation.started!==null?' · '+Math.floor((Date.now()-operation.started)/1000)+'s elapsed':'');n.className=operation.error?'error':'';$('notice-details').hidden=!operation.details;$('notice-technical').textContent=operation.details?JSON.stringify(operation.details,null,2):'';}
 function notify(message,error=false,details=null){operation={message,error,details,started:busy?operation?.started??Date.now():null};$('notice-details').open=false;paintNotice();}
@@ -14,6 +15,10 @@ function serviceError(error={},status=null,path=''){
   FORBIDDEN:'You do not have access to this saved work. Use work created with your current access.',
   NOT_FOUND:'This saved item is not available with your current access. Check the saved workspace ID or start a new check.',
   SOURCE_REQUIRED:'Add the task owner’s instructions in step 1 before continuing.',
+  REVIEWER_REQUIRED:'Enter the responsible person’s name before finalizing a record or starting a test.',
+  CONFIRMATION_REQUIRED:'Confirm the history deletion before continuing.',
+  HISTORY_CHANGED:'Decision history changed. Choose “Open history” again before deleting or resetting it.',
+  LIVE_REQUIRED:'Reading new documents requires the AI-connected application. No simulated reading was substituted.',
   EXTRACTION_REQUIRED:'Choose “Organize the work” in step 1 to read the current files first.',
   WORKFLOW_REQUIRED:'Review and approve the work and its conditions in step 1 before continuing.',
   CASES_REQUIRED:'Add at least one example case in step 1 before testing the instructions.',
@@ -122,7 +127,7 @@ function updateNextStep(){
  if(ws){
   if(ws.status==='STALE')message='Next: review the changed instructions and approve an updated guide.';
   else if(ws.draft&&ws.draft.base_version===ws.version)message='Next: check the work and its conditions below, then approve the conditions if they reflect the job.';
-  else if(!ws.domain)message='Add a file or explanation, then choose “Organize the work”.';
+  else if(!ws.domain)message=ws.requirements_review?'Review the questions below. Add an explanation, or prepare a practice test.':'Add a file or explanation, then choose “Organize the work”.';
   else if(!ws.dev_cases.length)message='Next: add at least one example case to test what AI can do with these instructions.';
   else if(teaching?.approval_state==='DRAFT')message='Next: read the proposed guidance in step 2, then approve it if it matches your judgment.';
   else if(teaching?.approval_state==='APPROVED')message='Next: try the same cases with the approved guidance, then check each result.';
@@ -132,6 +137,7 @@ function updateNextStep(){
  }
  if(recorded)message='You are reading a saved result. No new case is being processed.';
  $('next-step').textContent=message;
+ $('next-step').hidden=!ws&&!recorded;$('record-person').hidden=!ws||recorded;$('history-panel').hidden=!ws||recorded;
  $('workflow-card').hidden=!(ws?.domain||ws?.draft&&ws.draft.base_version===ws.version);
  $('cases-card').hidden=!ws?.domain;
  // Visual emphasis only: existing availability, approvals and callbacks are unchanged.
@@ -141,13 +147,24 @@ function updateNextStep(){
   else if(ws.frozen)primary=null;
   else if(ws.status==='STALE')primary='analyse';
   else if(ws.draft&&ws.draft.base_version===ws.version)primary='approve-workflow';
-  else if(!ws.domain)primary='analyse';
+  else if(!ws.domain)primary=ws.requirements_review?'prepare-test':'analyse';
   else if(!ws.dev_cases.length)primary='add-case';
   else if(!currentRun)primary='baseline';
  }else if(activeTab==='teach'&&ws&&!ws.frozen&&!recorded&&currentRun){
   primary=teaching?.approval_state==='DRAFT'?'approve-teaching':teaching?.approval_state==='APPROVED'?'replay':question?'propose':'ask';
  }else if(activeTab==='results'&&ws&&!ws.frozen&&!recorded&&currentRun)primary='next-teach';
- for(const id of ['new','upload','analyse','approve-workflow','add-case','baseline','ask','propose','approve-teaching','replay','next-teach'])$(id)?.classList.toggle('primary-action',id===primary);
+ for(const id of ['new','upload','analyse','prepare-test','approve-workflow','add-case','baseline','ask','propose','approve-teaching','replay','next-teach'])$(id)?.classList.toggle('primary-action',id===primary);
+}
+
+function renderRequirements(){
+ const review=ws?.requirements_review,holder=$('requirements-review');holder.hidden=!review;
+ if(!review){holder.innerHTML='';return;}
+ const labels={purpose_scope:'Purpose and scope',required_information:'Required information',steps_operations:'Steps and operations',decision_conditions:'Conditions and reasons',exceptions_human_review:'Exceptions and human review',completion:'Completion'};
+ const statuses={documented:'Documented',needs_clarification:'Needs clarification',not_provided:'Not provided'};
+ const current=ws.sources.length===Object.keys(review.source_hashes).length&&ws.sources.every(s=>review.source_hashes[s.source_id]===s.version_hash)&&review.goal===ws.goal;
+ holder.innerHTML='<h2>What needs clarifying?</h2><p>'+escapeText(review.summary)+'</p>'+(current?'':'<p class="warning">The materials changed. Organize the work again to update this review.</p>')+(review.questions.length?'<ol class="review-questions">'+review.questions.map(q=>'<li><strong>'+escapeText(q.question)+'</strong><p>'+escapeText(q.why_needed)+'</p><details><summary>Supporting material</summary>'+sourceReferences(q.source_refs,ws.sources)+'</details></li>').join('')+'</ol>':'<p>No clarification question was returned. This does not establish that the work can be automated.</p>')+'<details><summary>Review all six perspectives</summary>'+review.checks.map(c=>'<article><h3>'+escapeText(labels[c.aspect])+'</h3><p class="muted">'+escapeText(statuses[c.status])+'</p><p>'+escapeText(c.finding)+'</p>'+sourceReferences(c.source_refs,ws.sources)+'</article>').join('')+'</details>'+observationsGuide(review.observations,ws.domain,ws.sources)+'<button id="fix-review" class="secondary" '+(!current?'disabled':'')+'>Finalize this review</button> <button id="prepare-test" class="secondary" '+(!current||ws.frozen?'disabled':'')+'>Prepare a practice test</button><p class="muted">Draft test conditions for your approval. Findings alone do not prove that AI can complete the work.</p>';
+ bind('fix-review',async()=>{await api('/history/fix',{workspace_id:ws.workspace_id,...recordPerson()});clearRecordNote();await refresh();notify('Review finalized. Its evidence, name, note and timestamp are saved in Decision history.');});
+ bind('prepare-test',async()=>{notify('Drafting conditions for your review…');await api('/domains/draft',{workspace_id:ws.workspace_id,goal:ws.goal});await refresh();notify('Draft ready. Review the conditions before approving.');});
 }
 
 function caseInput(caseId,value){return (value.traces||[]).find(t=>t.payload?.case?.case_id===caseId)?.payload.case||(ws?.workspace_id===value.run.workspace_id?ws.dev_cases.find(c=>c.case_id===caseId):null);}
@@ -158,14 +175,24 @@ function renderCaseEditor(){
  if(!ws||ws.sample){holder.innerHTML='';return;}
  if(!ws.domain){holder.innerHTML='<p class="muted">Approve the work and its conditions to add example cases.</p>';return;}
  if(ws.frozen||ws.run_ids.length){holder.innerHTML='<p class="muted">These cases are fixed so the before-and-after checks use the same inputs. Start a new check to use a different set.</p>';return;}
+ const sameDraft=caseDraft?.workspace_id===ws.workspace_id;
+ if(!sameDraft)caseDraft=null;
+ if(caseEdits?.workspace_id!==ws.workspace_id)caseEdits=null;
  const control=(field,group,index)=>{const id=`case-${group}-${index}`;return `<div class="case-input"><label for="${id}">${escapeText(fieldLabel(ws.domain,field.field_id))}</label><p id="${id}-help" class="muted">${escapeText(JTUiCopy.field(ws.domain,field.field_id).description)}</p>${field.type==='boolean'?`<select id="${id}" aria-describedby="${id}-help"><option value="">Not supplied</option><option value="true">Yes</option><option value="false">No</option></select>`:`<input id="${id}" type="${field.type==='number'?'number':'text'}" ${field.type==='number'?'step="any"':''} aria-describedby="${id}-help" placeholder="Not supplied">`}</div>`;};
- holder.innerHTML=`<h3>Add an example case</h3><p>Describe a situation that you want AI to handle. Enter only facts you know. A blank field means the information is not supplied.</p><label for="case-description">Describe the situation</label><textarea id="case-description" rows="2" maxlength="4000" placeholder="What has happened, and what needs deciding?"></textarea><label for="case-kind">What kind of example is this?</label><select id="case-kind"><option value="normal">A routine case</option><option value="transfer">A case the instructions may not cover</option><option value="must_hold">A case that should wait for more information</option></select><h4>Facts about this case</h4><div class="case-form-grid">${ws.domain.input_fields.map((f,i)=>control(f,'fact',i)).join('')}</div><h4>Before any action</h4><p class="muted">Enter the case’s current state. These values are not chosen for you.</p><div class="case-form-grid">${ws.domain.state_fields.map((f,i)=>control(f,'state',i)).join('')}</div><button id="add-case" class="secondary">Save this example case</button><p class="muted">Add up to 40 cases before the first test. Case type organizes the examples; it does not set a correct-answer label.</p>`;
+ holder.innerHTML=`<input id="case-file" class="native-file-input" tabindex="-1" aria-hidden="true" type="file" accept=".txt,.pdf,.png,.jpg,.jpeg,.mp4"><button id="read-case-file" class="secondary">Read a case file</button><p class="muted">Upload one case and its supporting evidence in a single file. Review the extracted facts before saving.</p>${caseDraft?'<p><strong>Read: '+escapeText(caseDraft.sources[0].name)+'</strong></p>':''}<details id="case-form" ${caseDraft?'open':''}><summary>${caseDraft?'Review the facts and starting state':'Or enter an example manually'}</summary><label for="case-description">Describe the situation</label><textarea id="case-description" rows="2" maxlength="4000" placeholder="What has happened, and what needs deciding?"></textarea><label for="case-kind">What kind of example is this?</label><select id="case-kind"><option value="normal">A routine case</option><option value="transfer">A case the instructions may not cover</option><option value="must_hold">A case that should wait for more information</option></select><h4>Facts about this case</h4><p class="muted">Blank means not supplied. Inferences and unresolved values are left blank.</p><div class="case-form-grid">${ws.domain.input_fields.map((f,i)=>control(f,'fact',i)).join('')}</div>${caseDraft?observationsGuide(caseDraft.observations,ws.domain,caseDraft.sources):''}<h4>Before any action</h4><p class="muted">Enter the case’s current state. These values are not chosen for you.</p><div class="case-form-grid">${ws.domain.state_fields.map((f,i)=>control(f,'state',i)).join('')}</div><button id="add-case" class="secondary">${caseDraft?'Confirm facts and save case':'Save this example case'}</button></details><p class="muted">Add up to 40 cases before the first test. The case kind does not supply a correct answer.</p>`;
+ const vals=caseEdits||caseDraft?.case;
+ if(vals){$('case-description').value=vals.raw_text||'';$('case-kind').value=vals.stratum||'normal';for(const [group,key,defs] of [['fact','facts',ws.domain.input_fields],['state','initial_state',ws.domain.state_fields]])defs.forEach((f,i)=>{$(`case-${group}-${i}`).value=vals[key]?.[f.field_id]??'';});}
+ const read=(fields,group,validate=true)=>Object.fromEntries(fields.map((f,i)=>{const input=$(`case-${group}-${i}`),raw=input.value.trim();let value=raw===''?null:f.type==='boolean'?raw==='true':f.type==='number'?Number(raw):raw;if(validate&&(input.validity?.badInput||f.type==='number'&&value!==null&&!Number.isFinite(value)))throw Error('Enter a number for '+fieldLabel(ws.domain,f.field_id)+'.');return [f.field_id,value];}));
+ const remember=()=>{caseEdits={workspace_id:ws.workspace_id,raw_text:$('case-description').value,stratum:$('case-kind').value,facts:read(ws.domain.input_fields,'fact',false),initial_state:read(ws.domain.state_fields,'state',false)};};
+ holder.querySelectorAll('input:not([type=file]),select,textarea').forEach(el=>el.addEventListener('input',remember));
+ $('read-case-file').onclick=()=>{if(!busy&&!cancelRequest)$('case-file').click();};
+ $('case-file').onchange=()=>{const file=$('case-file').files[0];if(!file)return;return action(async()=>{const data=new FormData();data.append('workspace_id',ws.workspace_id);data.append('file',file);data.append('stratum',$('case-kind').value);notify('Reading the case file…');const result=await api('/cases/read',data);caseDraft=result;caseEdits=null;renderCaseEditor();notify('Read complete. Check each fact, its evidence and the starting state, then confirm the case.');});};
  bind('add-case',async()=>{
   const description=$('case-description').value.trim();if(!description)throw Error('Describe the situation for this example case.');
-  const cases=[...ws.dev_cases];if(cases.length>=40)throw Error('This workspace already has 40 cases.');
-  const read=(fields,group)=>Object.fromEntries(fields.map((f,i)=>{const input=$(`case-${group}-${i}`),raw=input.value.trim();let value=raw===''?null:f.type==='boolean'?raw==='true':f.type==='number'?Number(raw):raw;if(input.validity?.badInput||f.type==='number'&&value!==null&&!Number.isFinite(value))throw Error('Enter a number for '+fieldLabel(ws.domain,f.field_id)+'.');return [f.field_id,value];}));
-  const c={case_id:'case_'+crypto.randomUUID().replaceAll('-',''),domain_id:ws.domain.domain_id,split:'dev',stratum:$('case-kind').value,facts:read(ws.domain.input_fields,'fact'),raw_text:description,initial_state:read(ws.domain.state_fields,'state')};
-  await api('/cases/import',{workspace_id:ws.workspace_id,cases:[...cases,c]});await refresh();notify('Example saved. Add another, or try the original instructions.');
+  const c={case_id:caseDraft?.case.case_id||'case_'+crypto.randomUUID().replaceAll('-',''),domain_id:ws.domain.domain_id,split:'dev',stratum:$('case-kind').value,facts:read(ws.domain.input_fields,'fact'),raw_text:description,initial_state:read(ws.domain.state_fields,'state')};
+  if(caseDraft)await api('/cases/confirm',{workspace_id:ws.workspace_id,case_draft_id:caseDraft.case_draft_id,case:c,...recordPerson()});
+  else await api('/cases/import',{workspace_id:ws.workspace_id,cases:[c],append:true,...recordPerson()});
+  caseDraft=null;caseEdits=null;clearRecordNote();await refresh();notify('Case saved. Add another, or try the original instructions.');
  });
 }
 function renderWorkspace(preserveInputs=false){
@@ -180,10 +207,10 @@ function renderWorkspace(preserveInputs=false){
  if(d){$('workflow').innerHTML=workflowGuide(d,isDraft);$('domain-json').value=JSON.stringify(d,null,2);}else{$('workflow').textContent='Add instructions and organize them to create a guide for review.';$('domain-json').value='';}
  $('observations').innerHTML=observationsGuide(ws.draft?.observations,d,ws.sources||[]);
  $('dev-cases').innerHTML='<p class="muted">'+ws.dev_cases.length+' example cases ready.</p>'+ws.dev_cases.map((c,i)=>`<details><summary>Case ${i+1}: ${escapeText(caseSummary(c,'Example case'))}</summary>${caseFacts(c,d)}<p><strong>Starting state:</strong> ${escapeText(stateDescription(c.initial_state,d))}</p><details><summary>Original case data</summary><pre>${escapeText(JSON.stringify(c,null,2))}</pre></details></details>`).join('');
- question=ws.questions.at(-1)?.question||null;teaching=ws.teachings.at(-1)?.teaching||null;renderTeaching();renderCaseEditor();updateNextStep();
+ question=ws.questions.at(-1)?.question||null;teaching=ws.teachings.at(-1)?.teaching||null;renderTeaching();renderRequirements();renderCaseEditor();updateNextStep();
  sessionStorage.setItem('jt-workspace',ws.workspace_id);$('saved-work').hidden=true;
 }
-function resetWorkspaceView(preserveInputs=false){currentRun=beforeRun=afterRun=question=teaching=null;recorded=false;stopRequested=false;displayedWorkspace=null;$('answer').value='';$('cases-json').value='';if(!preserveInputs){$('goal').value='';$('file').value='';$('initial-explanation').value='';}$('source-list').innerHTML='';$('dev-cases').innerHTML='';$('stale').hidden=true;$('recorded').value='';$('run-status').textContent='';$('comparison').innerHTML='';$('results-table').innerHTML='';sessionStorage.removeItem('jt-run');renderTeaching();}
+function resetWorkspaceView(preserveInputs=false){currentRun=beforeRun=afterRun=question=teaching=null;recorded=false;stopRequested=false;displayedWorkspace=null;caseDraft=null;caseEdits=null;$('history-list').innerHTML='';$('history-comparison').innerHTML='';$('requirements-review').hidden=true;$('answer').value='';$('cases-json').value='';if(!preserveInputs){$('goal').value='';$('file').value='';$('initial-explanation').value='';syncUploadControl();}$('source-list').innerHTML='';$('dev-cases').innerHTML='';$('stale').hidden=true;$('recorded').value='';$('run-status').textContent='';$('comparison').innerHTML='';$('results-table').innerHTML='';sessionStorage.removeItem('jt-run');renderTeaching();}
 function renderTeaching(){
  const hasExample=Boolean(ws?.sample&&ws.example_answer);$('example').hidden=!hasExample;$('example-note').hidden=!hasExample;
  $('question').innerHTML=question?`<h3>${escapeText(question.text)}</h3><p>${escapeText(question.why_needed)}</p><details><summary>Cases behind this question</summary>${question.affected_dev_case_ids.map((id,i)=>`<p>${escapeText(caseSummary(ws?.dev_cases.find(c=>c.case_id===id),'Example case '+(i+1)))}</p>`).join('')}</details>`:'<p>First try the original instructions in step 1. Then find a case that needs your explanation.</p>';
@@ -192,9 +219,10 @@ function renderTeaching(){
 }
 async function refresh(preserveInputs=false){if(ws){ws=await api('/workspaces/'+ws.workspace_id,null,'GET');renderWorkspace(preserveInputs);}}
 async function ensureWorkspace(){if(!ws){ws=await api('/workspaces',{goal:$('goal').value});renderWorkspace(true);}return ws;}
+function syncUploadControl(){const file=$('file').files[0];$('upload').textContent=file?'Retry upload':'Upload file';$('upload-status').textContent=file?'Not saved: '+file.name:'';$('replace-upload').hidden=!file;}
 async function saveFile(file){
- await ensureWorkspace();const data=new FormData();data.append('workspace_id',ws.workspace_id);data.append('file',file);
- await api('/sources',data);$('file').value='';await refresh(true);
+ try{await ensureWorkspace();const data=new FormData();data.append('workspace_id',ws.workspace_id);data.append('file',file);
+ await api('/sources',data);$('file').value='';await refresh(true);}finally{syncUploadControl();}
 }
 async function saveExplanation(text){
  await ensureWorkspace();const data=new FormData();data.append('workspace_id',ws.workspace_id);data.append('file',new Blob([text],{type:'text/plain'}),'task-owner-explanation.txt');
@@ -202,26 +230,32 @@ async function saveExplanation(text){
 }
 async function create(sample){ws=await api('/workspaces',sample?{sample}:{});currentRun=beforeRun=afterRun=null;recorded=false;renderWorkspace();tab('sources');notify(sample?'Review the work and its conditions, then approve the conditions if they match the example instructions.':'Describe the job and add the instructions you use today.');}
 bind('sample-invoice',()=>create('invoice_routing'));bind('sample-support',()=>create('support_triage'));bind('new',()=>create());
+bind('sample-expense',async()=>{const response=await fetch('/assets/samples/expense_policy.txt');if(!response.ok)throw Error('The sample instructions could not be loaded.');const text=await response.text();await create();$('goal').value='Check business-trip accommodation reimbursement documents before a person gives business approval.';await saveFile(new File([text],'expense_policy.txt',{type:'text/plain'}));notify('Sample instructions added. Download the sample files, then organize the work. No AI result or approval has been created.');});
+bind('download-expense',async()=>{const response=await fetch('/assets/samples/expense_files.json');if(!response.ok)throw Error('The sample files could not be loaded.');const data=await response.json(),bytes=Uint8Array.from(atob(data.base64),c=>c.charCodeAt(0)),url=URL.createObjectURL(new Blob([bytes],{type:data.mime})),a=document.createElement('a');a.href=url;a.download=data.filename;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);notify('Sample files downloaded. Start with the four development cases; keep the other two for a separate check.');});
+$('open-recorded').onclick=()=>{if(!busy&&!cancelRequest)$('recorded').click();};
+
 bind('continue-saved',async()=>{
  if(!savedWork)throw Error('There is no saved work linked to this tab. Start a new check above.');
  const {workspaceId,runId}=savedWork;ws=await api('/workspaces/'+workspaceId,null,'GET');recorded=false;renderWorkspace();
  if(runId&&ws.run_ids.includes(runId)){currentRun=runId;sessionStorage.setItem('jt-run',runId);showRun(await api('/runs/'+runId,null,'GET'));}
  tab('sources');notify('Saved work opened. Review the instructions and results before choosing what to do next. No case has been started.');
 });
-bind('upload',async()=>{const file=$('file').files[0];if(!file)throw Error('Choose a file to add.');await saveFile(file);notify('File saved. Add more information or organize the work.');});
+function uploadSelectedFile(){const file=$('file').files[0];if(!file){syncUploadControl();return;}return action(async()=>{await saveFile(file);notify('File saved. Add more information or organize the work.');});}
+$('upload').onclick=()=>{if(busy||cancelRequest)return;return $('file').files[0]?uploadSelectedFile():$('file').click();};
+$('replace-upload').onclick=()=>{if(!busy&&!cancelRequest)$('file').click();};
+$('file').onchange=uploadSelectedFile;
 bind('add-explanation',async()=>{const text=$('initial-explanation').value;if(!text.trim())throw Error('Enter an explanation or comment to add.');await saveExplanation(text);notify('Explanation saved as a text file. It is not approved guidance yet.');});
 bind('analyse',async()=>{
  const file=$('file').files[0],text=$('initial-explanation').value,goal=$('goal').value;
  if(!file&&!text.trim()&&!ws?.sources.length)throw Error('Add a file or explanation first.');
  await ensureWorkspace();if(file)await saveFile(file);if(text.trim())await saveExplanation(text);
- notify('Reading your materials and explanation…');await api('/sources/extract',{workspace_id:ws.workspace_id});
- notify('Drafting conditions for your review…');await api('/domains/draft',{workspace_id:ws.workspace_id,goal});await refresh();notify('Draft ready. Review the conditions before approving.');
+ notify('Reviewing your materials and explanation…');await api('/requirements/review',{workspace_id:ws.workspace_id,goal});await refresh();notify('Review ready. Read the questions, add any missing explanation, or prepare a practice test.');
 });
 bind('save-domain',async()=>{await api('/domains/draft',{workspace_id:ws.workspace_id,domain:JSON.parse($('domain-json').value)});await refresh();notify('Edited conditions saved as a draft. Review them before approving.');});
-bind('approve-workflow',async()=>{await api('/domains/approve',{draft_id:ws.draft.draft_id,base_version:ws.version});await refresh();notify('Conditions approved. Try the original instructions on the example cases.');});
-bind('import-cases',async()=>{await api('/cases/import',{workspace_id:ws.workspace_id,cases:JSON.parse($('cases-json').value)});await refresh();notify('Cases imported.');});
-bind('rollback',async()=>{await api('/domains/rollback',{workspace_id:ws.workspace_id,target_version:Number($('rollback-version').value),base_version:ws.version});await refresh();notify('The earlier guidance is now saved as a new approved version.');});
-async function run(arm){if(!ws||ws.version<0)throw Error('Review and approve the work and its conditions in step 1 first.');recorded=false;const r=await api('/runs',{workspace_id:ws.workspace_id,arm,split:'dev',repeats:1,...(admin?{case_ids:guidedCases()}: {})});currentRun=r.run_id;sessionStorage.setItem('jt-run',currentRun);tab('results');return executeRun();}
+bind('approve-workflow',async()=>{await api('/domains/approve',{draft_id:ws.draft.draft_id,base_version:ws.version,...recordPerson()});clearRecordNote();await refresh();notify('Conditions approved. Try the original instructions on the example cases.');});
+bind('import-cases',async()=>{await api('/cases/import',{workspace_id:ws.workspace_id,cases:JSON.parse($('cases-json').value),...recordPerson()});clearRecordNote();await refresh();notify('Cases imported.');});
+bind('rollback',async()=>{await api('/domains/rollback',{workspace_id:ws.workspace_id,target_version:Number($('rollback-version').value),base_version:ws.version,...recordPerson()});clearRecordNote();await refresh();notify('The earlier guidance is now saved as a new approved version.');});
+async function run(arm){if(!ws||ws.version<0)throw Error('Review and approve the work and its conditions in step 1 first.');recorded=false;const r=await api('/runs',{workspace_id:ws.workspace_id,arm,split:'dev',repeats:1,...recordPerson(),case_ids:ws.dev_cases.map(c=>c.case_id)});currentRun=r.run_id;sessionStorage.setItem('jt-run',currentRun);tab('results');return executeRun();}
 function guidedCases(){return ['normal','transfer','must_hold'].flatMap(s=>ws.dev_cases.filter(c=>c.stratum===s).slice(0,1).map(c=>c.case_id));}
 async function executeRun(){
  stopRequested=false;executingRun=true;$('cancel').disabled=false;
@@ -255,7 +289,7 @@ $('cancel').onclick=async()=>{
 bind('ask',async()=>{if(!currentRun||recorded)throw Error('Try the original instructions in step 1 first.');const q=await api('/questions',{run_id:currentRun});question=q.question;renderTeaching();notify('Answer the question, then review the guidance drafted from your explanation.');});
 bind('example',async()=>{if(!ws?.sample||!ws.example_answer)throw Error('Write an explanation for your own work. Supplied explanations belong only to the fictional examples.');$('answer').value=ws.example_answer;notify('This sample’s explanation is inserted. Check it against the fictional example before submitting.');});
 bind('propose',async()=>{if(!question)throw Error('Choose “Find what needs explaining” first.');notify('Drafting guidance from your explanation for you to review…');const t=await api('/teachings',{question_id:question.question_id,human_text:$('answer').value});teaching=t.teaching;renderTeaching();notify('Draft ready. Read the conditions and action, then approve them if they match your judgment.');});
-bind('approve-teaching',async()=>{await api('/teachings/'+teaching.teaching_id+'/approve',{base_version:teaching.base_domain_version});await refresh();notify('Guidance approved. Try the same example cases again from their original starting points.');});
+bind('approve-teaching',async()=>{await api('/teachings/'+teaching.teaching_id+'/approve',{base_version:teaching.base_domain_version,...recordPerson()});clearRecordNote();await refresh();notify('Guidance approved. Try the same example cases again from their original starting points.');});
 bind('next-teach',async()=>{if(recorded)throw Error('This imported result is read-only. Open or create work in step 1 to add an explanation.');tab('teach');});
 function percent(v){return v===null?'Unlabelled':(v*100).toFixed(1)+'%';}
 function comparableRuns(a,b){
@@ -303,9 +337,44 @@ function showRun(value){
  if(!value.receipts&&!recorded)$('results-table').querySelectorAll('details[data-task]').forEach(details=>{details.addEventListener('toggle',async()=>{if(!details.open||details.dataset.loaded)return;details.dataset.loaded='loading';try{exported=exported||api('/exports/'+r.run_id,null,'GET');const full=await exported;const task=full.tasks.find(t=>t.task_id===details.dataset.task);details.innerHTML='<summary>Why this happened and what changed</summary>'+taskEvidence(task,full);details.dataset.loaded='true';}catch(e){details.dataset.loaded='';exported=null;const p=document.createElement('p');p.textContent='The saved change could not be loaded. '+e.message;details.append(p);if(e.details){const technical=document.createElement('details');technical.innerHTML='<summary>Technical details for support</summary><pre>'+escapeText(JSON.stringify(e.details,null,2))+'</pre>';details.append(technical);}}});});
  updateNextStep();
 }
+function recordPerson(){const name=$('reviewer-name').value.trim();if(!name){$('reviewer-name').focus?.();$('reviewer-name').scrollIntoView?.({block:'center'});throw Error('Enter the responsible person’s name before finalizing this record.');}return {reviewer_name:name,memo:$('record-memo').value};}
+function clearRecordNote(){$('record-memo').value='';$('history-list').innerHTML='';$('history-comparison').innerHTML='';}
+const historyKinds={requirements_review:'Requirements review',workflow_approval:'Conditions approved',workflow_reuse:'Earlier conditions reused',case_confirmation:'Case facts confirmed',manual_case_change:'Case data confirmed',teaching_approval:'Explanation approved',evaluation_lock:'Evaluation locked',test_result:'Test result finalized'};
+function fixedRecordView(record){
+ const s=record.snapshot,heading='<p class="muted">'+escapeText(historyKinds[record.kind]||humanize(record.kind))+' · '+escapeText(record.reviewer_name)+' · '+escapeText(record.recorded_at)+'</p>'+(record.memo?'<blockquote>'+escapeText(record.memo)+'</blockquote>':'');
+ let body='';
+ if(s.checks)body='<p>'+escapeText(s.summary)+'</p>'+s.checks.map(c=>'<h4>'+escapeText(humanize(c.aspect))+'</h4><p>'+escapeText(c.finding)+'</p>'+sourceReferences(c.source_refs,record.source_metadata)).join('');
+ else if(s.domain)body='<h3>'+escapeText(s.domain.title)+'</h3><p>'+escapeText(s.domain.goal)+'</p>'+renderRules(s.domain.rules,s.domain);
+ else if(s.case)body='<p>'+escapeText(s.case.raw_text)+'</p>'+caseFacts(s.case,{input_fields:s.input_fields||[],state_fields:[]});
+ else if(s.cases)body=s.cases.map(c=>'<p>'+escapeText(c.raw_text)+'</p>'+caseFacts(c,{input_fields:s.input_fields||[],state_fields:[]})).join('');
+ else if(s.metrics)body='<p>'+escapeText(s.metrics.counts.COMPLETED)+' completed · '+escapeText(s.metrics.counts.FAILED)+' technical failures · '+escapeText(s.metrics.holds)+' held for review</p>'+s.tasks.map(t=>'<h4>'+escapeText(t.case_id)+'</h4><p>'+escapeText(t.decision?.explanation||t.status)+'</p>').join('');
+ else body='<p>Evaluation settings and evidence versions were finalized.</p>';
+ const files=record.source_metadata.map(src=>'<li><button class="text-button" data-history-source="'+escapeText(src.source_id)+'" data-history-record="'+escapeText(record.record_id)+'" data-source-name="'+escapeText(src.name)+'">'+escapeText(src.name)+'</button></li>').join('');
+ return heading+body+'<details><summary>Evidence and original record</summary><ul>'+files+'</ul><p>Record hash: '+escapeText(record.record_hash)+'</p><pre>'+escapeText(JSON.stringify(record,null,2))+'</pre></details>';
+}
+function bindHistorySources(){document.querySelectorAll('[data-history-source]').forEach(button=>{button.onclick=()=>action(async()=>{const path='/api/v1/history/'+encodeURIComponent(button.dataset.historyRecord)+'/sources/'+encodeURIComponent(button.dataset.historySource),response=await fetch(path,{credentials:'same-origin',headers:admin?{'X-JT-Admin':admin}:{}});if(!response.ok)throw Error('The original evidence file could not be opened.');const url=URL.createObjectURL(await response.blob()),a=document.createElement('a');a.href=url;a.download=button.dataset.sourceName;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);notify('Original evidence downloaded from the finalized record.');});});}
+async function loadHistory(){
+ if(!ws)throw Error('Open a workspace first.');const {records}=await api('/workspaces/'+ws.workspace_id+'/history',null,'GET');
+ $('history-comparison').innerHTML='';
+ if(!records.length){$('history-list').textContent='No finalized records in this workspace.';return;}
+ const opts=records.map(r=>'<option value="'+escapeText(r.record_id)+'">'+escapeText((historyKinds[r.kind]||r.kind)+' · '+r.reviewer_name+' · '+r.recorded_at)+'</option>').join('');
+ $('history-list').innerHTML='<label for="history-current">Record</label><select id="history-current">'+opts+'</select><label for="history-previous">Compare with (optional)</label><select id="history-previous"><option value="">No comparison</option>'+opts+'</select><div class="history-actions"><button id="compare-history" class="secondary">Read selected records</button><button id="delete-history" class="text-button danger">Delete selected record</button><button id="reset-history" class="text-button danger">Reset history</button></div>';
+ bind('compare-history',async()=>{const left=await api('/history/'+$('history-current').value,null,'GET');const previous=$('history-previous').value;const right=previous?await api('/history/'+previous,null,'GET'):null;$('history-comparison').innerHTML='<div class="history-compare '+(right?'two-records':'')+'"><article>'+fixedRecordView(left)+'</article>'+(right?'<article>'+fixedRecordView(right)+'</article>':'')+'</div>';bindHistorySources();notify('Finalized records opened. No evidence, decision or AI result has been changed.');});
+ bind('delete-history',async()=>{
+  const selected=records.find(r=>r.record_id===$('history-current').value);if(!selected)throw Error('Select a record first.');
+  if(!window.confirm('Delete this finalized record?\n\n'+(historyKinds[selected.kind]||humanize(selected.kind))+' · '+selected.reviewer_name+'\n'+selected.recorded_at+'\n\nThis cannot be undone. Current materials, approved conditions and test results will remain.'))return;
+  await api('/history/delete',{workspace_id:ws.workspace_id,record_id:selected.record_id,confirmed:true});await loadHistory();notify('The selected history record was deleted.');
+ });
+ bind('reset-history',async()=>{
+  if(!window.confirm('Delete all '+records.length+' finalized records in this workspace?\n\nThis cannot be undone. Current materials, approved conditions and test results will remain.'))return;
+  await api('/history/reset',{workspace_id:ws.workspace_id,record_ids:records.map(r=>r.record_id),confirmed:true});await loadHistory();notify('Decision history was reset for this workspace.');
+ });
+}
+bind('load-history',loadHistory);
+bind('fix-result',async()=>{if(!currentRun||recorded)throw Error('Open a completed test in this application first.');await api('/history/fix',{run_id:currentRun,...recordPerson()});clearRecordNote();await refresh();notify('Result finalized with its responsible person, note, timestamp and original evidence.');});
 bind('download',async()=>{if(!currentRun||recorded)throw Error('Open a saved test in this application to download its full result.');const value=await api('/exports/'+currentRun,null,'GET');const url=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=currentRun+'.json';a.click();URL.revokeObjectURL(url);});
 $('recorded').onchange=()=>action(async()=>{const file=$('recorded').files[0];if(!file||file.size>20*1024*1024)throw Error('Choose an exported result file (.json) under 20 MiB.');const value=JSON.parse(await file.text());if(value.export_version!=='1.0'||!value.run||!value.metrics||!Array.isArray(value.tasks))throw Error('This is not a Judgment Transfer export.');recorded=true;beforeRun=afterRun=null;currentRun=null;$('mode').textContent='Saved result · '+modeLabel(value.run.mode);showRun(value);notify('Saved result opened for reading. No AI request was made.');});
 bind('admin-login',async()=>{admin=$('admin-token').value;$('admin-token').value='';await sessionInfo();ws=null;resetWorkspaceView();$('source-editor').hidden=false;$('workspace-label').textContent='';$('admin-workspace').textContent='';sessionStorage.removeItem('jt-workspace');notify('Administrator access enabled for this tab. Create or reopen an evaluation workspace.');});
 bind('open-workspace',async()=>{const id=$('open-workspace-id').value.trim();if(!/^ws_[a-f0-9]{32}$/.test(id))throw Error('Enter the saved Workspace ID.');ws=await api('/workspaces/'+id,null,'GET');recorded=false;renderWorkspace();currentRun=ws.run_ids.at(-1)||null;if(currentRun){sessionStorage.setItem('jt-run',currentRun);showRun(await api('/runs/'+currentRun,null,'GET'));}tab('sources');notify('Saved workspace opened. Completed actions are preserved.');});
-bind('freeze',async()=>{if(!ws||!admin)throw Error('Use administrator access and approve the work and an explanation before locking the evaluation.');await api('/workspaces/freeze',{workspace_id:ws.workspace_id});await refresh();notify('Cases, expected answers and approved guidance are locked for comparison. Use the saved workspace ID in the administrator’s step 07.');});
+bind('freeze',async()=>{if(!ws||!admin)throw Error('Use administrator access and approve the work and an explanation before locking the evaluation.');await api('/workspaces/freeze',{workspace_id:ws.workspace_id,...recordPerson()});clearRecordNote();await refresh();notify('Cases, expected answers and approved guidance are locked for comparison. Use the saved workspace ID in the administrator’s step 07.');});
 (async()=>{try{const workspaceId=sessionStorage.getItem('jt-workspace');savedWork=workspaceId?{workspaceId,runId:sessionStorage.getItem('jt-run')}:null;$('saved-work').hidden=!savedWork;updateNextStep();await sessionInfo();}catch(e){notifyError(e);}})();

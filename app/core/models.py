@@ -61,8 +61,18 @@ def validate_domain(domain, source_check=None):
             f = field_map.get(condition['field_id'])
             if not f:
                 raise JTError('INVALID_INPUT', 'Add and approve the new field before using it in a rule.')
-            op, value = condition['operator'], condition['value']
-            if op in ('gt', 'gte', 'lt', 'lte') and (f['type'] != 'number' or type(value) not in (int, float)):
+            op = condition['operator']
+            if 'rhs_field_id' in condition:
+                rhs = field_map.get(condition['rhs_field_id'])
+                if not rhs:
+                    raise JTError('INVALID_INPUT', 'The compared field must be declared and approved.')
+                if op not in ('eq', 'ne', 'gt', 'gte', 'lt', 'lte'):
+                    raise JTError('INVALID_INPUT', 'Field comparisons support equality or numeric ordering only.')
+                if rhs['type'] != f['type'] or op in ('gt', 'gte', 'lt', 'lte') and f['type'] != 'number':
+                    raise JTError('INVALID_INPUT', 'Compared fields require matching types; ordered comparisons require numbers.')
+                continue
+            value = condition['value']
+            if op in ('gt', 'gte', 'lt', 'lte') and (f['type'] != 'number' or value is None or not scalar_ok(value, 'number')):
                 raise JTError('INVALID_INPUT', 'Ordered comparisons require numbers.')
             if op == 'in' and (not isinstance(value, list) or not value or any(v is None or not scalar_ok(v, f['type']) for v in value)):
                 raise JTError('INVALID_INPUT', 'Membership requires a nonempty list of typed scalar values.')
@@ -95,7 +105,19 @@ def validate_case(case, domain):
                 raise JTError('INVALID_INPUT', 'Incorrect type: ' + f['field_id'])
 
 def compare(c, values):
-    a, b, op = values.get(c['field_id']), c['value'], c['operator']
+    a, op = values.get(c['field_id']), c['operator']
+    if 'rhs_field_id' in c:
+        if 'value' in c or op not in ('eq', 'ne', 'gt', 'gte', 'lt', 'lte'):
+            raise JTError('INVALID_INPUT', 'Invalid field comparison.')
+        b = values.get(c['rhs_field_id'])
+        if a is None or b is None:
+            return None
+        numeric = type(a) in (int, float) and type(b) in (int, float)
+        same_scalar = type(a) is type(b) and type(a) in (str, bool)
+        if not (numeric or same_scalar) or numeric and (not math.isfinite(a) or not math.isfinite(b)):
+            return None
+    else:
+        b = c['value']
     if op == 'exists':
         return a is not None
     if a is None:
@@ -121,6 +143,14 @@ def evaluate(expression, values):
 
 def permitted(domain, values):
     """UNKNOWN at the current priority cannot fall through to a lower permission."""
+    field_map = {f['field_id']: f for f in domain['input_fields'] + domain['state_fields']}
+    for rule in domain['rules']:
+        for condition in rule['when']['all'] + rule['when']['any']:
+            if 'rhs_field_id' in condition:
+                for field_id in (condition['field_id'], condition['rhs_field_id']):
+                    field = field_map.get(field_id)
+                    if not field or not scalar_ok(values.get(field_id), field['type']):
+                        return domain['default_action_id'], [], 'A compared field is invalid; human clarification is required.'
     for priority in sorted({r['priority'] for r in domain['rules']}):
         matches = [(r, evaluate(r['when'], values)) for r in domain['rules'] if r['priority'] == priority]
         if any(result is None for _, result in matches):
