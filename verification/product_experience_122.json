@@ -1,0 +1,89 @@
+{
+  "version": "1.0.22",
+  "date": "2026-10-14",
+  "scope": "English first-screen file/explanation entry and a less dense recorded demo with an optional Japanese explanatory reader. Backend VERSION only relative to 1.0.21.",
+  "checks": {
+    "main_input_flow": {
+      "passed": true,
+      "checks_passed": 12,
+      "scope": "Stubbed source API and Node DOM logic; not a live browser/session test",
+      "behavior": "The existing source API accepts a file and explanation TXT; no automatic model execution on entry. Original review/approval workflow remains."
+    },
+    "existing_results": "PASS - existing 216 decisions, 4 failures, 92 holds and six metric displays retained in bounded frontend checks.",
+    "guided_demo": {
+      "passed": true,
+      "scope": "DOM logic simulation, not a browser rendering test",
+      "languages": 2,
+      "stages_per_language": 3,
+      "cases_per_language": 3,
+      "checks": [
+        "three-stage order and primary before/after comparison",
+        "all nine case/decision/receipt/trace associations",
+        "plain-text explanation has same outcomes",
+        "unknown deadline remains held",
+        "forward/back/restart",
+        "language switch",
+        "checklist download",
+        "no model request"
+      ],
+      "browser_visual_qa": "not executed: cloud browser blocks local file URLs; Cloud Console unavailable",
+      "new_model_calls": 0
+    },
+    "demo_density_and_translation": {
+      "passed": true,
+      "scope": "Collapsed-detail HTML text, not rendered layout; source and evidence are not translated in place",
+      "stages": [
+        {
+          "stage": 1,
+          "before_visible_characters": 298,
+          "after_visible_characters": 173,
+          "reduction_percent": 42
+        },
+        {
+          "stage": 2,
+          "before_visible_characters": 451,
+          "after_visible_characters": 280,
+          "reduction_percent": 38
+        },
+        {
+          "stage": 3,
+          "before_visible_characters": 410,
+          "after_visible_characters": 243,
+          "reduction_percent": 41
+        }
+      ],
+      "source_original_separately_disclosed": true,
+      "japanese_material_and_explanation_reader": true,
+      "b_equals_c_and_untested_scope_visible": true
+    },
+    "installer_addition": {
+      "passed": 7,
+      "checks": [
+        "payload_accepts_exact_117_through121_set",
+        "121_initial_selection",
+        "121_unrecorded_mixed_state_rejected",
+        "121_recorded_resume",
+        "cross_baseline_resume_rejected",
+        "121_to122_completed_resume",
+        "121_and122_exact_health_accepted"
+      ],
+      "reused": "Unchanged 1.0.21 installer preservation and earlier baseline checks"
+    },
+    "demo_evidence": "PASS - only demo_version changes; source, human explanation, rules, cases, decisions and receipts remain byte-equivalent data to 1.0.21.",
+    "previous_installers": "PASS - 117 through 121 remain byte-identical to issued files.",
+    "final_payload_integrity": "Embedded files/manifests, unchanged backend except VERSION, unchanged contract hash and original historical record bytes are checked during final packaging.",
+    "reused": "Unaffected earlier frontend/installer checks and the 1.0.20 source-extraction validation.",
+    "new_model_calls": 0,
+    "cloud_deployments": 0
+  },
+  "language_scope": "The working product remains English. Japanese is an optional aid to understand recorded demo evidence; English originals are retained separately.",
+  "previous_release": {
+    "version": "1.0.21",
+    "deployment": "User reported successful deployment. Root agent observed the initial screen in the browser; this is not 1.0.22 browser acceptance."
+  },
+  "not_executed": {
+    "cloud_deployment": "1.0.22 not deployed in this preparation session.",
+    "rendered_browser_acceptance": "Not executed for 1.0.22."
+  },
+  "evaluation_boundary": "The original 216 decisions remain known-policy holdout evaluation on 1.0.15. No new measured performance, whole-job automation or successor-ability result is claimed."
+}

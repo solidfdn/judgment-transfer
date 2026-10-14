@@ -1,3 +1,11 @@
+## 1.0.22 — 2026-10-14 — Start with the material and make the evidence easier to read
+
+Category: user-authorized entry-flow and presentation refinement. The first application screen accepts a file and the task owner's explanation through the existing source-upload path; explanation text is stored as a TXT source. Opening or preparing the entry screen does not automatically call the model. Redundant visible prose is reduced. The working application remains English. The guided demo is more compact and has an optional Japanese explanatory view for understanding the saved evidence; the immutable English originals remain available separately.
+
+This is a UI change relative to 1.0.21. The backend changes only displayed VERSION. Source facts, source hashes, original approvals, all 216 historical decisions including four failures, .jt records, call counters and budgets are unchanged. Existing source extraction, proposed conditions and explicit approval remain the operating workflow; the entry form does not silently approve or activate rules. Previously issued installers remain unchanged.
+
+The release accepts exact completed 1.0.17 through 1.0.21 packages, preserving the selected-baseline and same-payload interruption safeguards. Verification is limited to affected entry/demo behavior and the added 1.0.21 baseline; unaffected checks are reused. Final payload and historical record integrity are checked during packaging. See verification/product_experience_122.json. Package preparation does not establish cloud deployment or rendered browser acceptance; no model execution or cloud deployment is performed during preparation.
+
 ## 1.0.21 — 2026-10-14 — Clarify the layout and visual hierarchy
 
 Category: user-authorized presentation refinement. The operational application, three-stage guided demo and past evaluation viewer use a consistent palette, spacing and clearer grouping so the main question, action and result can be found before supporting detail. Product wording, review questions, observed result groups, measurement definitions and access to original evidence are retained.

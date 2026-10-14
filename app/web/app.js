@@ -14,7 +14,7 @@ function serviceError(error={},status=null,path=''){
   FORBIDDEN:'You do not have access to this saved work. Use work created with your current access.',
   NOT_FOUND:'This saved item is not available with your current access. Check the saved workspace ID or start a new check.',
   SOURCE_REQUIRED:'Add the task owner’s instructions in step 1 before continuing.',
-  EXTRACTION_REQUIRED:'Choose “Organize these instructions” in step 1 to read the current files first.',
+  EXTRACTION_REQUIRED:'Choose “Organize the work” in step 1 to read the current files first.',
   WORKFLOW_REQUIRED:'Review and approve the work and its conditions in step 1 before continuing.',
   CASES_REQUIRED:'Add at least one example case in step 1 before testing the instructions.',
   STALE:'The instructions or approved guidance changed. Review the latest version in step 1, then start a new test.',
@@ -118,11 +118,11 @@ function workflowGuide(domain,isDraft){
  return `<div class="guide-heading"><h3>${escapeText(JTUiCopy.title(domain))}</h3><span class="guide-status">${isDraft?'Draft — not yet in use':'Approved · version '+domain.version}</span></div><h4>The job</h4><p>${escapeText(JTUiCopy.goal(domain))}</p><h4>Information to check</h4><dl class="guide-fields">${domain.input_fields.map(f=>`<div><dt>${escapeText(fieldLabel(domain,f.field_id))}</dt><dd>${escapeText(JTUiCopy.field(domain,f.field_id).description)}${f.type==='boolean'?' <span class="muted">Yes / No / Not supplied</span>':''}</dd></div>`).join('')}</dl>${explanation?'<h4>The task owner’s explanation</h4>'+explanation:''}<h4>What to do in each situation</h4>${renderRules(domain.rules,domain)}<div class="guide-stop"><h4>When to stop and ask</h4><p>If the facts or permission needed for an action are missing, the case waits for review. The instruction for that situation is <strong>${escapeText(actionDescription(domain,domain.default_action_id))}</strong>.</p></div>`;
 }
 function updateNextStep(){
- let message='Start with the worked example, or choose a job to check below.';
+ let message='Add a file or explanation, then organize the work.';
  if(ws){
   if(ws.status==='STALE')message='Next: review the changed instructions and approve an updated guide.';
   else if(ws.draft&&ws.draft.base_version===ws.version)message='Next: check the work and its conditions below, then approve the conditions if they reflect the job.';
-  else if(!ws.domain)message='Next: add instructions, describe the job, and choose “Organize these instructions”.';
+  else if(!ws.domain)message='Add a file or explanation, then choose “Organize the work”.';
   else if(!ws.dev_cases.length)message='Next: add at least one example case to test what AI can do with these instructions.';
   else if(teaching?.approval_state==='DRAFT')message='Next: read the proposed guidance in step 2, then approve it if it matches your judgment.';
   else if(teaching?.approval_state==='APPROVED')message='Next: try the same cases with the approved guidance, then check each result.';
@@ -132,14 +132,16 @@ function updateNextStep(){
  }
  if(recorded)message='You are reading a saved result. No new case is being processed.';
  $('next-step').textContent=message;
+ $('workflow-card').hidden=!(ws?.domain||ws?.draft&&ws.draft.base_version===ws.version);
+ $('cases-card').hidden=!ws?.domain;
  // Visual emphasis only: existing availability, approvals and callbacks are unchanged.
  let primary=null;
  if(activeTab==='sources'){
-  if(!ws)primary='new';
+  if(!ws)primary='analyse';
   else if(ws.frozen)primary=null;
   else if(ws.status==='STALE')primary='analyse';
   else if(ws.draft&&ws.draft.base_version===ws.version)primary='approve-workflow';
-  else if(!ws.domain)primary=ws.sources.length?'analyse':'upload';
+  else if(!ws.domain)primary='analyse';
   else if(!ws.dev_cases.length)primary='add-case';
   else if(!currentRun)primary='baseline';
  }else if(activeTab==='teach'&&ws&&!ws.frozen&&!recorded&&currentRun){
@@ -166,11 +168,12 @@ function renderCaseEditor(){
   await api('/cases/import',{workspace_id:ws.workspace_id,cases:[...cases,c]});await refresh();notify('Example saved. Add another, or try the original instructions.');
  });
 }
-function renderWorkspace(){
- if(displayedWorkspace!==ws.workspace_id){resetWorkspaceView();displayedWorkspace=ws.workspace_id;}
+function renderWorkspace(preserveInputs=false){
+ const enteredGoal=$('goal').value;
+ if(displayedWorkspace!==ws.workspace_id){resetWorkspaceView(preserveInputs);displayedWorkspace=ws.workspace_id;}
  $('mode').textContent=modeLabel(ws.mode)+(admin?' · Administrator':'');$('mode').classList.toggle('mock',ws.mode==='MOCK');
  $('source-editor').hidden=false;$('workspace-label').textContent=(ws.sample?'Fictional example':'Your own work')+' · '+(ws.status==='STALE'?'Instructions changed':ws.version<0?'Conditions awaiting approval':'Approved conditions, version '+ws.version);
- $('admin-workspace').textContent=admin?'Workspace ID for the runbook: '+ws.workspace_id:'';$('goal').value=ws.goal;
+ $('admin-workspace').textContent=admin?'Workspace ID for the runbook: '+ws.workspace_id:'';$('goal').value=preserveInputs?enteredGoal:ws.goal;
  $('source-list').innerHTML=ws.sources.map(s=>`<li><strong>${escapeText(s.name)}</strong> <span class="muted">${(s.size/1024).toFixed(1)} KiB</span><details><summary>File details</summary><p class="muted">${escapeText(s.mime)}<br>Source: ${escapeText(s.source_id)}<br>Content hash: ${escapeText(s.version_hash)}</p></details></li>`).join('');
  $('stale').hidden=ws.status!=='STALE';const isDraft=Boolean(ws.draft&&ws.draft.base_version===ws.version),d=isDraft?ws.draft.domain:ws.domain;
  $('approve-workflow').hidden=!isDraft;
@@ -180,14 +183,23 @@ function renderWorkspace(){
  question=ws.questions.at(-1)?.question||null;teaching=ws.teachings.at(-1)?.teaching||null;renderTeaching();renderCaseEditor();updateNextStep();
  sessionStorage.setItem('jt-workspace',ws.workspace_id);$('saved-work').hidden=true;
 }
-function resetWorkspaceView(){currentRun=beforeRun=afterRun=question=teaching=null;recorded=false;stopRequested=false;displayedWorkspace=null;$('answer').value='';$('cases-json').value='';$('file').value='';$('recorded').value='';$('run-status').textContent='';$('comparison').innerHTML='';$('results-table').innerHTML='';sessionStorage.removeItem('jt-run');renderTeaching();}
+function resetWorkspaceView(preserveInputs=false){currentRun=beforeRun=afterRun=question=teaching=null;recorded=false;stopRequested=false;displayedWorkspace=null;$('answer').value='';$('cases-json').value='';if(!preserveInputs){$('goal').value='';$('file').value='';$('initial-explanation').value='';}$('source-list').innerHTML='';$('dev-cases').innerHTML='';$('stale').hidden=true;$('recorded').value='';$('run-status').textContent='';$('comparison').innerHTML='';$('results-table').innerHTML='';sessionStorage.removeItem('jt-run');renderTeaching();}
 function renderTeaching(){
  const hasExample=Boolean(ws?.sample&&ws.example_answer);$('example').hidden=!hasExample;$('example-note').hidden=!hasExample;
  $('question').innerHTML=question?`<h3>${escapeText(question.text)}</h3><p>${escapeText(question.why_needed)}</p><details><summary>Cases behind this question</summary>${question.affected_dev_case_ids.map((id,i)=>`<p>${escapeText(caseSummary(ws?.dev_cases.find(c=>c.case_id===id),'Example case '+(i+1)))}</p>`).join('')}</details>`:'<p>First try the original instructions in step 1. Then find a case that needs your explanation.</p>';
  $('rules').innerHTML=teaching?`<h3>Your explanation</h3><blockquote>${escapeText(teaching.human_text)}</blockquote><h3>Guidance to review</h3>${renderRules(teaching.proposed_rules)}`:'<p>Your proposed guidance will appear here. Nothing changes until you approve it.</p>';
  $('approve-teaching').hidden=!teaching||teaching.approval_state!=='DRAFT';updateNextStep();
 }
-async function refresh(){if(ws){ws=await api('/workspaces/'+ws.workspace_id,null,'GET');renderWorkspace();}}
+async function refresh(preserveInputs=false){if(ws){ws=await api('/workspaces/'+ws.workspace_id,null,'GET');renderWorkspace(preserveInputs);}}
+async function ensureWorkspace(){if(!ws){ws=await api('/workspaces',{goal:$('goal').value});renderWorkspace(true);}return ws;}
+async function saveFile(file){
+ await ensureWorkspace();const data=new FormData();data.append('workspace_id',ws.workspace_id);data.append('file',file);
+ await api('/sources',data);$('file').value='';await refresh(true);
+}
+async function saveExplanation(text){
+ await ensureWorkspace();const data=new FormData();data.append('workspace_id',ws.workspace_id);data.append('file',new Blob([text],{type:'text/plain'}),'task-owner-explanation.txt');
+ await api('/sources',data);if($('initial-explanation').value===text)$('initial-explanation').value='';await refresh(true);
+}
 async function create(sample){ws=await api('/workspaces',sample?{sample}:{});currentRun=beforeRun=afterRun=null;recorded=false;renderWorkspace();tab('sources');notify(sample?'Review the work and its conditions, then approve the conditions if they match the example instructions.':'Describe the job and add the instructions you use today.');}
 bind('sample-invoice',()=>create('invoice_routing'));bind('sample-support',()=>create('support_triage'));bind('new',()=>create());
 bind('continue-saved',async()=>{
@@ -196,8 +208,15 @@ bind('continue-saved',async()=>{
  if(runId&&ws.run_ids.includes(runId)){currentRun=runId;sessionStorage.setItem('jt-run',runId);showRun(await api('/runs/'+runId,null,'GET'));}
  tab('sources');notify('Saved work opened. Review the instructions and results before choosing what to do next. No case has been started.');
 });
-bind('upload',async()=>{if(!ws)throw Error('Choose an example or start with your own work in step 1.');const file=$('file').files[0];if(!file)throw Error('Choose a file.');const data=new FormData();data.append('workspace_id',ws.workspace_id);data.append('file',file);await api('/sources',data);await refresh();notify('Instructions saved. Choose “Organize these instructions”, then review the proposed conditions.');});
-bind('analyse',async()=>{if(!ws)throw Error('Choose an example or start with your own work in step 1.');notify('Reading your instructions…');await api('/sources/extract',{workspace_id:ws.workspace_id});notify('Instructions read. Organizing what to check and what AI may do…');await api('/domains/draft',{workspace_id:ws.workspace_id,goal:$('goal').value});await refresh();notify('Draft ready. Check what AI must know, what it may do and when it must ask a person before approving.');});
+bind('upload',async()=>{const file=$('file').files[0];if(!file)throw Error('Choose a file to add.');await saveFile(file);notify('File saved. Add more information or organize the work.');});
+bind('add-explanation',async()=>{const text=$('initial-explanation').value;if(!text.trim())throw Error('Enter an explanation or comment to add.');await saveExplanation(text);notify('Explanation saved as a text file. It is not approved guidance yet.');});
+bind('analyse',async()=>{
+ const file=$('file').files[0],text=$('initial-explanation').value,goal=$('goal').value;
+ if(!file&&!text.trim()&&!ws?.sources.length)throw Error('Add a file or explanation first.');
+ await ensureWorkspace();if(file)await saveFile(file);if(text.trim())await saveExplanation(text);
+ notify('Reading your materials and explanation…');await api('/sources/extract',{workspace_id:ws.workspace_id});
+ notify('Drafting conditions for your review…');await api('/domains/draft',{workspace_id:ws.workspace_id,goal});await refresh();notify('Draft ready. Review the conditions before approving.');
+});
 bind('save-domain',async()=>{await api('/domains/draft',{workspace_id:ws.workspace_id,domain:JSON.parse($('domain-json').value)});await refresh();notify('Edited conditions saved as a draft. Review them before approving.');});
 bind('approve-workflow',async()=>{await api('/domains/approve',{draft_id:ws.draft.draft_id,base_version:ws.version});await refresh();notify('Conditions approved. Try the original instructions on the example cases.');});
 bind('import-cases',async()=>{await api('/cases/import',{workspace_id:ws.workspace_id,cases:JSON.parse($('cases-json').value)});await refresh();notify('Cases imported.');});
@@ -286,7 +305,7 @@ function showRun(value){
 }
 bind('download',async()=>{if(!currentRun||recorded)throw Error('Open a saved test in this application to download its full result.');const value=await api('/exports/'+currentRun,null,'GET');const url=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=currentRun+'.json';a.click();URL.revokeObjectURL(url);});
 $('recorded').onchange=()=>action(async()=>{const file=$('recorded').files[0];if(!file||file.size>20*1024*1024)throw Error('Choose an exported result file (.json) under 20 MiB.');const value=JSON.parse(await file.text());if(value.export_version!=='1.0'||!value.run||!value.metrics||!Array.isArray(value.tasks))throw Error('This is not a Judgment Transfer export.');recorded=true;beforeRun=afterRun=null;currentRun=null;$('mode').textContent='Saved result · '+modeLabel(value.run.mode);showRun(value);notify('Saved result opened for reading. No AI request was made.');});
-bind('admin-login',async()=>{admin=$('admin-token').value;$('admin-token').value='';await sessionInfo();ws=null;resetWorkspaceView();$('source-editor').hidden=true;$('workspace-label').textContent='';$('admin-workspace').textContent='';sessionStorage.removeItem('jt-workspace');notify('Administrator access enabled for this tab. Create or reopen an evaluation workspace.');});
+bind('admin-login',async()=>{admin=$('admin-token').value;$('admin-token').value='';await sessionInfo();ws=null;resetWorkspaceView();$('source-editor').hidden=false;$('workspace-label').textContent='';$('admin-workspace').textContent='';sessionStorage.removeItem('jt-workspace');notify('Administrator access enabled for this tab. Create or reopen an evaluation workspace.');});
 bind('open-workspace',async()=>{const id=$('open-workspace-id').value.trim();if(!/^ws_[a-f0-9]{32}$/.test(id))throw Error('Enter the saved Workspace ID.');ws=await api('/workspaces/'+id,null,'GET');recorded=false;renderWorkspace();currentRun=ws.run_ids.at(-1)||null;if(currentRun){sessionStorage.setItem('jt-run',currentRun);showRun(await api('/runs/'+currentRun,null,'GET'));}tab('sources');notify('Saved workspace opened. Completed actions are preserved.');});
 bind('freeze',async()=>{if(!ws||!admin)throw Error('Use administrator access and approve the work and an explanation before locking the evaluation.');await api('/workspaces/freeze',{workspace_id:ws.workspace_id});await refresh();notify('Cases, expected answers and approved guidance are locked for comparison. Use the saved workspace ID in the administrator’s step 07.');});
 (async()=>{try{const workspaceId=sessionStorage.getItem('jt-workspace');savedWork=workspaceId?{workspaceId,runId:sessionStorage.getItem('jt-run')}:null;$('saved-work').hidden=!savedWork;updateNextStep();await sessionInfo();}catch(e){notifyError(e);}})();

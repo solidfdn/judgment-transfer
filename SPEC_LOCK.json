@@ -2,8 +2,8 @@
   "product": "Judgment Transfer",
   "owner": "SOLIFAN",
   "spec_version": "1.0",
-  "package_version": "1.0.21",
-  "app_version": "1.0.21",
+  "package_version": "1.0.22",
+  "app_version": "1.0.22",
   "baseline_spec": {
     "path": "baseline/Judgment_Transfer_Development_Spec_v1.0_20261010.docx",
     "sha256": "8585fe58d7fdf3511771c0214e960ee7c4091209f7cf60ab5826ca984fb82e07"
@@ -281,5 +281,23 @@
       "hierarchy": "One main next action for the current state; supporting details remain available separately.",
       "demo": "Three compact stage controls, before/after comparison first, case facts beside it, supporting conditions and roles in expandable detail."
     }
+  },
+  "product_entry_122": {
+    "category": "user-authorized first-screen input and demo clarity revision",
+    "entry": "File upload and task-owner explanation use the existing source API; explanation text is a TXT source. No automatic model operation on opening or preparing the entry form.",
+    "demo": "Reduce visual density; Japanese is an optional explanatory aid for the recorded demo, with the immutable English originals available separately.",
+    "backend_change": "Displayed VERSION only relative to 1.0.21.",
+    "workflow": "Existing extraction, draft review and explicit approval remain; entry does not automatically activate rules.",
+    "installer_baselines": [
+      "1.0.17",
+      "1.0.18",
+      "1.0.19",
+      "1.0.20",
+      "1.0.21"
+    ],
+    "new_model_calls": 0,
+    "formal_replays": 0,
+    "preserved": "All source facts and hashes, original approvals, 216 archived decisions including four failures, .jt records, call counters, budgets and previously issued installers.",
+    "main_language": "English; no Japanese localization of the working application."
   }
 }
