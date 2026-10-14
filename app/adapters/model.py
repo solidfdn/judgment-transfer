@@ -199,10 +199,11 @@ class LiveAdapter:
             http_options=self.types.HttpOptions(api_version='v1', headers=config.REQUEST_HEADERS,
                 retry_options=self.types.HttpRetryOptions(attempts=1)))
 
-    async def _stream_response(self, content, generation_config, entry, seconds):
+    async def _stream_response(self, content, generation_config, entry, seconds, first_text_seconds=None):
         client = self._new_stream_client(); stream = None
         fragments = []; usage = None; finish = None; model_version = None; response_id = None
         started = time.monotonic()
+        first_text_limit = config.SETTINGS['first_text_timeout_seconds'] if first_text_seconds is None else first_text_seconds
         first_text = asyncio.Event()
         entry.update(transport='streamGenerateContent', chunk_count=0, first_chunk_ms=None,
                      first_text_ms=None, complete_stream=False)
@@ -213,6 +214,7 @@ class LiveAdapter:
             async for chunk in stream:
                 elapsed = round((time.monotonic()-started)*1000)
                 entry['chunk_count'] += 1
+                entry['last_chunk_ms'] = elapsed
                 if entry['first_chunk_ms'] is None: entry['first_chunk_ms'] = elapsed
                 if chunk.usage_metadata is not None: usage = chunk.usage_metadata
                 model_version = getattr(chunk, 'model_version', None) or model_version
@@ -227,6 +229,8 @@ class LiveAdapter:
                                 entry['first_text_ms'] = elapsed
                                 first_text.set()
                             fragments.append(part.text); chars += len(part.text)
+                            entry['last_text_ms'] = elapsed
+                            entry['received_text_chars'] = chars
                 if chars > 100000: raise ValueError('Response exceeds the bounded output size.')
             entry['complete_stream'] = True
         async def watched():
@@ -235,8 +239,8 @@ class LiveAdapter:
             # Only the first generation has an early no-text deadline. Keep the
             # provider's server deadline at the full remaining request window;
             # do not recreate the old nine-second server DEADLINE_EXCEEDED.
-            early = entry.get('attempt') == 1 and seconds > config.SETTINGS['first_text_timeout_seconds']
-            timeout = config.SETTINGS['first_text_timeout_seconds'] if early else seconds
+            early = entry.get('attempt') == 1 and seconds > first_text_limit
+            timeout = first_text_limit if early else seconds
             entry['first_text_timeout_ms'] = round(timeout * 1000)
             try:
                 done, _ = await asyncio.wait((consuming, first), timeout=timeout,
@@ -293,9 +297,9 @@ class LiveAdapter:
         parts = self.parts(payload, sources)
         content = self.types.Content(role='user', parts=parts)
         response_schema = extraction_response_schema(output_schema) if purpose == 'extract' else output_schema
-        instruction = SYSTEM if purpose in ('decide', 'extract') else SYSTEM + '\nJSON contract: ' + json.dumps(output_schema, separators=(',', ':'))
+        instruction = SYSTEM if purpose in ('decide', 'extract', 'draft_domain') else SYSTEM + '\nJSON contract: ' + json.dumps(output_schema, separators=(',', ':'))
         prompt = {'system': instruction, 'payload': payload, 'sources': [(s['source_id'], s['version_hash']) for s in sources]}
-        if purpose == 'extract': prompt.update(response_schema=response_schema, validation_schema=output_schema)
+        if purpose in ('extract', 'draft_domain'): prompt.update(response_schema=response_schema, validation_schema=output_schema)
         fingerprint = digest(prompt)
         started, attempts = time.monotonic(), []
         trace_id = 'trace_' + uuid.uuid4().hex
@@ -304,7 +308,7 @@ class LiveAdapter:
                  'source_hashes': {s['source_id']: s['version_hash'] for s in sources}, 'attempts': attempts}
         trace['runtime'] = runtime_diagnostic(self.client)
         error = None
-        long_call = purpose in ('draft_rules', 'decide')
+        long_call = purpose in ('draft_rules', 'decide', 'draft_domain')
         window = 120 if long_call else 50
         call_limit = 120 if long_call else 35
         maximum_attempts = 1 if long_call else 2
@@ -317,6 +321,12 @@ class LiveAdapter:
             trace['settings'].update(response_schema_policy='compact_extraction_v124', schema_location='api_only',
                 transport='generateContent', response_schema_hash=digest(response_schema),
                 validation_schema_hash=digest(output_schema), code_hash=config.CODE_HASH)
+        if purpose == 'draft_domain':
+            trace['runtime']['generation_client_scope'] = 'per_attempt_async_client'
+            trace['settings'].update(transport='streamGenerateContent', schema_location='api_only',
+                first_text_timeout_seconds=35, retry_policy='single_streamed_workflow_attempt',
+                response_schema_hash=digest(response_schema), validation_schema_hash=digest(output_schema),
+                code_hash=config.CODE_HASH)
         estimate = None
         for number in range(maximum_attempts):
             if number and purpose == 'decide':
@@ -358,6 +368,9 @@ class LiveAdapter:
                         http_options=options)
                 if purpose == 'decide':
                     response = asyncio.run(self._stream_response(content, generation_config, entry, options.timeout/1000))
+                elif purpose == 'draft_domain':
+                    response = asyncio.run(self._stream_response(content, generation_config, entry, options.timeout/1000,
+                        first_text_seconds=35))
                 else:
                     response = self.client.models.generate_content(model=config.MODEL, contents=content, config=generation_config)
                 entry['generation_elapsed_ms'] = round((time.monotonic()-phase_started)*1000)
@@ -383,7 +396,9 @@ class LiveAdapter:
                 actual = (entry['input_tokens'] * input_price + (entry['output_tokens'] + entry['thinking_tokens']) * output_price) / 1e6
                 if usage is not None: self.budget.settle(reserved, actual)
                 entry['cost_usd'] = actual if usage is not None else reserved
-                if purpose == 'decide' and entry.get('finish_reason') != 'STOP':
+                if purpose == 'draft_domain':
+                    trace['raw_response_text'] = response.text or ''
+                if purpose in ('decide', 'draft_domain') and entry.get('finish_reason') != 'STOP':
                     raise ValueError('Incomplete response; no decision may be executed.')
                 value = json.loads(response.text or '')
                 errors = list(Draft202012Validator(output_schema).iter_errors(value))

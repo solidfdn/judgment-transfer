@@ -2,8 +2,8 @@
   "product": "Judgment Transfer",
   "owner": "SOLIFAN",
   "spec_version": "1.0",
-  "package_version": "1.0.25",
-  "app_version": "1.0.25",
+  "package_version": "1.0.26",
+  "app_version": "1.0.26",
   "baseline_spec": {
     "path": "baseline/Judgment_Transfer_Development_Spec_v1.0_20261010.docx",
     "sha256": "8585fe58d7fdf3511771c0214e960ee7c4091209f7cf60ab5826ca984fb82e07"
@@ -334,5 +334,21 @@
     "preflight": "Read the diagnosed saved 1.0.24 response and validate in memory before deployment. No model call or cloud write.",
     "live_gate": "One new versioned request on the same source/workspace, at most two generation attempts, same existing allowance and USD100 ceiling. Prior failures/counters retained.",
     "status": "Local targeted tests passed; complete cloud-saved answer and new deployed review pending."
+  },
+  "workflow_stream_fix_126": {
+    "category": "Transport and diagnostic defect fix",
+    "observed_failure": "One workflow proposal cancelled by provider with 499 after 32530 ms; exact cause undisclosed. Source review passed.",
+    "scope": "draft_domain uses existing per-request async stream receiver; exact response schema is API-only, without prompt duplication.",
+    "limits": {
+      "generation_attempts": 1,
+      "model_window_seconds": 120,
+      "first_text_timeout_seconds": 35,
+      "http_request_lease_seconds": 180
+    },
+    "acceptance": "Complete stream plus STOP, unchanged strict contract and source evidence validation; human approval still required.",
+    "diagnostics": "Bounded administrator timing and stream progress; raw provider answer retained, partial text never activated.",
+    "preserved": "Source review, decision behavior, model, dependencies, approvals, original 216 results including four failures, previous installers and all grants/counters.",
+    "validation": "Reuse the exact saved 1.0.25 review; one new journalled workflow proposal after deployment, no approval or case execution.",
+    "live_status": "Pending deployed verification."
   }
 }

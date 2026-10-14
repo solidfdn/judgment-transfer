@@ -4,6 +4,7 @@ import copy
 import importlib.util
 import io
 import json
+import os
 from pathlib import Path
 import sys
 import tempfile
@@ -13,8 +14,15 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT/'app')]
 from steps import runbook as r
-spec = importlib.util.spec_from_file_location('prepare125', ROOT/'releases/jt_prepare_125.py')
+gate_script = os.environ.get('JT_PREPARE_GATE_SCRIPT', 'releases/jt_prepare_125.py')
+spec = importlib.util.spec_from_file_location('prepare_gate', ROOT/gate_script)
 m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+APP_VERSION = getattr(m, 'VERSION', '1.0.25')
+APP_HASH = getattr(m, 'CODE_HASH', 'test126')
+SOURCE_HASH = getattr(m, 'SOURCE_CODE_HASH', APP_HASH)
+OUTPUT = 'release'+APP_VERSION.split('.')[0]+APP_VERSION.split('.')[-1]
+def gate_run(api, root):
+    return m.run(api, root, r, APP_HASH) if APP_VERSION == '1.0.26' else m.run(api, root, r)
 checks = []
 def ok(name, value=True):
     assert value, name
@@ -32,7 +40,7 @@ class API:
         p=root/'app/web/samples/expense_policy.txt';p.parent.mkdir(parents=True);p.write_bytes(self.policy)
         self.source_hash=m.digest(self.policy)
         r.save(root/'.jt/upgrades/1.0.25/source-review-gate.json', {'status':'PASSED',
-            'code_hash':m.CODE_HASH, 'workspace_id':m.WORKSPACE, 'trace_id':m.SOURCE_TRACE})
+            'code_hash':SOURCE_HASH, 'workspace_id':m.WORKSPACE, 'trace_id':m.SOURCE_TRACE})
         self.ws={'workspace_id':m.WORKSPACE,'source_ids':[m.SOURCE], 'sources':[
             {'source_id':m.SOURCE,'version_hash':self.source_hash}], 'version':-1, 'domain':None,
             'run_ids':[], 'case_ids':[], 'teaching_ids':[], 'human_source_ids':[], 'question_ids':[],
@@ -46,7 +54,7 @@ class API:
             'extra_retry_attempts':{'limit':6,'used':6}}
     def call(self,path,data=None,key=None,files=None):
         self.calls.append(path)
-        if path=='/health':return {'package_version':'1.0.25','code_hash':m.CODE_HASH,'mode':'LIVE','max_cost_usd':100}
+        if path=='/health':return {'package_version':APP_VERSION,'code_hash':APP_HASH,'mode':'LIVE','max_cost_usd':100}
         if path=='/workspaces/'+m.WORKSPACE:return copy.deepcopy(self.ws)
         if path=='/recovery115':return copy.deepcopy(self.ledger)
         if path!='/domains/draft':raise AssertionError(path)
@@ -84,7 +92,7 @@ class API:
 
 for mode in ('pass','failure','lost','extra_usage','changed_study','approved','wrong_origin','wrong_trace'):
     with tempfile.TemporaryDirectory() as folder, contextlib.redirect_stdout(io.StringIO()):
-        root=Path(folder);api=API(root,mode);call=lambda:m.run(api,root,r)
+        root=Path(folder);api=API(root,mode);call=lambda:gate_run(api,root)
         if mode=='pass':
             report=call();ok('actual returned unapproved draft is recorded', report['status']=='DRAFT_READY_FOR_REVIEW' and report['model_calls']==1 and not report['approval_created'])
             old=len(api.calls);call();ok('completed re-entry performs no application request',len(api.calls)==old)
@@ -94,7 +102,7 @@ for mode in ('pass','failure','lost','extra_usage','changed_study','approved','w
             report=call();ok('same-key reconciliation uses original one generation',api.generations==1 and api.posts==[m.REQUEST_KEY,m.REQUEST_KEY] and report['model_calls']==1)
         else:
             rejects(mode+' stops instead of passing',call,'WORKFLOW_PREPARE_FAILED')
-            state=r.load(root/'.jt/upgrades/1.0.25/workflow-prepare.json')
+            state=r.load(root/f'.jt/upgrades/{APP_VERSION}/workflow-prepare.json')
             ok(mode+' retains failed checkpoint',state['status']=='FAILED')
             if mode=='failure':
                 ok('provider diagnostic retained',state['diagnostic']['trace_id']=='trace_test' and state['error_message']=='Provider rejected request.')
@@ -112,14 +120,14 @@ for mode in ('source_changed','wrong_source_trace','existing_draft','missing_gat
         elif mode=='wrong_source_trace':api.ws['requirements_review']['trace_id']='other'
         elif mode=='existing_draft':api.ws['draft']={'draft_id':'other'};expected='EXISTING_DRAFT'
         else:(root/'.jt/upgrades/1.0.25/source-review-gate.json').unlink();expected='SOURCE_GATE_REQUIRED'
-        rejects(mode+' stops before generation',lambda:m.run(api,root,r),expected)
+        rejects(mode+' stops before generation',lambda:gate_run(api,root),expected)
         ok(mode+' generates nothing',api.generations==0)
 
 # Exercise read-only failure diagnosis with an exact saved trace and the actual
 # installed domain/evidence validators. This is explicitly synthetic test data.
 with tempfile.TemporaryDirectory() as folder, contextlib.redirect_stdout(io.StringIO()):
     root=Path(folder);api=API(root,'failure')
-    try:m.run(api,root,r)
+    try:gate_run(api,root)
     except r.Stop:pass
     wanted='workflow_'+m.digest(['test-owner',m.REQUEST_KEY,''])[:32]
     domain=json.loads((ROOT/'app/fixtures/expense_review/domain_v0.json').read_text())
@@ -141,12 +149,12 @@ with tempfile.TemporaryDirectory() as folder, contextlib.redirect_stdout(io.Stri
         return io.BytesIO(json.dumps({'fields':{'payload':{'stringValue':json.dumps(value)}}}).encode())
     with patch.object(m.subprocess,'run',return_value=SimpleNamespace(returncode=0,stdout='TEST_ONLY_TOKEN')), patch.object(m.urllib.request,'urlopen',response):
         m.diagnose(root,r)
-    report=r.load(root/'.jt/upgrades/1.0.25/workflow-prepare.json')
+    report=r.load(root/f'.jt/upgrades/{APP_VERSION}/workflow-prepare.json')
     d=report['saved_answer_diagnostic']
     ok('failure diagnosis reuses saved answer with actual exact validator',d['revalidation']['status']=='REPRODUCED_FAILURE' and len(d['invalid_references'])==1)
-    ok('diagnosis creates no model call and preserves raw answer',api.generations==1 and r.load(root/'deliverables/release125/workflow-failed-trace.json')==trace)
+    ok('diagnosis creates no model call and preserves raw answer',api.generations==1 and r.load(root/f'deliverables/{OUTPUT}/workflow-failed-trace.json')==trace)
 
 report={'status':'PASSED','checks':checks,'count':len(checks),'live_calls':0,'cloud_writes':0,
         'scope':'Standalone controller with explicit API/Firestore doubles; no deployed workflow success claimed.'}
-(ROOT/'verification/prepare125_offline.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+(ROOT/('verification/prepare126_offline.json' if APP_VERSION == '1.0.26' else 'verification/prepare125_offline.json')).write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
 print(json.dumps({'status':'PASSED','checks':len(checks),'live_calls':0}))

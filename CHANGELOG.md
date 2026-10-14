@@ -1,3 +1,13 @@
+## 1.0.26 — 2026-10-15 JST — Bound and observe workflow generation
+
+Category: transport/diagnostic defect fix. The real 1.0.25 workflow proposal ended with provider 499/CANCELLED after 32,530 ms of generation (33,072 ms total) under a 35,000 ms request timeout. There was one attempt and no answer, approval or case execution. The timing does not prove that our timeout caused the cancellation. Source review had already passed and is reused.
+
+Changed: `app/adapters/model.py` uses the existing per-request asynchronous stream receiver for `draft_domain`, removes the duplicated schema from that purpose's system prompt, and keeps the exact provider/validator schema. A single generation has a 120-second total window, a 35-second no-text limit, and requires complete receipt plus STOP and original strict validation. Partial streams never become drafts. Progress timestamps and received character counts remain in failed traces; complete but invalid workflow responses remain available for diagnosis. Decision and extraction policies remain unchanged. `app/service.py` copies model output before draft normalization and attaches the saved trace to domain/evidence errors. `app/main.py` adds bounded administrator timing diagnostics and a 180-second workflow request lease. No schema, model, dependency, rule activation, IAM, budget or UI behavior changes.
+
+Execution: the installer reuses existing deployment preservation checks and invokes `steps/prepare_workflow126.py` with the pinned environment after deployment. The controller reuses the exact passed 1.0.25 source review and makes one new versioned draft request. Earlier failure checkpoints and traces remain. It stops at an unapproved draft or any failure; it does not approve, read cases, replay comparisons or repeat the source review.
+
+Verification: 19 focused actual stream/service/diagnostic checks with SDK doubles; the existing 39 controller tests reused for the new version. Shared extraction and administrator error tests are reused for the affected common adapter/error path. LIVE workflow success remains pending the owner's release command. See `verification/RELEASE126_STATUS.md`.
+
 ## 1.0.25 — 2026-10-14 — Restore literal source quotations and retain validation diagnostics
 
 Category: defect fix. The saved 1.0.24 provider response succeeded and passed shape/semantic checks, but five finding citations joined lines or omitted text with ellipses. The original exact-reference validator correctly rejected these quotations. The complete failed response is retained in trace_5d234acf56844bdcb657aa120f37fe5d.

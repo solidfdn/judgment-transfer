@@ -1,0 +1,27 @@
+{
+  "passed": 19,
+  "checks": [
+    "complete streamed answer becomes an unapproved source-grounded draft",
+    "workflow schema remains exact and is sent only through API",
+    "one attempt has 120-second total bound and 35-second first-text bound",
+    "stream progress is saved without treating fragments as a result",
+    "cancelled cannot save a draft or automatically retry",
+    "partial cannot save a draft or automatically retry",
+    "cancelled partial stream retains progress only",
+    "cutoff cannot save a draft or automatically retry",
+    "invalid cannot save a draft or automatically retry",
+    "invalid complete JSON retained for diagnosis",
+    "silent has an actual bounded cancellation",
+    "stalled has an actual bounded cancellation",
+    "all per-request clients and streams close on success and failure",
+    "existing decision first-text deadline remains ten seconds",
+    "post-generation evidence failure includes trace and validation stage",
+    "administrator gets failure timing without raw response",
+    "public error still hides diagnostics",
+    "installer uses pinned interpreter and one workflow gate",
+    "failed workflow gate stops release command"
+  ],
+  "new_model_calls": 0,
+  "cloud_writes": 0,
+  "scope": "Actual adapter, service, async stream and diagnostic code with SDK/HTTP doubles; LIVE acceptance pending."
+}

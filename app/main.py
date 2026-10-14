@@ -78,8 +78,16 @@ def create_app(repo=None, adapter=None, blobs=None, testing=False):
             # This request's bounded diagnostics only; no prompt, source text,
             # model output, credentials or arbitrary trace lookup is exposed.
             detail['diagnostic'] = {'trace_id':trace['trace_id'], 'attempts':[
-                {k:a[k] for k in ('attempt','stage','status','provider_code','error_type','validation_errors') if k in a}
+                {k:a[k] for k in ('attempt','stage','status','provider_code','error_type','validation_errors',
+                    'elapsed_ms','failed_stage_elapsed_ms','generation_timeout_ms','count_elapsed_ms',
+                    'transport','chunk_count','first_chunk_ms','first_text_ms','last_chunk_ms','last_text_ms',
+                    'received_text_chars','complete_stream','finish_reason','local_first_text_deadline_reached',
+                    'local_total_deadline_reached') if k in a}
                 for a in trace.get('attempts', [])[:2]]}
+            detail['diagnostic']['elapsed_ms'] = trace.get('elapsed_ms')
+            detail['diagnostic']['settings'] = {k:trace.get('settings',{})[k] for k in
+                ('transport','schema_location','model_window_seconds','call_limit_seconds','first_text_timeout_seconds','attempts')
+                if k in trace.get('settings',{})}
             if getattr(error, 'validation', None):
                 detail['diagnostic']['validation'] = error.validation
         return {'error': detail}
@@ -108,7 +116,7 @@ def create_app(repo=None, adapter=None, blobs=None, testing=False):
                     if prior['until']>time.time():raise JTError('BUSY','This request is still running.',409,True)
                     # The caller can inspect saved entities before explicitly retrying a new operation.
                     raise JTError('REQUEST_INTERRUPTED','The request was interrupted. Reopen the workspace to inspect saved state before retrying.',409)
-                window=180 if request.path=='/api/v1/teachings' or request.path.endswith('/step') else 90
+                window=180 if request.path in ('/api/v1/teachings','/api/v1/domains/draft') or request.path.endswith('/step') else 90
                 values[key]={'body_hash':bodyhash,'until':time.time()+window,'result':None};return None
             cached=repo.atomic([key],claim)
             if cached is not None:return jsonify(cached)

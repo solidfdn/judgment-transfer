@@ -121,12 +121,19 @@ class Service:
                 for ref in observation['source_refs']: self.source_check(wid,ref)
             domain_id=self.domain(ws)['domain_id'] if ws['version']>=0 else ws['sample'] or ident('workflow',ctx)
             domain,trace=self.adapter.draft_domain(str(body.get('goal') or ws['goal'])[:2000],domain_id,ws['version']+1,sources,observations,ctx['owner'],ctx['admin'])
+            domain=copy.deepcopy(domain)  # Keep the provider answer unchanged in its trace.
             traces.append(trace['trace_id']); origin=self.adapter.mode
         domain['version']=ws['version']+1
         for rule in domain['rules']: rule['approved_by']=None
-        validate_domain(domain,lambda ref:self.source_check(wid,ref))
-        if domain['source_hashes']!={s['source_id']:s['version_hash'] for s in sources}: raise JTError('INVALID_EVIDENCE','The proposed workflow must identify every current source version.')
-        if ws['version']>=0 and domain['domain_id']!=self.domain(ws)['domain_id']:raise JTError('INVALID_INPUT','Workflow ID is immutable.')
+        try:
+            validate_domain(domain,lambda ref:self.source_check(wid,ref))
+            if domain['source_hashes']!={s['source_id']:s['version_hash'] for s in sources}: raise JTError('INVALID_EVIDENCE','The proposed workflow must identify every current source version.')
+            if ws['version']>=0 and domain['domain_id']!=self.domain(ws)['domain_id']:raise JTError('INVALID_INPUT','Workflow ID is immutable.')
+        except JTError as error:
+            if traces:
+                error.trace=trace
+                error.validation={'stage':'workflow_validation','path':'domain'}
+            raise
         draft={'draft_id':draft_id,'workspace_id':wid,'base_version':ws['version'],'domain':domain,'observations':observations,'origin':origin,'trace_ids':traces}
         wk,dk=('workspaces',wid),('drafts',draft_id)
         def commit(values):
