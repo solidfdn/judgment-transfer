@@ -1,0 +1,69 @@
+{
+  "version": "1.0.21",
+  "date": "2026-10-14",
+  "scope": "Layout, spacing, palette and information hierarchy; backend VERSION only relative to1.0.20.",
+  "checks": {
+    "main_application": {
+      "passed": true,
+      "scope": "Bounded Node VM / DOM logic; not browser rendering",
+      "checks": [
+        "13 workflow states retained",
+        "216 archived decisions including4 failures and92 holds remain represented",
+        "Stale material directs the next action to analysis",
+        "Frozen work has no incorrect primary execution action"
+      ]
+    },
+    "guided_demo": {
+      "passed": true,
+      "scope": "DOM logic simulation, not a browser rendering test",
+      "languages": 2,
+      "stages_per_language": 3,
+      "cases_per_language": 3,
+      "checks": [
+        "three-stage order and primary before/after comparison",
+        "all nine case/decision/receipt/trace associations",
+        "plain-text explanation has same outcomes",
+        "unknown deadline remains held",
+        "forward/back/restart",
+        "language switch",
+        "checklist download",
+        "no model request"
+      ],
+      "browser_visual_qa": "not executed: cloud browser blocks local file URLs; Cloud Console unavailable",
+      "new_model_calls": 0
+    },
+    "archive_viewer": {
+      "passed": true,
+      "scope": "Markup / CSS structure, not rendered visual acceptance",
+      "checks": [
+        "IDs,data-panel attributes,scripts and links preserved",
+        "All archived JSON unchanged",
+        "CSS structure checked"
+      ]
+    },
+    "installer_addition": {
+      "passed": 7,
+      "checks": [
+        "payload_accepts_exact_117_through120_set",
+        "120_initial_selection",
+        "120_unrecorded_mixed_state_rejected",
+        "120_recorded_resume",
+        "cross_baseline_resume_rejected",
+        "120_to121_completed_resume",
+        "120_and121_exact_health_accepted"
+      ],
+      "reused": "Unchanged 1.0.20 installer preservation and other baseline checks"
+    },
+    "demo_evidence": "PASS - only demo_version changes; all recorded data unchanged from1.0.20.",
+    "previous_installers": "PASS -117,118,119,120 byte-identical to issued files.",
+    "final_payload_integrity": "Exact embedded files/manifests, unchanged backend except VERSION and unchanged historical records are checked during final packaging.",
+    "reused": "Unaffected1.0.20 validation and previous installer preservation checks. Source-extraction behavior is unchanged in1.0.21.",
+    "new_model_calls": 0,
+    "cloud_deployments": 0
+  },
+  "not_executed": {
+    "cloud_deployment": "1.0.21 not deployed in this preparation session.",
+    "rendered_browser_acceptance": "Not executed for1.0.21."
+  },
+  "evaluation_boundary": "Existing216 archived decisions remain holdout-case evaluation under known policies on1.0.15. No new measurement or ability assessment of a successor is claimed."
+}

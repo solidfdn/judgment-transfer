@@ -1,3 +1,11 @@
+## 1.0.21 — 2026-10-14 — Clarify the layout and visual hierarchy
+
+Category: user-authorized presentation refinement. The operational application, three-stage guided demo and past evaluation viewer use a consistent palette, spacing and clearer grouping so the main question, action and result can be found before supporting detail. Product wording, review questions, observed result groups, measurement definitions and access to original evidence are retained.
+
+This is a presentation change from 1.0.20. No backend change other than displayed VERSION; the 1.0.20 source-extraction fix is included unchanged when updating from older packages. The installer accepts the exact completed 1.0.17, 1.0.18, 1.0.19 or 1.0.20 package, with a recorded same-payload/same-baseline interruption path. Previously issued installers, all historical results, sources, approvals, .jt state and usage limits remain unchanged. No model execution or cloud deployment is performed during package preparation.
+
+Verification is limited to the affected presentation and the additional 1.0.20 installer baseline; unaffected earlier checks are reused. Final source hashes, embedded payload and original record bytes are verified during packaging. See verification/product_experience_121.json. Local preparation does not establish cloud deployment or rendered browser acceptance.
+
 ## 1.0.20 — 2026-10-14 — Make the assessment and handover findings explicit
 
 Category: user-authorized product clarification plus a source-extraction contract defect fix. The agreed description is: “専任担当者の資料や説明をもとに、AIに任せられる範囲を確かめます。足りない情報や、人の判断が必要な箇所を明らかにし、後任担当者への引継ぎにも活かせます。” The guided demo now has three stages: gaps in the material, the change after the explanation, and the handover findings. The application shows six review questions without scoring them, four observed case-result groups, six evaluation measures with explicit counting rules, and separate observed / inferred / unresolved source information with its source locations. It does not assess the next person's ability.

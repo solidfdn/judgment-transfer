@@ -2,8 +2,8 @@
   "product": "Judgment Transfer",
   "owner": "SOLIFAN",
   "spec_version": "1.0",
-  "package_version": "1.0.20",
-  "app_version": "1.0.20",
+  "package_version": "1.0.21",
+  "app_version": "1.0.21",
   "baseline_spec": {
     "path": "baseline/Judgment_Transfer_Development_Spec_v1.0_20261010.docx",
     "sha256": "8585fe58d7fdf3511771c0214e960ee7c4091209f7cf60ab5826ca984fb82e07"
@@ -260,5 +260,26 @@
     ],
     "evaluation_boundary": "The archived 216 decisions evaluated holdout cases separate from the development cases used for the task owner’s explanation. Policies were known and evaluation ran on 1.0.15; this does not establish transfer to unknown jobs or policies. Existing development/holdout mechanisms remain; no additional execution was performed in this release.",
     "preserved": "All original sources and approvals, 216 historical decisions including four failures, .jt records, usage counters, workflow execution, model and dependencies."
+  },
+  "product_layout_121": {
+    "category": "user-authorized presentation layout refinement",
+    "scope": "Operational application, three-stage guided demo and past evaluation viewer; consistent palette, spacing and information hierarchy.",
+    "product_behavior": "Product wording, six review perspectives, four observed result groups, six measurement definitions and source-evidence access retained.",
+    "backend_change": "Displayed VERSION only relative to 1.0.20; its source-extraction fix is included unchanged when updating from older packages.",
+    "installer_baselines": [
+      "1.0.17",
+      "1.0.18",
+      "1.0.19",
+      "1.0.20"
+    ],
+    "new_model_calls": 0,
+    "formal_replays": 0,
+    "preserved": "Previously issued installers, all sources and approvals, 216 archived decisions including four failures, .jt state and all usage counters.",
+    "presentation": {
+      "palette": "Warm white and green, with semantic status colors.",
+      "surfaces": "Consistent spacing and grouping; no shadows or animation.",
+      "hierarchy": "One main next action for the current state; supporting details remain available separately.",
+      "demo": "Three compact stage controls, before/after comparison first, case facts beside it, supporting conditions and roles in expandable detail."
+    }
   }
 }
