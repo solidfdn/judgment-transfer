@@ -1,16 +1,18 @@
 # Judgment Transfer — by SOLIFAN
 
-**Verify the task owner’s information. Test whether their judgment is reproducible and effective.**
+**Use the task owner’s materials and explanations. Check which parts of the work AI can handle.**
 
-Use the current task owner’s instructions and explanations to examine which parts of a job AI can handle. Review the conditions, test example cases, and see where a person must still decide. The same review can reveal gaps in instructions for the next person.
+Identify missing information and decisions that need a person, and use the findings to improve the handover to the next task owner.
 
 **Open the application:** https://judgment-transfer-unql76xapq-an.a.run.app
-**Guided demo (1.0.19, after deployment):** https://judgment-transfer-unql76xapq-an.a.run.app/assets/demo/index.html
+**Guided demo (1.0.20, after deployment):** https://judgment-transfer-unql76xapq-an.a.run.app/assets/demo/index.html
 **Read-only measured evidence:** https://judgment-transfer-unql76xapq-an.a.run.app/assets/review/index.html
 
-The guided demo and evidence walkthrough are read-only and make no model calls. It displays the actual saved Google Cloud results, source text, prior human approval, case facts and before/after receipts. The operational application starts with a new-work entry point; a previous workspace opens only when the user chooses to continue it. It retains its separate materials / explanation / results workflow; starting a LIVE operation can make a model call within the existing limits. All sample data are fictional; actions affect only isolated case state.
+The guided demo follows three stages: find the missing explanation, compare what the explanation changes, and improve the handover material. The demo and evidence walkthrough are read-only and make no model calls. They display the actual saved Google Cloud results, source text, prior human approval, case facts and before/after receipts. The operational application starts with a new-work entry point; a previous workspace opens only when the user chooses to continue it. It retains its separate materials / explanation / results workflow; starting a LIVE operation can make a model call within the existing limits. All sample data are fictional; actions affect only isolated case state.
 
-## Measured result — 1.0.15 execution, 1.0.19 presentation
+The six instruction-review perspectives are prompts for a person, not automated scores. Four result groups summarize the observed case records; they do not score a future task owner. Evaluation details count approved supplements, deduplicated input/output/thinking usage including retries, and cumulative decision-trace time. Unreported usage remains unknown and shared preparation is listed separately.
+
+## Measured result — 1.0.15 execution, 1.0.20 presentation
 
 | Condition | Correct autonomous completion | Correct decision, including hold | Failed decisions | Critical errors |
 |---|---:|---:|---:|---:|
@@ -18,11 +20,11 @@ The guided demo and evidence walkthrough are read-only and make no model calls. 
 | B: Same task owner explanation as text | 48/72 (66.7%) | 72/72 (100%) | 0 | 0 |
 | C: Approved structured rules | 48/72 (66.7%) | 69/72 (95.8%) | 3 | 0 |
 
-24 synthetic cases × 3 conditions × 3 repeats = 216 nominal decisions. All four failed decisions remain in the denominator. C − A is +33.3 percentage points; C − B is zero. This result does **not** demonstrate C-over-B accuracy superiority. Policies were previously exposed; this is fresh-record revalidation, not independent blind validation or proof of production reliability.
+24 synthetic holdout cases, separate from the development cases used for the task owner’s explanation, × 3 conditions × 3 repeats = 216 nominal decisions. All four failed decisions remain in the denominator. C − A is +33.3 percentage points; C − B is zero. This result does **not** demonstrate C-over-B accuracy superiority. Policies were previously exposed; this is fresh-record revalidation, not independent blind validation or proof of production reliability.
 
 Median latency among 212 completed decisions: 4.2 seconds. Recorded comparison model cost: USD 3.3286. All completed responses used Standard after a Priority request; failed unknown-usage calls retain conservative cost reservations. Infrastructure costs are separate. Approval and execution receipts, rather than an unproven accuracy claim, make the structured-rule behavior inspectable.
 
-Past evaluation records are kept as evidence of what was actually tested, including incomplete calls. They are not automatically loaded into a new assessment and do not establish that a new job can be automated. The original sources, approvals and results retain their provenance. The completed study and original results are immutable. The exhausted authorized call grant is not reset by this release. Historical recovery commands remain for provenance and are not a request to repeat the experiment. For the completed deployment, `python3 ~/jt_release_119.py --deploy` installs only the reviewed UI release.
+Past evaluation records are kept as evidence of what was actually tested, including incomplete calls. They are not automatically loaded into a new assessment and do not establish that a new job can be automated. The original sources, approvals and results retain their provenance. The completed study and original results are immutable. The exhausted authorized call grant is not reset by this release. Historical recovery commands remain for provenance and are not a request to repeat the experiment. For the completed deployment, `python3 ~/jt_release_120.py --deploy` installs the reviewed interface and source-extraction defect fix.
 
 The prototype reads source evidence, proposes a declarative workflow, runs isolated cases, asks a targeted question about blocked development cases, and turns the task owner’s explanation into an **inactive rule proposal**. Human approval creates a new immutable workflow version. Replaying starts from independent copies of the same initial state. Declared state effects and receipts make the difference inspectable.
 
@@ -77,7 +79,7 @@ All routes use `/api/v1`. Mutations require `Idempotency-Key`, a valid session a
 | `POST /workspaces/freeze` | administrator workspace_id |
 | `GET /session`, `/workspaces/{id}`, `/runs/{id}`, `/exports/{run_id}`, `/health` | owned saved state or public health metadata |
 
-The source extraction endpoint splits reading and drafting into separate HTTP calls so each remains within the bounded model window. This is an additive transport binding, not a change to the accepted workflow. Strict DomainSpec/Case/Decision/Receipt contracts remain unchanged. Repository documents wrap those contracts with operational metadata.
+The source extraction endpoint splits reading and drafting into separate HTTP calls so each remains within the bounded model window. This is an additive transport binding, not a change to the accepted workflow. DomainSpec/Case/Decision/Receipt contracts remain unchanged. In 1.0.20, an UNRESOLVED Observation must keep its value null and may have no reference when no valid location exists. OBSERVED and INFERRED observations still require a reference; every supplied reference retains the existing validation. Conflicting evidence stays unresolved with its source locations. Repository documents wrap those contracts with operational metadata.
 
 ## Execution semantics
 
@@ -115,8 +117,8 @@ Do not commit `.jt/`, `.venv/`, tokens, personal source data or raw cloud logs. 
 
 ## Completed study and release provenance
 
-The final study is `watchdog115`, phase `COMPLETE`, cursor `216`. Its evaluation code hash is `b5ffd242d8256902e309bbe816e631da4c932e93c324a85a1a6edc36af6aa8d4`. The presentation release is 1.0.19 and does not reclassify old results as a new execution. Its only Python change is the displayed version; source, prompt, model adapter, budget checks and judgment logic are unchanged.
+The final study is `watchdog115`, phase `COMPLETE`, cursor `216`. Its evaluation code hash is `b5ffd242d8256902e309bbe816e631da4c932e93c324a85a1a6edc36af6aa8d4`. The presentation release is 1.0.20 and does not reclassify old results as a new execution. The 1.0.20 source-extraction fix changes Observation validation and the extraction instruction, alongside the displayed version. It does not rerun or reclassify the historical evaluation. Workflow execution, approvals, model choice, budget checks and dependencies are unchanged. No fresh model result is claimed for the fix.
 
 A recorded continuation preserved all 181 already-terminal task and trace records and all 180 already-committed receipts. It retained failed judgments and exhausted retry counters, and processed only the remaining 35 nominal decisions. See `evaluation/continuation-provenance.json`, `evaluation/EVALUATION_REPORT.md` and the six byte-exact exports in `app/web/review/`.
 
-Historical recovery implementation and instructions in the changelog are provenance, not current operating instructions. Do not rerun recovery or reset its counters to reproduce a presentation. The completed evidence walkthrough is the no-cost review path. The 1.0.19 installer is a separate, reviewed direct update from either the exact 1.0.17 or 1.0.18 completed package. It does not require an intermediate deployment. Local preparation does not establish that a cloud deployment has completed.
+Historical recovery implementation and instructions in the changelog are provenance, not current operating instructions. Do not rerun recovery or reset its counters to reproduce a presentation. The completed evidence walkthrough is the no-cost review path. The 1.0.20 installer is a separate, reviewed direct update from the exact 1.0.17, 1.0.18 or 1.0.19 completed package. It does not require an intermediate deployment. Local preparation does not establish that a cloud deployment has completed.

@@ -2,15 +2,15 @@
   "product": "Judgment Transfer",
   "owner": "SOLIFAN",
   "spec_version": "1.0",
-  "package_version": "1.0.19",
-  "app_version": "1.0.19",
+  "package_version": "1.0.20",
+  "app_version": "1.0.20",
   "baseline_spec": {
     "path": "baseline/Judgment_Transfer_Development_Spec_v1.0_20261010.docx",
     "sha256": "8585fe58d7fdf3511771c0214e960ee7c4091209f7cf60ab5826ca984fb82e07"
   },
   "contracts": {
     "path": "app/contracts/jt_contracts.schema.json",
-    "sha256": "998724f56a7bb63cb42d94df573a74fbd53a438ec4bd2c71bbf5018d84e10d50"
+    "sha256": "d90b53ce33b856f156214bd437e5d789b0b4e4d5e5abd43af236465982586af4"
   },
   "fixed": {
     "delivery": "one ZIP with complete code and numbered Google Cloud Shell runbook",
@@ -182,5 +182,83 @@
       "ja": "担当者が確認・提供した内容を検証し、その判断の再現性と有効性を確かめる。",
       "en": "Verify the task owner’s information. Test whether their judgment is reproducible and effective."
     }
+  },
+  "product_copy_120": {
+    "category": "user-authorized assessment presentation and source-extraction contract defect fix",
+    "product_statement_ja": [
+      "専任担当者の資料や説明をもとに、AIに任せられる範囲を確かめます。",
+      "足りない情報や、人の判断が必要な箇所を明らかにし、後任担当者への引継ぎにも活かせます。"
+    ],
+    "review_perspectives_ja": [
+      "業務の目的と範囲",
+      "必要な情報",
+      "手順と操作",
+      "判断条件と根拠",
+      "例外と人への確認",
+      "完了条件"
+    ],
+    "review_perspectives_behavior": "Static review questions, not six calculated scores.",
+    "result_groups_ja": [
+      "AIで進められた範囲",
+      "情報を補えば再検証できる範囲",
+      "人の判断・承認が必要な範囲",
+      "未検証の範囲"
+    ],
+    "result_group_labels_en": [
+      "AI proceeded",
+      "Information to clarify",
+      "Needs a person’s review",
+      "Not verified"
+    ],
+    "result_group_behavior": "Display based on observed case state, missing fields and existing decisions; no dedicated four-class model. Untested work outside these cases remains unverified.",
+    "evaluation_metrics_ja": [
+      "正しい自動完了率",
+      "判断正解率（正しく保留した案件を含む）",
+      "重大誤実行数",
+      "人への補足回数",
+      "使用トークン",
+      "経過時間"
+    ],
+    "evaluation_metrics_en": [
+      "Correct autonomous completion",
+      "Correct decisions, including hold",
+      "Critical errors",
+      "Task owner’s supplements",
+      "Tokens used",
+      "AI processing time"
+    ],
+    "measurement_bounds": {
+      "supplements": "Approved task-owner supplements.",
+      "tokens": "Deduplicated input/output/thinking usage, including retries; unreported usage stays unknown; shared preparation shown separately.",
+      "time": "Cumulative decision-trace duration, not end-to-end elapsed time.",
+      "held_cases": "Correct holds count toward correct decisions, not autonomous completion."
+    },
+    "handover_scope": "Review whether the materials and explanations provide what a successor needs; do not assess the successor’s capability.",
+    "demo": "Three recorded stages: material gaps, before/after the explanation, handover findings.",
+    "source_observation_display": "Keep OBSERVED, INFERRED and UNRESOLVED distinct and show recorded source locations.",
+    "source_extraction_fix": {
+      "previous_contract_sha256": "998724f56a7bb63cb42d94df573a74fbd53a438ec4bd2c71bbf5018d84e10d50",
+      "contract_sha256": "d90b53ce33b856f156214bd437e5d789b0b4e4d5e5abd43af236465982586af4",
+      "Observation.source_refs.minItems": 0,
+      "OBSERVED_and_INFERRED": "At least one valid source reference remains mandatory.",
+      "UNRESOLVED": "Value must be null; no reference may be supplied when no valid location exists.",
+      "conflicting_sources": "Keep unresolved null with the valid conflicting references; do not silently select one fact.",
+      "validation": "Existing validation of every supplied source reference unchanged."
+    },
+    "installer_baselines": [
+      "1.0.17",
+      "1.0.18",
+      "1.0.19"
+    ],
+    "new_model_calls": 0,
+    "formal_replays": 0,
+    "backend_changes": [
+      "app/config.py VERSION",
+      "app/contracts/jt_contracts.schema.json Observation references",
+      "app/core/models.py Observation validation",
+      "app/adapters/model.py extraction instruction"
+    ],
+    "evaluation_boundary": "The archived 216 decisions evaluated holdout cases separate from the development cases used for the task owner’s explanation. Policies were known and evaluation ran on 1.0.15; this does not establish transfer to unknown jobs or policies. Existing development/holdout mechanisms remain; no additional execution was performed in this release.",
+    "preserved": "All original sources and approvals, 216 historical decisions including four failures, .jt records, usage counters, workflow execution, model and dependencies."
   }
 }

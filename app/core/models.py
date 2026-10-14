@@ -24,6 +24,12 @@ def check(name, value):
     if errors:
         e = errors[0]
         raise JTError('INVALID_INPUT', f'{name}.{list(e.path)}: {e.message}')
+    if name == 'Observation':
+        if value['status'] == 'UNRESOLVED':
+            if value['value'] is not None:
+                raise JTError('INVALID_INPUT', 'An unresolved observation must keep its value null.')
+        elif not value['source_refs']:
+            raise JTError('INVALID_INPUT', 'Observed and inferred observations require a source reference.')
     return value
 
 def scalar_ok(value, kind):

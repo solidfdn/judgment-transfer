@@ -1,0 +1,76 @@
+{
+  "version": "1.0.20",
+  "date": "2026-10-14",
+  "scope": "Three-stage recorded demo, assessment presentation, and a source-extraction contract defect fix.",
+  "checks": {
+    "product_copy": "PASS - current task owner’s materials and explanations establish the AI-assessment purpose; missing information and human judgment support handover review.",
+    "main_application": {
+      "passed": true,
+      "scope": "Bounded Node VM / DOM logic, not browser rendering",
+      "checks": [
+        "Six review questions, no automated six-score claim",
+        "Four observed-case groups account for all216 saved decisions",
+        "Four failures and92 holds retained without reclassification as autonomous completion",
+        "Observed/inferred/unresolved information and actual source locations remain distinct",
+        "Six metrics displayed with approved supplements, cumulative trace time, deduplicated usage and unknown unreported usage; preparation separate"
+      ]
+    },
+    "guided_demo": {
+      "passed": true,
+      "scope": "DOM logic simulation, not a browser rendering test",
+      "languages": 2,
+      "stages_per_language": 3,
+      "cases_per_language": 3,
+      "checks": [
+        "three-stage order and primary before/after comparison",
+        "all nine case/decision/receipt/trace associations",
+        "plain-text explanation has same outcomes",
+        "unknown deadline remains held",
+        "forward/back/restart",
+        "language switch",
+        "checklist download",
+        "no model request"
+      ],
+      "browser_visual_qa": "not executed: cloud browser blocks local file URLs; Cloud Console unavailable",
+      "new_model_calls": 0
+    },
+    "source_extraction_fix": {
+      "checks_passed": 37,
+      "scope": "Actual added core semantics isolated via AST; unchanged evidence validation functions executed; contract change and source-check paths inspected.",
+      "jsonschema_validation": "NOT EXECUTED: jsonschema unavailable in configured runtime; no dependency installation.",
+      "live_calls": 0,
+      "model_calls": 0,
+      "cloud_calls": 0,
+      "fixture_contracts": "Only Observation.source_refs minItems changed; no existing Observation instances in fixture or archived result JSON."
+    },
+    "installer_addition": {
+      "passed": 7,
+      "checks": [
+        "payload_accepts_exact_117_118_119_set",
+        "119_initial_selection",
+        "119_unrecorded_mixed_state_rejected",
+        "119_recorded_resume",
+        "cross_baseline_resume_rejected",
+        "119_to120_completed_resume",
+        "119_and120_exact_health_accepted"
+      ],
+      "reused": "Unchanged 1.0.19 installer preservation and other baseline checks"
+    },
+    "final_payload_integrity": "Exact embedded files/manifests and unchanged historical records are checked during packaging.",
+    "reused": "Unaffected 1.0.19 frontend continuation, state preservation and installer checks.",
+    "new_model_calls": 0,
+    "new_cloud_calls": 0
+  },
+  "previous_release": {
+    "version": "1.0.19",
+    "deployment": "User reported completed with saved records, approvals and usage unchanged; zero model calls/replays.",
+    "browser": "Root agent verified selected deployed119 demo paths and screenshots; this is not120 visual acceptance."
+  },
+  "not_executed": {
+    "cloud_deployment": "1.0.20 not deployed in this preparation session.",
+    "rendered_browser_acceptance": "Not executed for1.0.20.",
+    "complete_jsonschema_validation": "jsonschema unavailable in configured runtime; no dependency installation.37 bounded semantic/source-reference checks passed.",
+    "fresh_model_validation": "No new model execution for this release, including the extraction fix."
+  },
+  "evaluation_boundary": "The216 archived decisions evaluated holdout cases separate from teaching-development cases under known policies on1.0.15. The records remain intact; no additional execution or unknown-policy generalization is claimed."
+}

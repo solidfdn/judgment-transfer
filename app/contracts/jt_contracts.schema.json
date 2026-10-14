@@ -508,7 +508,7 @@
           "items": {
             "$ref": "#/$defs/SourceRef"
           },
-          "minItems": 1
+          "minItems": 0
         },
         "status": {
           "enum": [
