@@ -7,7 +7,7 @@ An expert criterion becomes a reviewed rule, an evidence-checked decision and an
 
 The evidence walkthrough requires no token and makes no model calls. It displays the actual saved Google Cloud results, source text, prior human approval, case facts and before/after receipts. The live application retains its separate Sources / Teach / Results workflow. All sample data are fictional; actions affect only isolated case state.
 
-## Measured result — 1.0.15 execution, 1.0.16 viewer
+## Measured result — 1.0.15 execution, 1.0.17 viewer
 
 | Condition | Correct autonomous completion | Correct decision, including hold | Failed decisions | Critical errors |
 |---|---:|---:|---:|---:|
@@ -19,7 +19,7 @@ The evidence walkthrough requires no token and makes no model calls. It displays
 
 Median latency among 212 completed decisions: 4.2 seconds. Recorded comparison model cost: USD 3.3286. All completed responses used Standard after a Priority request; failed unknown-usage calls retain conservative cost reservations. Infrastructure costs are separate. Approval and execution receipts, rather than an unproven accuracy claim, make the structured-rule behavior inspectable.
 
-The completed study and original results are immutable. The exhausted authorized call grant is not reset by this release. Historical recovery commands remain for provenance and are not a request to repeat the experiment. For the completed deployment, `python3 ~/jt_release_116.py --deploy` installs only the reviewed UI release.
+The completed study and original results are immutable. The exhausted authorized call grant is not reset by this release. Historical recovery commands remain for provenance and are not a request to repeat the experiment. For the completed deployment, `python3 ~/jt_release_117.py --deploy` installs only the reviewed UI release.
 
 The prototype reads source evidence, proposes a declarative workflow, runs isolated cases, asks a targeted question about blocked development cases, and turns the expert's answer into an **inactive rule proposal**. Human approval creates a new immutable workflow version. Replaying starts from independent copies of the same initial state. Declared state effects and receipts make the difference inspectable.
 
@@ -112,7 +112,7 @@ Do not commit `.jt/`, `.venv/`, tokens, personal source data or raw cloud logs. 
 
 ## Completed study and release provenance
 
-The final study is `watchdog115`, phase `COMPLETE`, cursor `216`. Its evaluation code hash is `b5ffd242d8256902e309bbe816e631da4c932e93c324a85a1a6edc36af6aa8d4`. The viewer is 1.0.16 and does not reclassify old results as a new execution. Its only Python change is the displayed version; source, prompt, model adapter, budget checks and judgment logic are unchanged.
+The final study is `watchdog115`, phase `COMPLETE`, cursor `216`. Its evaluation code hash is `b5ffd242d8256902e309bbe816e631da4c932e93c324a85a1a6edc36af6aa8d4`. The viewer is 1.0.17 and does not reclassify old results as a new execution. Its only Python change is the displayed version; source, prompt, model adapter, budget checks and judgment logic are unchanged.
 
 A recorded continuation preserved all 181 already-terminal task and trace records and all 180 already-committed receipts. It retained failed judgments and exhausted retry counters, and processed only the remaining 35 nominal decisions. See `evaluation/continuation-provenance.json`, `evaluation/EVALUATION_REPORT.md` and the six byte-exact exports in `app/web/review/`.
 

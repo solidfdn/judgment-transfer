@@ -1,0 +1,24 @@
+{
+  "version": "1.0.17",
+  "code_hash": "c4af20ebc2c930692dcc4954d76623f8aa715fe3c4de2ff4caf2893c58cde6b9",
+  "scope": "UI evidence inspection and installer only; prior backend acceptance reused",
+  "checks": {
+    "backend_model_prompts_contracts_dependencies_unchanged_except_version": true,
+    "all_six_exports_summary_and_sources_unchanged": true,
+    "public_synthetic_exports_have_no_credential_patterns": true,
+    "altered_explanation_hash_rejected": true,
+    "approved_explanations_verified_and_rendered": 2,
+    "missing_explanation_rejected": true,
+    "checked_nominal_decision_displays": 216,
+    "failed_C_paths": 3,
+    "source_teach_results_rendered": true,
+    "receipt_display_and_escaping": true,
+    "all_requests_read_only": true,
+    "browser_visual_QA": "pending deployment",
+    "flask_serves_exact_assets_without_admin_auth": true,
+    "installer_preserves_originals_and_caps_and_is_resumable": true,
+    "real_model_calls": 0,
+    "cloud_mutations": 0,
+    "deployed_browser_QA": "not yet performed"
+  }
+}

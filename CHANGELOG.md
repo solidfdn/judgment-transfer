@@ -1,6 +1,10 @@
-## Public documentation revision 1 — 2026-10-14
+## 1.0.17 — 2026-10-14 — Display the verified expert explanation
 
-Documentation-only clarification after the 1.0.16 source publication: remove obsolete “current” recovery commands from README and describe the completed 216-decision study and exhausted counters. Update the README and changelog hashes in the public-source manifest. Application files and code hash are unchanged. The previously supplied Cloud Shell release installer remains unchanged.
+Category: recorded-viewer defect fix found in deployed browser QA. B's decision payload intentionally carries an empty human_text because the adapter reads the expert source as an attachment. The viewer incorrectly read this empty field. It now locates the original full explanation in shared preparation traces and accepts it only when SHA-256 matches the recorded human source version. Duplicate identical preparation text is deduplicated. A missing or mismatched explanation is reported explicitly; no text is manufactured from the rule statement.
+
+Changed: review/review.js, review/index.html displayed version, config.py VERSION only, README, SPEC_LOCK and manifest. Exact evaluation exports, all backend judgment and accounting code, approvals and model settings are unchanged. The installer reads the completed 1.0.15 study before and after deployment and makes zero model calls. Public README clarification from the published source is included.
+
+Verification: both real saved explanations match their approved source hashes (311 and 559 UTF-8 bytes); the frontend renders both full explanations; missing or altered text is rejected; all saved case/receipt paths still render. All other deployed 1.0.16 views passed browser inspection, including the failed invoice repeat and the support receipt. Final browser verification of the corrected explanation follows deployment.
 
 ## 1.0.16 — 2026-10-14 — Inspect the committed evidence
 

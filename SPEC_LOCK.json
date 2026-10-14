@@ -2,8 +2,8 @@
   "product": "Judgment Transfer",
   "owner": "SOLIFAN",
   "spec_version": "1.0",
-  "package_version": "1.0.16",
-  "app_version": "1.0.16",
+  "package_version": "1.0.17",
+  "app_version": "1.0.17",
   "baseline_spec": {
     "path": "baseline/Judgment_Transfer_Development_Spec_v1.0_20261010.docx",
     "sha256": "8585fe58d7fdf3511771c0214e960ee7c4091209f7cf60ab5826ca984fb82e07"
@@ -142,5 +142,11 @@
     "model_calls": 0,
     "backend_change": "VERSION only",
     "preserved": "All existing judgments, receipts, approvals, freezes, source hashes, caps and budget counters."
+  },
+  "recorded_explanation_fix_117": {
+    "category": "UI defect fix",
+    "source": "shared preparation human_text verified against source_metadata.version_hash",
+    "model_calls": 0,
+    "judgment_logic": "unchanged"
   }
 }
