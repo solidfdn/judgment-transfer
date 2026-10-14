@@ -2,6 +2,7 @@
 import copy
 from jsonschema import Draft202012Validator
 from core.models import CONTRACT, JTError, check
+from adapters.citations import resolve_reference
 from service import ident, now, required
 
 ASPECTS = ('purpose_scope', 'required_information', 'steps_operations',
@@ -45,6 +46,8 @@ def review_requirements(service, body, ctx):
         'Separate source observations from inference. Review exactly the six listed aspects once each. '
         'Describe what the material actually establishes and what remains missing or contradictory. '
         'Documented findings require exact source references. Missing information is not evidence of a negative fact. '
+        'For each reference, copy one short continuous passage verbatim. Preserve line breaks as JSON newline escapes. '
+        'Never abbreviate a quotation with ellipses or combine separated passages in one quotation; use separate references. '
         'Ask at most five specific questions: identify the situation, what the owner must clarify, and why it changes the work. '
         'Prioritize the questions that prevent a correct decision. Avoid generic checklists, invented company policies, '
         'invented integrations, approvals or claims of automation readiness. If the job cannot yet be represented as a '
@@ -55,20 +58,34 @@ def review_requirements(service, body, ctx):
         'Never use hidden cases, expected answers or reference rules.'), 'goal': goal, 'aspects': list(ASPECTS)}
     if not hasattr(service.adapter, 'invoke'): raise JTError('LIVE_REQUIRED', 'Requirements review needs LIVE mode. No synthetic review was substituted.', 409)
     result, trace = service.adapter.invoke('extract', payload, REVIEW_SCHEMA, sources, ctx['owner'], ctx['admin'])
-    errors = list(Draft202012Validator(REVIEW_SCHEMA).iter_errors(result))
-    if errors: raise JTError('INVALID_INPUT', 'The requirements review did not match the response contract.')
-    if {x['aspect'] for x in result['checks']} != set(ASPECTS):
-        raise JTError('INVALID_INPUT', 'Each review perspective must appear exactly once.')
-    for item in result['observations']: check('Observation', item)
-    for item in result['observations'] + result['checks'] + result['questions']:
-        if item.get('status') == 'documented' and not item['source_refs']:
-            raise JTError('INVALID_EVIDENCE', 'A documented finding needs supporting evidence.')
-        for ref in item['source_refs']:
-            if hashes.get(ref['source_id']) != ref['version_hash']:
-                raise JTError('INVALID_EVIDENCE', 'Review evidence must come from the supplied work materials.')
-            service.source_check(wid, ref)
+    result = copy.deepcopy(result)  # Keep the raw provider trace unchanged.
+    resolutions = []; path = 'response_contract'
+    try:
+        errors = list(Draft202012Validator(REVIEW_SCHEMA).iter_errors(result))
+        if errors: raise JTError('INVALID_INPUT', 'The requirements review did not match the response contract.')
+        path = 'checks'
+        if {x['aspect'] for x in result['checks']} != set(ASPECTS):
+            raise JTError('INVALID_INPUT', 'Each review perspective must appear exactly once.')
+        for section in ('observations', 'checks', 'questions'):
+            for i, item in enumerate(result[section]):
+                path = f'{section}[{i}]'
+                if section == 'observations': check('Observation', item)
+                if item.get('status') == 'documented' and not item['source_refs']:
+                    raise JTError('INVALID_EVIDENCE', 'A documented finding needs supporting evidence.')
+                for j, ref in enumerate(item['source_refs']):
+                    path = f'{section}[{i}].source_refs[{j}]'
+                    if hashes.get(ref['source_id']) != ref['version_hash']:
+                        raise JTError('INVALID_EVIDENCE', 'Review evidence must come from the supplied work materials.')
+                    resolved, note = resolve_reference(ref, service.source(wid, ref['source_id']), service.blobs,
+                                                       allow_omissions=section != 'observations')
+                    item['source_refs'][j] = resolved
+                    if note: resolutions.append({'path':path, **note})
+    except JTError as error:
+        error.trace = trace
+        error.validation = {'stage':'requirements_validation', 'path':path}
+        raise
     review = {**copy.deepcopy(result), 'source_hashes': hashes, 'goal': goal,
-              'trace_id': trace['trace_id'], 'created_at': now()}
+              'trace_id': trace['trace_id'], 'created_at': now(), 'citation_resolutions':resolutions}
     wk = ('workspaces', wid)
     source_keys = [('sources', wid + '-' + sid) for sid in hashes]
     def commit(values):

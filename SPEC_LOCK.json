@@ -2,8 +2,8 @@
   "product": "Judgment Transfer",
   "owner": "SOLIFAN",
   "spec_version": "1.0",
-  "package_version": "1.0.24",
-  "app_version": "1.0.24",
+  "package_version": "1.0.25",
+  "app_version": "1.0.25",
   "baseline_spec": {
     "path": "baseline/Judgment_Transfer_Development_Spec_v1.0_20261010.docx",
     "sha256": "8585fe58d7fdf3511771c0214e960ee7c4091209f7cf60ab5826ca984fb82e07"
@@ -325,5 +325,14 @@
     "preserved": "Business semantics, six review aspects, model, dependencies, decision path, approvals, earlier source evidence and all usage/grant counters.",
     "deployment_gate": "Explicit --verify-source: one real source-review invocation, at most two generations through existing policy, named verification record, no workflow approval/judgment/replay. Same idempotency key on resume.",
     "provider_acceptance": "Pending execution in deployed environment."
+  },
+  "source_citation_fix_125": {
+    "category": "Defect fix; restore literal source quotations without changing evidence or decisions",
+    "scope": "Requirements review only. Existing exact validator remains unchanged.",
+    "format_recovery": "Same source ID/hash/locator; unique ordered literal match within the specified location. Restore whitespace. Expand explicit ellipses to the complete original span for findings/questions only; retain original response and repair provenance.",
+    "rejection": "Changed words, numbers, negation, source/hash/location; reordered, ambiguous or oversized alignment. No semantic inference or business-value repair.",
+    "preflight": "Read the diagnosed saved 1.0.24 response and validate in memory before deployment. No model call or cloud write.",
+    "live_gate": "One new versioned request on the same source/workspace, at most two generation attempts, same existing allowance and USD100 ceiling. Prior failures/counters retained.",
+    "status": "Local targeted tests passed; complete cloud-saved answer and new deployed review pending."
   }
 }

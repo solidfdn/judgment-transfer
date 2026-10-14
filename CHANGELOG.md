@@ -1,3 +1,11 @@
+## 1.0.25 — 2026-10-14 — Restore literal source quotations and retain validation diagnostics
+
+Category: defect fix. The saved 1.0.24 provider response succeeded and passed shape/semantic checks, but five finding citations joined lines or omitted text with ellipses. The original exact-reference validator correctly rejected these quotations. The complete failed response is retained in trace_5d234acf56844bdcb657aa120f37fe5d.
+
+Affected files: `app/adapters/citations.py` restores source whitespace or the complete span between uniquely aligned literal fragments, strictly within the already validated source/hash/location. Ellipses are supported only for review findings/questions, not raw observations. `app/requirements_review.py` records original/restored citation provenance, leaves the raw provider trace intact, asks for short continuous quotations, and attaches the precise validation path on failure. `app/main.py` includes that path in the current administrator's bounded diagnostic. The original source validator, contracts, case intake, model, dependencies, decisions, approvals and budget policy remain unchanged. `steps/verify_saved125.py` checks the actual saved answer in memory before deployment; `steps/verify_source125.py` retains detailed application errors and journals one fresh versioned review on the same source. The new installer preserves old evidence/counters and stops before deployment if preflight fails.
+
+Verification: 29 targeted citation/service/diagnostic checks using the five actually reported failed quotations and explicit synthetic surrounding data; 29 installer/API/gate checks with transport doubles. No real model call during preparation. The complete cloud-saved answer is checked by the release command before deployment; new live acceptance remains pending. See verification/RELEASE125_STATUS.md. All earlier installers and the original 216-case evidence, including four failures, are retained.
+
 ## 1.0.24 — 2026-10-14 — Correct the source-review request and verify its real result
 
 Category: defect fix and bounded verification. The owner’s read-only diagnostic established one provider 400 / INVALID_ARGUMENT during the new source review, not quota exhaustion. Google did not identify the exact invalid argument. Its documented schema-complexity limitation is the working diagnosis, not a proven individual-field cause.

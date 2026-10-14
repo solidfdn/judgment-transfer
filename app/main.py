@@ -80,6 +80,8 @@ def create_app(repo=None, adapter=None, blobs=None, testing=False):
             detail['diagnostic'] = {'trace_id':trace['trace_id'], 'attempts':[
                 {k:a[k] for k in ('attempt','stage','status','provider_code','error_type','validation_errors') if k in a}
                 for a in trace.get('attempts', [])[:2]]}
+            if getattr(error, 'validation', None):
+                detail['diagnostic']['validation'] = error.validation
         return {'error': detail}
 
     @app.errorhandler(JTError)

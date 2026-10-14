@@ -1,0 +1,31 @@
+{
+  "trace_id": "trace_5d234acf56844bdcb657aa120f37fe5d",
+  "source": "Owner supplied read-only diagnostic; fictional policy only",
+  "references": [
+    {
+      "path": "checks[0].source_refs[0]",
+      "locator": "line:3-4",
+      "quote": "Scope: check the submitted claim and hotel payment evidence before a manager's business approval. Only update the isolated review status. Never approve expenditure, send a message or execute payment."
+    },
+    {
+      "path": "checks[1].source_refs[0]",
+      "locator": "line:10-11",
+      "quote": "The acceptance conditions for a company-addressed hotel folio are not recorded here, including how to use its payer allocation. Ask the expense task owner before treating that arrangement as accepted evidence. If a required value, payer allocation or payment status is missing, hold and request the specific missing evidence."
+    },
+    {
+      "path": "checks[2].source_refs[0]",
+      "locator": "line:9-11",
+      "quote": "Mark the documentary precheck complete only when claimant and guest match, both stay dates match the approved dates, the receipt is accepted, and the claimed amount equals the stated employee-paid amount marked PAID. ... Do not subtract a company payment from a total, reverse-calculate from the claim, or infer who paid."
+    },
+    {
+      "path": "checks[3].source_refs[0]",
+      "locator": "line:5-9",
+      "quote": "If either hotel stay date differs, hold for a manager's decision on the changed stay ... A known guest-name mismatch is returned for correction. ... For an accepted receipt with an identified employee payment marked PAID, a known amount mismatch is returned for correction. Mark the documentary precheck complete only when claimant and guest match, both stay dates match the approved dates, the receipt is accepted, and the claimed amount equals the stated employee-paid amount marked PAID."
+    },
+    {
+      "path": "checks[4].source_refs[0]",
+      "locator": "line:11-12",
+      "quote": "If a required value, payer allocation or payment status is missing, hold and request the specific missing evidence. ... Changed-trip necessity and exceptions to the approved stay remain a manager's business decision. A task-owner clarification of document checks does not grant that approval."
+    }
+  ]
+}
