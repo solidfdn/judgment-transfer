@@ -1,0 +1,17 @@
+{
+  "version": "1.0.17",
+  "verified_at_jst": "2026-10-14T15:09:00+09:00",
+  "public_url": "https://judgment-transfer-unql76xapq-an.a.run.app/assets/review/index.html",
+  "checks": {
+    "home_loads_live_117": true,
+    "invoice_explanation_full_text_rendered": true,
+    "support_explanation_full_text_rendered": true,
+    "invoice_conditions_and_saved_approval_rendered": true,
+    "preserved_summary_216_and_four_failures_rendered": true,
+    "actual_invoice_and_support_receipts_rendered": true,
+    "failed_task_has_no_receipt_and_state_new": true
+  },
+  "model_calls": 0,
+  "state_mutations": 0,
+  "previous_checks_reused": "Unchanged Results / Sources screens visually reviewed on 1.0.16; Teach and public home reviewed on 1.0.17."
+}
