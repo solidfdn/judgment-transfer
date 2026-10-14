@@ -84,19 +84,9 @@ A task lease is 180 seconds; at most two tasks are leased per workspace. Decisio
 
 Stop prevents new case steps; it does not abort or refund an already dispatched model request. An in-flight step may commit once. If it has not reached a terminal state when the run is cancelled, its saved receipt remains and the task becomes CANCELLED instead of waiting for a step that cannot start. Failed or unfinished runs are never labelled as successfully completed in the UI. These controls do not resolve provider latency or availability.
 
-Public sessions expire after 60 minutes and allow 12 judgment calls / 24 total model calls. The administrator has a preparation/benchmark allowance of 320 judgment calls / 500 total calls, with the shared global 600-judgment-per-day ceiling and initial $20 cumulative model budget. 216 is the formal benchmark's nominal judgment count, not a fabricated measured count. Retries and interrupted calls consume allowance. Infrastructure has separate billing and a $30 alert; alerts do not stop billing.
+Public sessions expire after 60 minutes and allow 12 judgment calls / 24 total model calls. The completed, explicitly authorized recovery has used all 251 grant attempts and all 509 total owner-session model calls, including prior preparation. Its shared six-retry allowance is exhausted. These counters and the cumulative USD 20 model budget are preserved. Infrastructure is billed separately; budget alerts do not stop billing.
 
-### Historical 1.0.11 recovery (superseded for new execution)
-
-The owner separately authorized one Priority PayGo study, using the same model and at most 234 additional judgments from the current administrator counter. A single owner-bound grant enforces this limit without resetting counts; the USD 20 cumulative ledger, 500 total-call and 600 daily-judgment limits remain. Priority-only headers are checked against response `traffic_type`; verified prices are USD 2.70 input / 16.20 output per million tokens. Missing Priority confirmation cannot produce an executed decision.
-
-`POST /recovery111/prepare` atomically creates a separate frozen study from existing approved snapshots and new synthetic records, retaining approval provenance. `POST /recovery111/advance` accepts a fixed phase/cursor request key and performs at most one generation; duplicate keys cannot advance another case. `GET /recovery111` reads progress and budget. These endpoints require administrator access. Ordinary run endpoints cannot bypass this study's gates.
-
-Eighteen development decisions must complete with valid evidence and Priority confirmation within 20 seconds each, with intended source-only exception holds handled correctly. A conservative forecast from the largest pilot usage cost must also fit the remaining ledger. Only then can the 216 formal judgments proceed, interleaving arms and domains. A technical or critical-safety failure latches the study and preserves partial evidence. Uncertain expired calls are not retried. `python -m steps.recovery111` resumes from server state and writes only `deliverables/recovery111/`; it does not replace the historical benchmark or results.
-
-The new synthetic records reuse known policies and condition structures. Invoice exception records share the same Boolean facts. This is fresh-record revalidation, not independent blind validation or evidence of generalization to new policies. No LIVE recovery is established by the offline tests.
-
-## Evaluation and honesty
+### ## Evaluation and honesty
 
 - A: original source material. B: the same expert answer added as text. C: approved structured rules and the execution guard.
 - 2 fictional domains × 12 unique holdout cases × 3 arms × 3 repeats = 216 nominal judgments. There are 24 unique holdout cases, not 72.
@@ -120,10 +110,10 @@ Use New workspace, add material and a goal, analyse, review/approve the proposed
 Do not commit `.jt/`, `.venv/`, tokens, personal source data or raw cloud logs. `bash jt 08` produces a public-source ZIP without those local files. Public hosting and repository publication are separate explicit actions.
 
 
-## Current recovery revision: 1.0.14
+## Completed study and release provenance
 
-For the reviewed Cloud Shell environment, use the supplied `jt_complete_114.py --run --authorize-streamed-revalidation` command from its recovery package. It prepares a separate study, verifies all 18 development decisions on the deployed service, conditionally executes exactly 216 formal decisions, and exports under `deliverables/recovery114`. It does not rerun or overwrite original steps 07/08. On reconnect, run the same command; completed receipts are retained and a latched failure is not replayed.
+The final study is `watchdog115`, phase `COMPLETE`, cursor `216`. Its evaluation code hash is `b5ffd242d8256902e309bbe816e631da4c932e93c324a85a1a6edc36af6aa8d4`. The viewer is 1.0.16 and does not reclassify old results as a new execution. Its only Python change is the displayed version; source, prompt, model adapter, budget checks and judgment logic are unchanged.
 
-Current decision calls use streamed responses, the response schema only in the API, a 20-second total model window and at most one transient retry if time remains. Complete stream, STOP, valid JSON/schema, evidence and approved-rule checks precede execution. Other purposes keep their existing limits. These settings are not a promise of UI wall-clock latency.
+A read-only continuation preserved all 181 already-terminal task and trace records and all 180 already-committed receipts. It retained failed judgments and exhausted retry counters, and processed only the remaining 35 nominal decisions. See `evaluation/continuation-provenance.json`, `evaluation/EVALUATION_REPORT.md` and the six byte-exact exports in `app/web/review/`.
 
-Explicit opt-in amends the original grant from 242 to 251 attempts and its owner's session cap from 500 to 509; twelve grant attempts are already used, leaving 18+216+5. The USD 20 cumulative model ledger and 600 daily decision cap remain. Five remaining retry attempts are shared across the whole new study and are not renewed on restart. All arms uniformly request Priority; actual Standard downgrades and their pricing remain visible. The paired Cloud Shell diagnostic is supporting evidence, not a Cloud Run acceptance result or a causal latency experiment.
+Historical recovery implementation and instructions in the changelog are provenance, not current operating instructions. Do not rerun recovery or reset its counters to reproduce a presentation. The completed evidence walkthrough is the no-cost review path. This public-source documentation revision does not modify the separately supplied Cloud Shell installer or deployed application.

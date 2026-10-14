@@ -8,9 +8,9 @@
     ".gcloudignore": "a4a31a1bb21a33556715a46f63d13d9fc23b8622c3d397f464616a33e1ec2245",
     ".gitignore": "5a2dc5dd7a6099b50efb66860f7582714590876039c6925d9143a2054ba803ea",
     "AGENTS.md": "f9027c3f7644a7e0a5d112edcfc36d85cce565e0ad71a5d51c835c08afa228bb",
-    "CHANGELOG.md": "b6d64eeebbc37f8ccb4aa1aa8b3b56f666338f788d0984954891855c53959735",
+    "CHANGELOG.md": "8f6d55d28ef1408e883adfc585791091ac456ed3d895797849f8d06262f428b6",
     "Dockerfile": "780a2107eccba1628c9ba41cf659a14defbb97319ee0585904499b47ff0ff0b8",
-    "README.md": "3e87b6939e0e096b81d5260873dc849f61c43f8b239bd37e704f8b264c7cc89e",
+    "README.md": "933f6948e884900639d9067b33577fe70aee9a428c5bb35437407f7d52df42a8",
     "REFERENCES.md": "ebe368dc3e01287b97a5e5819c14b6a022013e347ed6766a3fbea750c075b258",
     "SPEC_LOCK.json": "bed31a9dc4dabb136452507dc7e56e0c221aaa62d434090a52463f8d6967ad7d",
     "START_HERE_ja.md": "133ca62307ac6d4096d8deed308b6758ae3234fb626d086cdb3a375681a4f97a",
@@ -81,5 +81,6 @@
     "verification/offline-acceptance.json": "8ffa0763dd1d8dbd30584d99abceb2db4c29b4b7eaef06881a6c5b94bf923a35"
   },
   "previous_code_hash": "b5ffd242d8256902e309bbe816e631da4c932e93c324a85a1a6edc36af6aa8d4",
-  "app_version": "1.0.16"
+  "app_version": "1.0.16",
+  "documentation_revision": 1
 }

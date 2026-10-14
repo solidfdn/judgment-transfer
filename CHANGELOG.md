@@ -1,3 +1,7 @@
+## Public documentation revision 1 — 2026-10-14
+
+Documentation-only clarification after the 1.0.16 source publication: remove obsolete “current” recovery commands from README and describe the completed 216-decision study and exhausted counters. Update the README and changelog hashes in the public-source manifest. Application files and code hash are unchanged. The previously supplied Cloud Shell release installer remains unchanged.
+
 ## 1.0.16 — 2026-10-14 — Inspect the committed evidence
 
 Category: UI evidence-inspection defect fix and completion of the existing RECORDED viewer. The previous Results detail showed receipt IDs without the committed before/after state. It now displays the actual receipt and trace metadata. Opening an existing live run detail performs one read-only export request; no decision is replayed.
