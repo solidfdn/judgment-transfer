@@ -1,0 +1,6 @@
+Service request triage procedure
+1. A verified service interruption affecting at least 20 users is high priority.
+2. A verified available service with no reported interruption is standard priority.
+3. A smaller interruption requires clarification and remains on hold until its business impact is established.
+4. If a required fact is missing, hold the case.
+No live customer message is sent.

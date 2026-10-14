@@ -1,0 +1,342 @@
+[
+  {
+    "case_id": "invoice_routing_dev_01",
+    "domain_id": "invoice_routing",
+    "split": "dev",
+    "stratum": "normal",
+    "facts": {
+      "supplier_verified": true,
+      "delivery_verified": true,
+      "number_repeated": false,
+      "staged_agreement": true,
+      "distinct_delivery": true
+    },
+    "raw_text": "A receiving clerk is preparing the first workshop delivery for the approval queue. The recorded facts below are authoritative; null means evidence is not supplied. {\"supplier_verified\": true, \"delivery_verified\": true, \"number_repeated\": false, \"staged_agreement\": true, \"distinct_delivery\": true}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "invoice_routing_dev_02",
+    "domain_id": "invoice_routing",
+    "split": "dev",
+    "stratum": "normal",
+    "facts": {
+      "supplier_verified": true,
+      "delivery_verified": true,
+      "number_repeated": false,
+      "staged_agreement": true,
+      "distinct_delivery": true
+    },
+    "raw_text": "The accounts desk is reviewing an equipment supplier bill during the morning batch. The recorded facts below are authoritative; null means evidence is not supplied. {\"supplier_verified\": true, \"delivery_verified\": true, \"number_repeated\": false, \"staged_agreement\": true, \"distinct_delivery\": true}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "invoice_routing_dev_03",
+    "domain_id": "invoice_routing",
+    "split": "dev",
+    "stratum": "normal",
+    "facts": {
+      "supplier_verified": true,
+      "delivery_verified": true,
+      "number_repeated": false,
+      "staged_agreement": true,
+      "distinct_delivery": true
+    },
+    "raw_text": "A branch office submits a materials invoice after its routine delivery check. The recorded facts below are authoritative; null means evidence is not supplied. {\"supplier_verified\": true, \"delivery_verified\": true, \"number_repeated\": false, \"staged_agreement\": true, \"distinct_delivery\": true}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "invoice_routing_dev_04",
+    "domain_id": "invoice_routing",
+    "split": "dev",
+    "stratum": "transfer",
+    "facts": {
+      "supplier_verified": true,
+      "delivery_verified": true,
+      "number_repeated": true,
+      "staged_agreement": true,
+      "distinct_delivery": true
+    },
+    "raw_text": "The next instalment for a phased refurbishment has arrived at accounts payable. The recorded facts below are authoritative; null means evidence is not supplied. {\"supplier_verified\": true, \"delivery_verified\": true, \"number_repeated\": true, \"staged_agreement\": true, \"distinct_delivery\": true}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "invoice_routing_dev_05",
+    "domain_id": "invoice_routing",
+    "split": "dev",
+    "stratum": "transfer",
+    "facts": {
+      "supplier_verified": true,
+      "delivery_verified": true,
+      "number_repeated": true,
+      "staged_agreement": true,
+      "distinct_delivery": true
+    },
+    "raw_text": "A supplier has reused an invoice reference on a separately logged warehouse delivery. The recorded facts below are authoritative; null means evidence is not supplied. {\"supplier_verified\": true, \"delivery_verified\": true, \"number_repeated\": true, \"staged_agreement\": true, \"distinct_delivery\": true}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "invoice_routing_dev_06",
+    "domain_id": "invoice_routing",
+    "split": "dev",
+    "stratum": "transfer",
+    "facts": {
+      "supplier_verified": true,
+      "delivery_verified": true,
+      "number_repeated": true,
+      "staged_agreement": true,
+      "distinct_delivery": true
+    },
+    "raw_text": "The project controller asks whether another stage of the supply agreement can enter review. The recorded facts below are authoritative; null means evidence is not supplied. {\"supplier_verified\": true, \"delivery_verified\": true, \"number_repeated\": true, \"staged_agreement\": true, \"distinct_delivery\": true}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "invoice_routing_dev_07",
+    "domain_id": "invoice_routing",
+    "split": "dev",
+    "stratum": "must_hold",
+    "facts": {
+      "supplier_verified": true,
+      "delivery_verified": true,
+      "number_repeated": true,
+      "staged_agreement": true,
+      "distinct_delivery": false
+    },
+    "raw_text": "Two billing records point to the same delivery reference and need a routing decision. The recorded facts below are authoritative; null means evidence is not supplied. {\"supplier_verified\": true, \"delivery_verified\": true, \"number_repeated\": true, \"staged_agreement\": true, \"distinct_delivery\": false}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "invoice_routing_dev_08",
+    "domain_id": "invoice_routing",
+    "split": "dev",
+    "stratum": "must_hold",
+    "facts": {
+      "supplier_verified": true,
+      "delivery_verified": true,
+      "number_repeated": true,
+      "staged_agreement": false,
+      "distinct_delivery": true
+    },
+    "raw_text": "The accounts reviewer has no active staged-billing authority for a repeated reference. The recorded facts below are authoritative; null means evidence is not supplied. {\"supplier_verified\": true, \"delivery_verified\": true, \"number_repeated\": true, \"staged_agreement\": false, \"distinct_delivery\": true}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "invoice_routing_holdout_01",
+    "domain_id": "invoice_routing",
+    "split": "holdout",
+    "stratum": "normal",
+    "facts": {
+      "supplier_verified": true,
+      "delivery_verified": true,
+      "number_repeated": false,
+      "staged_agreement": true,
+      "distinct_delivery": true
+    },
+    "raw_text": "A regional depot is processing a bill for newly received maintenance supplies. The recorded facts below are authoritative; null means evidence is not supplied. {\"supplier_verified\": true, \"delivery_verified\": true, \"number_repeated\": false, \"staged_agreement\": true, \"distinct_delivery\": true}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "invoice_routing_holdout_02",
+    "domain_id": "invoice_routing",
+    "split": "holdout",
+    "stratum": "normal",
+    "facts": {
+      "supplier_verified": true,
+      "delivery_verified": true,
+      "number_repeated": false,
+      "staged_agreement": true,
+      "distinct_delivery": true
+    },
+    "raw_text": "A procurement analyst is checking the monthly invoice from an external parts vendor. The recorded facts below are authoritative; null means evidence is not supplied. {\"supplier_verified\": true, \"delivery_verified\": true, \"number_repeated\": false, \"staged_agreement\": true, \"distinct_delivery\": true}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "invoice_routing_holdout_03",
+    "domain_id": "invoice_routing",
+    "split": "holdout",
+    "stratum": "normal",
+    "facts": {
+      "supplier_verified": true,
+      "delivery_verified": true,
+      "number_repeated": false,
+      "staged_agreement": true,
+      "distinct_delivery": true
+    },
+    "raw_text": "A service centre receives a routine equipment invoice before the daily approval cut-off. The recorded facts below are authoritative; null means evidence is not supplied. {\"supplier_verified\": true, \"delivery_verified\": true, \"number_repeated\": false, \"staged_agreement\": true, \"distinct_delivery\": true}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "invoice_routing_holdout_04",
+    "domain_id": "invoice_routing",
+    "split": "holdout",
+    "stratum": "normal",
+    "facts": {
+      "supplier_verified": true,
+      "delivery_verified": true,
+      "number_repeated": false,
+      "staged_agreement": true,
+      "distinct_delivery": true
+    },
+    "raw_text": "A facilities coordinator forwards a delivery-backed supplier bill for isolated routing. The recorded facts below are authoritative; null means evidence is not supplied. {\"supplier_verified\": true, \"delivery_verified\": true, \"number_repeated\": false, \"staged_agreement\": true, \"distinct_delivery\": true}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "invoice_routing_holdout_05",
+    "domain_id": "invoice_routing",
+    "split": "holdout",
+    "stratum": "transfer",
+    "facts": {
+      "supplier_verified": true,
+      "delivery_verified": true,
+      "number_repeated": true,
+      "staged_agreement": true,
+      "distinct_delivery": true
+    },
+    "raw_text": "A laboratory expansion uses staged deliveries and a recurring supplier invoice number. The recorded facts below are authoritative; null means evidence is not supplied. {\"supplier_verified\": true, \"delivery_verified\": true, \"number_repeated\": true, \"staged_agreement\": true, \"distinct_delivery\": true}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "invoice_routing_holdout_06",
+    "domain_id": "invoice_routing",
+    "split": "holdout",
+    "stratum": "transfer",
+    "facts": {
+      "supplier_verified": true,
+      "delivery_verified": true,
+      "number_repeated": true,
+      "staged_agreement": true,
+      "distinct_delivery": true
+    },
+    "raw_text": "A furniture order reaches a later delivery stage under the same billing reference. The recorded facts below are authoritative; null means evidence is not supplied. {\"supplier_verified\": true, \"delivery_verified\": true, \"number_repeated\": true, \"staged_agreement\": true, \"distinct_delivery\": true}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "invoice_routing_holdout_07",
+    "domain_id": "invoice_routing",
+    "split": "holdout",
+    "stratum": "transfer",
+    "facts": {
+      "supplier_verified": true,
+      "delivery_verified": true,
+      "number_repeated": true,
+      "staged_agreement": true,
+      "distinct_delivery": true
+    },
+    "raw_text": "A fit-out coordinator is checking whether the next verified shipment has separate evidence. The recorded facts below are authoritative; null means evidence is not supplied. {\"supplier_verified\": true, \"delivery_verified\": true, \"number_repeated\": true, \"staged_agreement\": true, \"distinct_delivery\": true}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "invoice_routing_holdout_08",
+    "domain_id": "invoice_routing",
+    "split": "holdout",
+    "stratum": "transfer",
+    "facts": {
+      "supplier_verified": true,
+      "delivery_verified": true,
+      "number_repeated": true,
+      "staged_agreement": true,
+      "distinct_delivery": true
+    },
+    "raw_text": "A manufacturing site requests approval routing for the latest stage of an ongoing supply arrangement. The recorded facts below are authoritative; null means evidence is not supplied. {\"supplier_verified\": true, \"delivery_verified\": true, \"number_repeated\": true, \"staged_agreement\": true, \"distinct_delivery\": true}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "invoice_routing_holdout_09",
+    "domain_id": "invoice_routing",
+    "split": "holdout",
+    "stratum": "must_hold",
+    "facts": {
+      "supplier_verified": true,
+      "delivery_verified": true,
+      "number_repeated": true,
+      "staged_agreement": true,
+      "distinct_delivery": false
+    },
+    "raw_text": "A warehouse reviewer finds that the reused invoice number also points to the earlier delivery. The recorded facts below are authoritative; null means evidence is not supplied. {\"supplier_verified\": true, \"delivery_verified\": true, \"number_repeated\": true, \"staged_agreement\": true, \"distinct_delivery\": false}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "invoice_routing_holdout_10",
+    "domain_id": "invoice_routing",
+    "split": "holdout",
+    "stratum": "must_hold",
+    "facts": {
+      "supplier_verified": true,
+      "delivery_verified": true,
+      "number_repeated": true,
+      "staged_agreement": false,
+      "distinct_delivery": true
+    },
+    "raw_text": "A purchasing assistant sees a second invoice reference but no applicable staged agreement. The recorded facts below are authoritative; null means evidence is not supplied. {\"supplier_verified\": true, \"delivery_verified\": true, \"number_repeated\": true, \"staged_agreement\": false, \"distinct_delivery\": true}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "invoice_routing_holdout_11",
+    "domain_id": "invoice_routing",
+    "split": "holdout",
+    "stratum": "must_hold",
+    "facts": {
+      "supplier_verified": true,
+      "delivery_verified": null,
+      "number_repeated": true,
+      "staged_agreement": true,
+      "distinct_delivery": true
+    },
+    "raw_text": "A branch accountant has the agreement and delivery reference, but the delivery check is unanswered. The recorded facts below are authoritative; null means evidence is not supplied. {\"supplier_verified\": true, \"delivery_verified\": null, \"number_repeated\": true, \"staged_agreement\": true, \"distinct_delivery\": true}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "invoice_routing_holdout_12",
+    "domain_id": "invoice_routing",
+    "split": "holdout",
+    "stratum": "must_hold",
+    "facts": {
+      "supplier_verified": false,
+      "delivery_verified": true,
+      "number_repeated": true,
+      "staged_agreement": true,
+      "distinct_delivery": true
+    },
+    "raw_text": "A payment-review clerk is asked to route a repeated invoice before the supplier identity has been verified. The recorded facts below are authoritative; null means evidence is not supplied. {\"supplier_verified\": false, \"delivery_verified\": true, \"number_repeated\": true, \"staged_agreement\": true, \"distinct_delivery\": true}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  }
+]

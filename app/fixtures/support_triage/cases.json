@@ -1,0 +1,362 @@
+[
+  {
+    "case_id": "support_triage_dev_01",
+    "domain_id": "support_triage",
+    "split": "dev",
+    "stratum": "normal",
+    "facts": {
+      "verified": true,
+      "interrupted": true,
+      "affected_users": 20,
+      "time_critical": true,
+      "hours_to_deadline": 1.0,
+      "workaround": false
+    },
+    "raw_text": "The service desk receives an interruption report from a shared operations team. The recorded facts below are authoritative; null means evidence is not supplied. {\"verified\": true, \"interrupted\": true, \"affected_users\": 20, \"time_critical\": true, \"hours_to_deadline\": 1.0, \"workaround\": false}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "support_triage_dev_02",
+    "domain_id": "support_triage",
+    "split": "dev",
+    "stratum": "normal",
+    "facts": {
+      "verified": true,
+      "interrupted": false,
+      "affected_users": 0,
+      "time_critical": true,
+      "hours_to_deadline": 1.5,
+      "workaround": false
+    },
+    "raw_text": "A customer reports a usability concern while the service remains available. The recorded facts below are authoritative; null means evidence is not supplied. {\"verified\": true, \"interrupted\": false, \"affected_users\": 0, \"time_critical\": true, \"hours_to_deadline\": 1.5, \"workaround\": false}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "support_triage_dev_03",
+    "domain_id": "support_triage",
+    "split": "dev",
+    "stratum": "normal",
+    "facts": {
+      "verified": true,
+      "interrupted": true,
+      "affected_users": 22,
+      "time_critical": true,
+      "hours_to_deadline": 1.0,
+      "workaround": false
+    },
+    "raw_text": "The support lead is reviewing an outage affecting a large working group. The recorded facts below are authoritative; null means evidence is not supplied. {\"verified\": true, \"interrupted\": true, \"affected_users\": 22, \"time_critical\": true, \"hours_to_deadline\": 1.0, \"workaround\": false}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "support_triage_dev_04",
+    "domain_id": "support_triage",
+    "split": "dev",
+    "stratum": "transfer",
+    "facts": {
+      "verified": true,
+      "interrupted": true,
+      "affected_users": 1,
+      "time_critical": true,
+      "hours_to_deadline": 1.0,
+      "workaround": false
+    },
+    "raw_text": "A small dispatch desk cannot perform a time-sensitive business task. The recorded facts below are authoritative; null means evidence is not supplied. {\"verified\": true, \"interrupted\": true, \"affected_users\": 1, \"time_critical\": true, \"hours_to_deadline\": 1.0, \"workaround\": false}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "support_triage_dev_05",
+    "domain_id": "support_triage",
+    "split": "dev",
+    "stratum": "transfer",
+    "facts": {
+      "verified": true,
+      "interrupted": true,
+      "affected_users": 2,
+      "time_critical": true,
+      "hours_to_deadline": 1.5,
+      "workaround": false
+    },
+    "raw_text": "A pair of scheduling staff need service restored before their immediate work deadline. The recorded facts below are authoritative; null means evidence is not supplied. {\"verified\": true, \"interrupted\": true, \"affected_users\": 2, \"time_critical\": true, \"hours_to_deadline\": 1.5, \"workaround\": false}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "support_triage_dev_06",
+    "domain_id": "support_triage",
+    "split": "dev",
+    "stratum": "transfer",
+    "facts": {
+      "verified": true,
+      "interrupted": true,
+      "affected_users": 3,
+      "time_critical": true,
+      "hours_to_deadline": 1.0,
+      "workaround": true
+    },
+    "raw_text": "A small team reports an interruption and confirms an available alternative route. The recorded facts below are authoritative; null means evidence is not supplied. {\"verified\": true, \"interrupted\": true, \"affected_users\": 3, \"time_critical\": true, \"hours_to_deadline\": 1.0, \"workaround\": true}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "support_triage_dev_07",
+    "domain_id": "support_triage",
+    "split": "dev",
+    "stratum": "must_hold",
+    "facts": {
+      "verified": false,
+      "interrupted": true,
+      "affected_users": 1,
+      "time_critical": true,
+      "hours_to_deadline": 1.0,
+      "workaround": false
+    },
+    "raw_text": "The triage queue contains an interruption claim that has not been verified. The recorded facts below are authoritative; null means evidence is not supplied. {\"verified\": false, \"interrupted\": true, \"affected_users\": 1, \"time_critical\": true, \"hours_to_deadline\": 1.0, \"workaround\": false}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "support_triage_dev_08",
+    "domain_id": "support_triage",
+    "split": "dev",
+    "stratum": "must_hold",
+    "facts": {
+      "verified": true,
+      "interrupted": true,
+      "affected_users": 2,
+      "time_critical": true,
+      "hours_to_deadline": null,
+      "workaround": false
+    },
+    "raw_text": "A support agent needs the missing deadline information before prioritising a small incident. The recorded facts below are authoritative; null means evidence is not supplied. {\"verified\": true, \"interrupted\": true, \"affected_users\": 2, \"time_critical\": true, \"hours_to_deadline\": null, \"workaround\": false}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "support_triage_holdout_01",
+    "domain_id": "support_triage",
+    "split": "holdout",
+    "stratum": "normal",
+    "facts": {
+      "verified": true,
+      "interrupted": true,
+      "affected_users": 20,
+      "time_critical": true,
+      "hours_to_deadline": 1.0,
+      "workaround": false
+    },
+    "raw_text": "A finance service used by twenty staff stops during a routine reporting period. The recorded facts below are authoritative; null means evidence is not supplied. {\"verified\": true, \"interrupted\": true, \"affected_users\": 20, \"time_critical\": true, \"hours_to_deadline\": 1.0, \"workaround\": false}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "support_triage_holdout_02",
+    "domain_id": "support_triage",
+    "split": "holdout",
+    "stratum": "normal",
+    "facts": {
+      "verified": true,
+      "interrupted": false,
+      "affected_users": 0,
+      "time_critical": true,
+      "hours_to_deadline": 1.5,
+      "workaround": false
+    },
+    "raw_text": "A regional office asks a service question without reporting an interruption. The recorded facts below are authoritative; null means evidence is not supplied. {\"verified\": true, \"interrupted\": false, \"affected_users\": 0, \"time_critical\": true, \"hours_to_deadline\": 1.5, \"workaround\": false}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "support_triage_holdout_03",
+    "domain_id": "support_triage",
+    "split": "holdout",
+    "stratum": "normal",
+    "facts": {
+      "verified": true,
+      "interrupted": true,
+      "affected_users": 200,
+      "time_critical": true,
+      "hours_to_deadline": 1.0,
+      "workaround": false
+    },
+    "raw_text": "An operations coordinator reports a widespread service interruption during the afternoon shift. The recorded facts below are authoritative; null means evidence is not supplied. {\"verified\": true, \"interrupted\": true, \"affected_users\": 200, \"time_critical\": true, \"hours_to_deadline\": 1.0, \"workaround\": false}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "support_triage_holdout_04",
+    "domain_id": "support_triage",
+    "split": "holdout",
+    "stratum": "normal",
+    "facts": {
+      "verified": true,
+      "interrupted": false,
+      "affected_users": 0,
+      "time_critical": true,
+      "hours_to_deadline": 1.5,
+      "workaround": false
+    },
+    "raw_text": "A branch user requests help with a screen while normal work can continue. The recorded facts below are authoritative; null means evidence is not supplied. {\"verified\": true, \"interrupted\": false, \"affected_users\": 0, \"time_critical\": true, \"hours_to_deadline\": 1.5, \"workaround\": false}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "support_triage_holdout_05",
+    "domain_id": "support_triage",
+    "split": "holdout",
+    "stratum": "transfer",
+    "facts": {
+      "verified": true,
+      "interrupted": true,
+      "affected_users": 1,
+      "time_critical": true,
+      "hours_to_deadline": 0,
+      "workaround": false
+    },
+    "raw_text": "A one-person scheduling desk loses a critical function at its immediate deadline. The recorded facts below are authoritative; null means evidence is not supplied. {\"verified\": true, \"interrupted\": true, \"affected_users\": 1, \"time_critical\": true, \"hours_to_deadline\": 0, \"workaround\": false}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "support_triage_holdout_06",
+    "domain_id": "support_triage",
+    "split": "holdout",
+    "stratum": "transfer",
+    "facts": {
+      "verified": true,
+      "interrupted": true,
+      "affected_users": 2,
+      "time_critical": true,
+      "hours_to_deadline": 2,
+      "workaround": false
+    },
+    "raw_text": "A small export team is blocked exactly two hours before a critical submission. The recorded facts below are authoritative; null means evidence is not supplied. {\"verified\": true, \"interrupted\": true, \"affected_users\": 2, \"time_critical\": true, \"hours_to_deadline\": 2, \"workaround\": false}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "support_triage_holdout_07",
+    "domain_id": "support_triage",
+    "split": "holdout",
+    "stratum": "transfer",
+    "facts": {
+      "verified": true,
+      "interrupted": true,
+      "affected_users": 19,
+      "time_critical": true,
+      "hours_to_deadline": 0.25,
+      "workaround": false
+    },
+    "raw_text": "A group just below the ordinary high-priority headcount cannot complete urgent work. The recorded facts below are authoritative; null means evidence is not supplied. {\"verified\": true, \"interrupted\": true, \"affected_users\": 19, \"time_critical\": true, \"hours_to_deadline\": 0.25, \"workaround\": false}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "support_triage_holdout_08",
+    "domain_id": "support_triage",
+    "split": "holdout",
+    "stratum": "transfer",
+    "facts": {
+      "verified": true,
+      "interrupted": true,
+      "affected_users": 4,
+      "time_critical": true,
+      "hours_to_deadline": 1.5,
+      "workaround": true
+    },
+    "raw_text": "A customer-services team confirms a usable workaround despite an approaching deadline. The recorded facts below are authoritative; null means evidence is not supplied. {\"verified\": true, \"interrupted\": true, \"affected_users\": 4, \"time_critical\": true, \"hours_to_deadline\": 1.5, \"workaround\": true}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "support_triage_holdout_09",
+    "domain_id": "support_triage",
+    "split": "holdout",
+    "stratum": "must_hold",
+    "facts": {
+      "verified": false,
+      "interrupted": true,
+      "affected_users": 1,
+      "time_critical": true,
+      "hours_to_deadline": 1.0,
+      "workaround": false
+    },
+    "raw_text": "A priority request arrives before the support team has validated the incident evidence. The recorded facts below are authoritative; null means evidence is not supplied. {\"verified\": false, \"interrupted\": true, \"affected_users\": 1, \"time_critical\": true, \"hours_to_deadline\": 1.0, \"workaround\": false}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "support_triage_holdout_10",
+    "domain_id": "support_triage",
+    "split": "holdout",
+    "stratum": "must_hold",
+    "facts": {
+      "verified": true,
+      "interrupted": true,
+      "affected_users": 2,
+      "time_critical": true,
+      "hours_to_deadline": null,
+      "workaround": false
+    },
+    "raw_text": "A verified interruption affects a small team, but nobody has supplied the deadline. The recorded facts below are authoritative; null means evidence is not supplied. {\"verified\": true, \"interrupted\": true, \"affected_users\": 2, \"time_critical\": true, \"hours_to_deadline\": null, \"workaround\": false}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "support_triage_holdout_11",
+    "domain_id": "support_triage",
+    "split": "holdout",
+    "stratum": "must_hold",
+    "facts": {
+      "verified": true,
+      "interrupted": true,
+      "affected_users": 3,
+      "time_critical": true,
+      "hours_to_deadline": 1.0,
+      "workaround": null
+    },
+    "raw_text": "The incident is verified and urgent, but the availability of an alternative route is unknown. The recorded facts below are authoritative; null means evidence is not supplied. {\"verified\": true, \"interrupted\": true, \"affected_users\": 3, \"time_critical\": true, \"hours_to_deadline\": 1.0, \"workaround\": null}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "support_triage_holdout_12",
+    "domain_id": "support_triage",
+    "split": "holdout",
+    "stratum": "must_hold",
+    "facts": {
+      "verified": true,
+      "interrupted": true,
+      "affected_users": 4,
+      "time_critical": null,
+      "hours_to_deadline": 1.5,
+      "workaround": false
+    },
+    "raw_text": "A small interrupted team has a deadline, but whether the blocked task is critical has not been established. The recorded facts below are authoritative; null means evidence is not supplied. {\"verified\": true, \"interrupted\": true, \"affected_users\": 4, \"time_critical\": null, \"hours_to_deadline\": 1.5, \"workaround\": false}",
+    "initial_state": {
+      "status": "NEW"
+    }
+  }
+]

@@ -1,0 +1,218 @@
+[
+  {
+    "case_id": "support_triage_dev_01",
+    "expected_action_id": "route_high",
+    "expected_state": {
+      "status": "HIGH_PRIORITY"
+    },
+    "critical_wrong_actions": [
+      "route_standard"
+    ],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "support_triage_dev_02",
+    "expected_action_id": "route_standard",
+    "expected_state": {
+      "status": "STANDARD_PRIORITY"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "support_triage_dev_03",
+    "expected_action_id": "route_high",
+    "expected_state": {
+      "status": "HIGH_PRIORITY"
+    },
+    "critical_wrong_actions": [
+      "route_standard"
+    ],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "support_triage_dev_04",
+    "expected_action_id": "route_high",
+    "expected_state": {
+      "status": "HIGH_PRIORITY"
+    },
+    "critical_wrong_actions": [
+      "route_standard"
+    ],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "support_triage_dev_05",
+    "expected_action_id": "route_high",
+    "expected_state": {
+      "status": "HIGH_PRIORITY"
+    },
+    "critical_wrong_actions": [
+      "route_standard"
+    ],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "support_triage_dev_06",
+    "expected_action_id": "route_standard",
+    "expected_state": {
+      "status": "STANDARD_PRIORITY"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "support_triage_dev_07",
+    "expected_action_id": "hold_case",
+    "expected_state": {
+      "status": "HELD"
+    },
+    "critical_wrong_actions": [
+      "route_high",
+      "route_standard"
+    ],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "support_triage_dev_08",
+    "expected_action_id": "hold_case",
+    "expected_state": {
+      "status": "HELD"
+    },
+    "critical_wrong_actions": [
+      "route_high",
+      "route_standard"
+    ],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "support_triage_holdout_01",
+    "expected_action_id": "route_high",
+    "expected_state": {
+      "status": "HIGH_PRIORITY"
+    },
+    "critical_wrong_actions": [
+      "route_standard"
+    ],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "support_triage_holdout_02",
+    "expected_action_id": "route_standard",
+    "expected_state": {
+      "status": "STANDARD_PRIORITY"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "support_triage_holdout_03",
+    "expected_action_id": "route_high",
+    "expected_state": {
+      "status": "HIGH_PRIORITY"
+    },
+    "critical_wrong_actions": [
+      "route_standard"
+    ],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "support_triage_holdout_04",
+    "expected_action_id": "route_standard",
+    "expected_state": {
+      "status": "STANDARD_PRIORITY"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "support_triage_holdout_05",
+    "expected_action_id": "route_high",
+    "expected_state": {
+      "status": "HIGH_PRIORITY"
+    },
+    "critical_wrong_actions": [
+      "route_standard"
+    ],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "support_triage_holdout_06",
+    "expected_action_id": "route_high",
+    "expected_state": {
+      "status": "HIGH_PRIORITY"
+    },
+    "critical_wrong_actions": [
+      "route_standard"
+    ],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "support_triage_holdout_07",
+    "expected_action_id": "route_high",
+    "expected_state": {
+      "status": "HIGH_PRIORITY"
+    },
+    "critical_wrong_actions": [
+      "route_standard"
+    ],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "support_triage_holdout_08",
+    "expected_action_id": "route_standard",
+    "expected_state": {
+      "status": "STANDARD_PRIORITY"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "support_triage_holdout_09",
+    "expected_action_id": "hold_case",
+    "expected_state": {
+      "status": "HELD"
+    },
+    "critical_wrong_actions": [
+      "route_high",
+      "route_standard"
+    ],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "support_triage_holdout_10",
+    "expected_action_id": "hold_case",
+    "expected_state": {
+      "status": "HELD"
+    },
+    "critical_wrong_actions": [
+      "route_high",
+      "route_standard"
+    ],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "support_triage_holdout_11",
+    "expected_action_id": "hold_case",
+    "expected_state": {
+      "status": "HELD"
+    },
+    "critical_wrong_actions": [
+      "route_high",
+      "route_standard"
+    ],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "support_triage_holdout_12",
+    "expected_action_id": "hold_case",
+    "expected_state": {
+      "status": "HELD"
+    },
+    "critical_wrong_actions": [
+      "route_high",
+      "route_standard"
+    ],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  }
+]

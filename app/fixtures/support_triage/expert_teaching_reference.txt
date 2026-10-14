@@ -1,0 +1,1 @@
+A verified interruption affecting fewer than 20 users is high priority if it blocks a time-critical business task, the deadline is within two hours, and no viable workaround exists. Otherwise, when every relevant fact is confirmed, route it to standard priority. If any relevant fact is missing, hold it.

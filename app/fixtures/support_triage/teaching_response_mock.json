@@ -1,0 +1,229 @@
+{
+  "teaching_id": "support_triage_teach_01",
+  "question_id": "support_triage_question_01",
+  "human_text": "A verified interruption affecting fewer than 20 users is high priority if it blocks a time-critical business task, the deadline is within two hours, and no viable workaround exists. Otherwise, when every relevant fact is confirmed, route it to standard priority. If any relevant fact is missing, hold it.",
+  "base_domain_version": 0,
+  "proposed_rules": [
+    {
+      "rule_id": "sup_critical",
+      "priority": 10,
+      "statement": "A verified interruption affecting fewer than 20 users is high priority if it blocks a time-critical business task, the deadline is within two hours, and no viable workaround exists. Otherwise, when every relevant fact is confirmed, route it to standard priority. If any relevant fact is missing, hold it.",
+      "when": {
+        "all": [
+          {
+            "field_id": "verified",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "interrupted",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "affected_users",
+            "operator": "lt",
+            "value": 20
+          },
+          {
+            "field_id": "time_critical",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "hours_to_deadline",
+            "operator": "gte",
+            "value": 0
+          },
+          {
+            "field_id": "hours_to_deadline",
+            "operator": "lte",
+            "value": 2
+          },
+          {
+            "field_id": "workaround",
+            "operator": "eq",
+            "value": false
+          }
+        ],
+        "any": []
+      },
+      "action_id": "route_high",
+      "source_refs": [
+        {
+          "source_id": "support_teaching",
+          "version_hash": "54cb7bc1aa279126faf0ceb2987dce15371dffb66860c81a422316f482ec3837",
+          "locator": "human:1",
+          "quote": "A verified interruption affecting fewer than 20 users is high priority if it blocks a time-critical business task, the deadline is within two hours, and no viable workaround exists. Otherwise, when every relevant fact is confirmed, route it to standard priority. If any relevant fact is missing, hold it."
+        }
+      ],
+      "approved_by": null
+    },
+    {
+      "rule_id": "sup_workaround",
+      "priority": 50,
+      "statement": "A fully confirmed smaller interruption without the urgent exception is standard priority.",
+      "when": {
+        "all": [
+          {
+            "field_id": "verified",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "interrupted",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "affected_users",
+            "operator": "lt",
+            "value": 20
+          },
+          {
+            "field_id": "time_critical",
+            "operator": "exists",
+            "value": null
+          },
+          {
+            "field_id": "hours_to_deadline",
+            "operator": "exists",
+            "value": null
+          },
+          {
+            "field_id": "workaround",
+            "operator": "exists",
+            "value": null
+          },
+          {
+            "field_id": "workaround",
+            "operator": "eq",
+            "value": true
+          }
+        ],
+        "any": []
+      },
+      "action_id": "route_standard",
+      "source_refs": [
+        {
+          "source_id": "support_teaching",
+          "version_hash": "54cb7bc1aa279126faf0ceb2987dce15371dffb66860c81a422316f482ec3837",
+          "locator": "human:1",
+          "quote": "A verified interruption affecting fewer than 20 users is high priority if it blocks a time-critical business task, the deadline is within two hours, and no viable workaround exists. Otherwise, when every relevant fact is confirmed, route it to standard priority. If any relevant fact is missing, hold it."
+        }
+      ],
+      "approved_by": null
+    },
+    {
+      "rule_id": "sup_not_critical",
+      "priority": 50,
+      "statement": "A fully confirmed smaller interruption without the urgent exception is standard priority.",
+      "when": {
+        "all": [
+          {
+            "field_id": "verified",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "interrupted",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "affected_users",
+            "operator": "lt",
+            "value": 20
+          },
+          {
+            "field_id": "time_critical",
+            "operator": "exists",
+            "value": null
+          },
+          {
+            "field_id": "hours_to_deadline",
+            "operator": "exists",
+            "value": null
+          },
+          {
+            "field_id": "workaround",
+            "operator": "exists",
+            "value": null
+          },
+          {
+            "field_id": "time_critical",
+            "operator": "eq",
+            "value": false
+          }
+        ],
+        "any": []
+      },
+      "action_id": "route_standard",
+      "source_refs": [
+        {
+          "source_id": "support_teaching",
+          "version_hash": "54cb7bc1aa279126faf0ceb2987dce15371dffb66860c81a422316f482ec3837",
+          "locator": "human:1",
+          "quote": "A verified interruption affecting fewer than 20 users is high priority if it blocks a time-critical business task, the deadline is within two hours, and no viable workaround exists. Otherwise, when every relevant fact is confirmed, route it to standard priority. If any relevant fact is missing, hold it."
+        }
+      ],
+      "approved_by": null
+    },
+    {
+      "rule_id": "sup_later",
+      "priority": 50,
+      "statement": "A fully confirmed smaller interruption without the urgent exception is standard priority.",
+      "when": {
+        "all": [
+          {
+            "field_id": "verified",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "interrupted",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "affected_users",
+            "operator": "lt",
+            "value": 20
+          },
+          {
+            "field_id": "time_critical",
+            "operator": "exists",
+            "value": null
+          },
+          {
+            "field_id": "hours_to_deadline",
+            "operator": "exists",
+            "value": null
+          },
+          {
+            "field_id": "workaround",
+            "operator": "exists",
+            "value": null
+          },
+          {
+            "field_id": "hours_to_deadline",
+            "operator": "gt",
+            "value": 2
+          }
+        ],
+        "any": []
+      },
+      "action_id": "route_standard",
+      "source_refs": [
+        {
+          "source_id": "support_teaching",
+          "version_hash": "54cb7bc1aa279126faf0ceb2987dce15371dffb66860c81a422316f482ec3837",
+          "locator": "human:1",
+          "quote": "A verified interruption affecting fewer than 20 users is high priority if it blocks a time-critical business task, the deadline is within two hours, and no viable workaround exists. Otherwise, when every relevant fact is confirmed, route it to standard priority. If any relevant fact is missing, hold it."
+        }
+      ],
+      "approved_by": null
+    }
+  ],
+  "approval_state": "DRAFT"
+}

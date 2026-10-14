@@ -1,0 +1,166 @@
+{
+  "schema_version": "1.0",
+  "domain_id": "invoice_routing",
+  "version": 1,
+  "title": "Supplier invoice routing",
+  "goal": "Route eligible invoices to an approval queue and hold unresolved cases without executing payment.",
+  "input_fields": [
+    {
+      "field_id": "supplier_verified",
+      "label": "supplier verified",
+      "type": "boolean",
+      "description": "Supplier identity has been verified.",
+      "required": true
+    },
+    {
+      "field_id": "delivery_verified",
+      "label": "delivery verified",
+      "type": "boolean",
+      "description": "The referenced delivery evidence has been verified.",
+      "required": true
+    },
+    {
+      "field_id": "number_repeated",
+      "label": "number repeated",
+      "type": "boolean",
+      "description": "Invoice number appears on an earlier invoice.",
+      "required": true
+    },
+    {
+      "field_id": "staged_agreement",
+      "label": "staged agreement",
+      "type": "boolean",
+      "description": "An active staged-billing agreement exists.",
+      "required": true
+    },
+    {
+      "field_id": "distinct_delivery",
+      "label": "distinct delivery",
+      "type": "boolean",
+      "description": "Delivery reference differs from the earlier invoice.",
+      "required": true
+    }
+  ],
+  "state_fields": [
+    {
+      "field_id": "status",
+      "label": "status",
+      "type": "string",
+      "description": "Current isolated case status.",
+      "required": true
+    }
+  ],
+  "actions": [
+    {
+      "action_id": "route_approval",
+      "label": "route approval",
+      "description": "Apply the declared result to this isolated case only.",
+      "effects": [
+        {
+          "field_id": "status",
+          "value": "APPROVAL_QUEUE"
+        }
+      ],
+      "terminal": true
+    },
+    {
+      "action_id": "hold_case",
+      "label": "hold case",
+      "description": "Apply the declared result to this isolated case only.",
+      "effects": [
+        {
+          "field_id": "status",
+          "value": "HELD"
+        }
+      ],
+      "terminal": true
+    }
+  ],
+  "rules": [
+    {
+      "rule_id": "inv_staged",
+      "priority": 10,
+      "statement": "A repeated invoice number may be routed to approval only when the supplier is verified, an active staged-billing agreement exists, the delivery reference differs from the earlier invoice, and the delivery is verified. A missing fact or unmet condition requires a hold. This exception does not authorize payment.",
+      "when": {
+        "all": [
+          {
+            "field_id": "supplier_verified",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "delivery_verified",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "number_repeated",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "staged_agreement",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "distinct_delivery",
+            "operator": "eq",
+            "value": true
+          }
+        ],
+        "any": []
+      },
+      "action_id": "route_approval",
+      "source_refs": [
+        {
+          "source_id": "invoice_teaching",
+          "version_hash": "06deaed9429468fec0a3b1d63bc94aab64c4152bd2e94cb1db08770b175077a9",
+          "locator": "human:1",
+          "quote": "A repeated invoice number may be routed to approval only when the supplier is verified, an active staged-billing agreement exists, the delivery reference differs from the earlier invoice, and the delivery is verified. A missing fact or unmet condition requires a hold. This exception does not authorize payment."
+        }
+      ],
+      "approved_by": "fixture-author"
+    },
+    {
+      "rule_id": "inv_regular",
+      "priority": 90,
+      "statement": "A verified non-repeated invoice may be routed.",
+      "when": {
+        "all": [
+          {
+            "field_id": "supplier_verified",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "delivery_verified",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "number_repeated",
+            "operator": "eq",
+            "value": false
+          }
+        ],
+        "any": []
+      },
+      "action_id": "route_approval",
+      "source_refs": [
+        {
+          "source_id": "invoice_sop",
+          "version_hash": "38fbe3d8a02912e07cc5cfe016ae328826cfa3b932ee332fc4db8224342c4947",
+          "locator": "line:3",
+          "quote": "Route a complete non-repeated invoice to the approval queue."
+        }
+      ],
+      "approved_by": "fixture-author"
+    }
+  ],
+  "default_action_id": "hold_case",
+  "source_hashes": {
+    "invoice_sop": "38fbe3d8a02912e07cc5cfe016ae328826cfa3b932ee332fc4db8224342c4947",
+    "invoice_teaching": "06deaed9429468fec0a3b1d63bc94aab64c4152bd2e94cb1db08770b175077a9"
+  }
+}

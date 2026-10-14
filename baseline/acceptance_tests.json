@@ -1,0 +1,166 @@
+{
+  "tests": [
+    {
+      "id": "T01",
+      "priority": "P0",
+      "name": "Contract validation",
+      "pass_condition": "Missing or unknown fields fail with a named validation error."
+    },
+    {
+      "id": "T02",
+      "priority": "P0",
+      "name": "Generic core",
+      "pass_condition": "Both domain packs execute through the same core commit without a domain-name branch."
+    },
+    {
+      "id": "T03",
+      "priority": "P0",
+      "name": "Material-free start",
+      "pass_condition": "MOCK mode completes upload stub, analysis, question, approval, execution and scoring offline."
+    },
+    {
+      "id": "T04",
+      "priority": "P0",
+      "name": "Real multimodal input",
+      "pass_condition": "An original short video and a text document produce verifiable source references through Gemini."
+    },
+    {
+      "id": "T05",
+      "priority": "P0",
+      "name": "Evidence integrity",
+      "pass_condition": "Unknown source IDs or out-of-range locators cannot become approved evidence."
+    },
+    {
+      "id": "T06",
+      "priority": "P0",
+      "name": "Unknown values",
+      "pass_condition": "A missing fact produces HOLD rather than an invented default or comparison result."
+    },
+    {
+      "id": "T07",
+      "priority": "P0",
+      "name": "Human approval",
+      "pass_condition": "A DRAFT teaching event cannot change the active rule version."
+    },
+    {
+      "id": "T08",
+      "priority": "P0",
+      "name": "Version conflict",
+      "pass_condition": "Approval against an outdated version returns 409 without overwriting another change."
+    },
+    {
+      "id": "T09",
+      "priority": "P0",
+      "name": "Conflicting rules",
+      "pass_condition": "Equal-priority contradictory matching rules produce HOLD and a conflict record."
+    },
+    {
+      "id": "T10",
+      "priority": "P0",
+      "name": "Actual execution",
+      "pass_condition": "A successful action changes the isolated case state and creates a receipt."
+    },
+    {
+      "id": "T11",
+      "priority": "P0",
+      "name": "Idempotency",
+      "pass_condition": "A repeated request ID returns the original result and does not repeat a state change."
+    },
+    {
+      "id": "T12",
+      "priority": "P0",
+      "name": "Recovery",
+      "pass_condition": "Interrupted model calls and expired leases can be resumed without duplicate application."
+    },
+    {
+      "id": "T13",
+      "priority": "P0",
+      "name": "Reproducible replay",
+      "pass_condition": "Each arm starts from an independent copy of the same initial state."
+    },
+    {
+      "id": "T14",
+      "priority": "P0",
+      "name": "Holdout isolation",
+      "pass_condition": "Expected labels, reference v1 rules and holdout traces are absent from teaching and solver prompts."
+    },
+    {
+      "id": "T15",
+      "priority": "P0",
+      "name": "Honest comparison",
+      "pass_condition": "A B C arms use the same model, frozen cases and call limits; all failures remain in the denominator."
+    },
+    {
+      "id": "T16",
+      "priority": "P0",
+      "name": "Measured improvement",
+      "pass_condition": "Report actual completion, error and human-input results, not target values or fabricated gains."
+    },
+    {
+      "id": "T17",
+      "priority": "P0",
+      "name": "No critical sample errors",
+      "pass_condition": "No disallowed execution on mandatory-hold cases in the final benchmark sample."
+    },
+    {
+      "id": "T18",
+      "priority": "P0",
+      "name": "Cross-session isolation",
+      "pass_condition": "A session cannot read or mutate another session by guessing object IDs."
+    },
+    {
+      "id": "T19",
+      "priority": "P0",
+      "name": "Input safety",
+      "pass_condition": "Oversized, invalid and instruction-injection files are rejected or treated only as evidence."
+    },
+    {
+      "id": "T20",
+      "priority": "P0",
+      "name": "Server-side secrets",
+      "pass_condition": "No cloud credentials, admin secret or private source content appear in frontend bundles or public logs."
+    },
+    {
+      "id": "T21",
+      "priority": "P0",
+      "name": "Cost limit",
+      "pass_condition": "An exhausted request budget prevents a new model call; it never falls back to an unlabeled fake result."
+    },
+    {
+      "id": "T22",
+      "priority": "P0",
+      "name": "Reviewer experience",
+      "pass_condition": "A fresh browser can complete the main guided demo; 429 and provider failure have understandable messages."
+    },
+    {
+      "id": "T23",
+      "priority": "P0",
+      "name": "Source changes",
+      "pass_condition": "A changed source hash marks dependent rules and results stale and requires re-approval before a new run."
+    },
+    {
+      "id": "T24",
+      "priority": "P0",
+      "name": "No live business side effects",
+      "pass_condition": "The prototype performs no payments, emails, access grants or writes to customer systems."
+    },
+    {
+      "id": "T25",
+      "priority": "P0",
+      "name": "Export consistency",
+      "pass_condition": "Export includes dataset and code hashes, model version, prompts, rule versions and actual usage."
+    },
+    {
+      "id": "T26",
+      "priority": "P0",
+      "name": "Fixture separation",
+      "pass_condition": "Reference labels and v1 fixture rules are for tests only and are never preloaded as LIVE learning results."
+    },
+    {
+      "id": "T27",
+      "priority": "P1",
+      "name": "External material swap",
+      "pass_condition": "A de-identified new pack can be added using the same schema without modifying the core."
+    }
+  ]
+}

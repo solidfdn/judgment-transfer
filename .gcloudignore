@@ -1,0 +1,10 @@
+.git/
+.jt/
+.venv/
+__pycache__/
+**/__pycache__/
+baseline/
+tests/
+deliverables/
+verification/
+*.zip

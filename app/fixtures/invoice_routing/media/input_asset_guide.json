@@ -1,0 +1,46 @@
+{
+  "type": "synthetic input material, not application execution",
+  "duration_seconds": 15,
+  "resolution": "1280x720",
+  "audio": false,
+  "created": "2026-10-10",
+  "expected_extraction_for_developer_only": {
+    "case_id": "SYN-INV-001",
+    "supplier_verified": true,
+    "delivery_verified": true,
+    "number_repeated": false
+  },
+  "source_locators": [
+    {
+      "seconds": "0-5",
+      "file": "step_1.png",
+      "observations": [
+        "number_repeated=false",
+        "status=NEW"
+      ]
+    },
+    {
+      "seconds": "5-10",
+      "file": "step_2.png",
+      "observations": [
+        "supplier_verified=true",
+        "delivery_verified=true"
+      ]
+    },
+    {
+      "seconds": "10-15",
+      "file": "step_3.png",
+      "observations": [
+        "allowed route ends in APPROVAL_QUEUE",
+        "no payment"
+      ]
+    }
+  ],
+  "model_input_rule": "Send only the PNG or MP4 and source SOP to extraction. Do not send this expected extraction metadata to the solving model.",
+  "source_hashes": {
+    "step_1.png": "0688775573f259f5547cd55aee738c307e53ca018f4a558851402b01bd4eb140",
+    "step_2.png": "1437d7498813fd03eabd7441af7b13a7d55395954f08071845eb6c5234ab24e0",
+    "step_3.png": "37ffcf799d9f8fecd0fa8dfa8010bf5edf2f55cd6a8c6f35d2958ec28c12a731",
+    "synthetic_invoice_walkthrough_15s.mp4": "ffe085ef85a83050f69e7929abe6beedb181ae556d3bae323b37de5505a87e60"
+  }
+}

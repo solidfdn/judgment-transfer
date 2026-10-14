@@ -1,0 +1,673 @@
+{
+  "description": "New synthetic sample records authored before this study. Policy, field vocabulary and rule structure were already exposed during development. Invoice transfer records necessarily share the same five Boolean facts. This is a fresh-record revalidation, not independent blind validation or proof of generalization to new business policies. Original exposed holdout records and results remain unchanged.",
+  "domains": {
+    "invoice_routing": {
+      "cases": [
+        {
+          "case_id": "invoice_routing_r111_01",
+          "domain_id": "invoice_routing",
+          "split": "holdout",
+          "stratum": "normal",
+          "facts": {
+            "supplier_verified": true,
+            "delivery_verified": true,
+            "number_repeated": false,
+            "staged_agreement": false,
+            "distinct_delivery": false
+          },
+          "raw_text": "A conservation workshop logs a first invoice for replacement air filters. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        },
+        {
+          "case_id": "invoice_routing_r111_02",
+          "domain_id": "invoice_routing",
+          "split": "holdout",
+          "stratum": "normal",
+          "facts": {
+            "supplier_verified": true,
+            "delivery_verified": true,
+            "number_repeated": false,
+            "staged_agreement": true,
+            "distinct_delivery": false
+          },
+          "raw_text": "A community kitchen registers an unrepeated invoice after checking the delivered freezer. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        },
+        {
+          "case_id": "invoice_routing_r111_03",
+          "domain_id": "invoice_routing",
+          "split": "holdout",
+          "stratum": "normal",
+          "facts": {
+            "supplier_verified": true,
+            "delivery_verified": true,
+            "number_repeated": false,
+            "staged_agreement": false,
+            "distinct_delivery": true
+          },
+          "raw_text": "A coastal laboratory receives the initial invoice for its verified sensor shipment. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        },
+        {
+          "case_id": "invoice_routing_r111_04",
+          "domain_id": "invoice_routing",
+          "split": "holdout",
+          "stratum": "normal",
+          "facts": {
+            "supplier_verified": true,
+            "delivery_verified": true,
+            "number_repeated": false,
+            "staged_agreement": true,
+            "distinct_delivery": true
+          },
+          "raw_text": "A theatre office verifies a newly numbered invoice for stage lighting. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        },
+        {
+          "case_id": "invoice_routing_r111_05",
+          "domain_id": "invoice_routing",
+          "split": "holdout",
+          "stratum": "transfer",
+          "facts": {
+            "supplier_verified": true,
+            "delivery_verified": true,
+            "number_repeated": true,
+            "staged_agreement": true,
+            "distinct_delivery": true
+          },
+          "raw_text": "A ferry depot receives another staged invoice under a verified agreement for a separately verified spare-parts delivery. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        },
+        {
+          "case_id": "invoice_routing_r111_06",
+          "domain_id": "invoice_routing",
+          "split": "holdout",
+          "stratum": "transfer",
+          "facts": {
+            "supplier_verified": true,
+            "delivery_verified": true,
+            "number_repeated": true,
+            "staged_agreement": true,
+            "distinct_delivery": true
+          },
+          "raw_text": "An orchard cooperative checks the next invoiced stage of its crate supply against a distinct verified delivery. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        },
+        {
+          "case_id": "invoice_routing_r111_07",
+          "domain_id": "invoice_routing",
+          "split": "holdout",
+          "stratum": "transfer",
+          "facts": {
+            "supplier_verified": true,
+            "delivery_verified": true,
+            "number_repeated": true,
+            "staged_agreement": true,
+            "distinct_delivery": true
+          },
+          "raw_text": "A planetarium receives a staged maintenance supply invoice reusing a number but referring to a distinct verified shipment. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        },
+        {
+          "case_id": "invoice_routing_r111_08",
+          "domain_id": "invoice_routing",
+          "split": "holdout",
+          "stratum": "transfer",
+          "facts": {
+            "supplier_verified": true,
+            "delivery_verified": true,
+            "number_repeated": true,
+            "staged_agreement": true,
+            "distinct_delivery": true
+          },
+          "raw_text": "A textile archive verifies a separate delivery for a subsequent stage under its existing billing agreement. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        },
+        {
+          "case_id": "invoice_routing_r111_09",
+          "domain_id": "invoice_routing",
+          "split": "holdout",
+          "stratum": "must_hold",
+          "facts": {
+            "supplier_verified": true,
+            "delivery_verified": true,
+            "number_repeated": true,
+            "staged_agreement": true,
+            "distinct_delivery": null
+          },
+          "raw_text": "A sports hall has no confirmed answer about whether the referenced delivery differs from the earlier invoice. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        },
+        {
+          "case_id": "invoice_routing_r111_10",
+          "domain_id": "invoice_routing",
+          "split": "holdout",
+          "stratum": "must_hold",
+          "facts": {
+            "supplier_verified": true,
+            "delivery_verified": true,
+            "number_repeated": true,
+            "staged_agreement": null,
+            "distinct_delivery": true
+          },
+          "raw_text": "A botanical centre has verified a separate delivery but has not confirmed a staged-billing agreement. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        },
+        {
+          "case_id": "invoice_routing_r111_11",
+          "domain_id": "invoice_routing",
+          "split": "holdout",
+          "stratum": "must_hold",
+          "facts": {
+            "supplier_verified": null,
+            "delivery_verified": true,
+            "number_repeated": true,
+            "staged_agreement": true,
+            "distinct_delivery": true
+          },
+          "raw_text": "A music school receives a repeated invoice before supplier verification is recorded. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        },
+        {
+          "case_id": "invoice_routing_r111_12",
+          "domain_id": "invoice_routing",
+          "split": "holdout",
+          "stratum": "must_hold",
+          "facts": {
+            "supplier_verified": true,
+            "delivery_verified": false,
+            "number_repeated": true,
+            "staged_agreement": true,
+            "distinct_delivery": true
+          },
+          "raw_text": "A recycling facility has a staged agreement but the claimed delivery fails verification. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "case_id": "invoice_routing_r111_01",
+          "expected_action_id": "route_approval",
+          "expected_state": {
+            "status": "APPROVAL_QUEUE"
+          },
+          "critical_wrong_actions": [],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        },
+        {
+          "case_id": "invoice_routing_r111_02",
+          "expected_action_id": "route_approval",
+          "expected_state": {
+            "status": "APPROVAL_QUEUE"
+          },
+          "critical_wrong_actions": [],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        },
+        {
+          "case_id": "invoice_routing_r111_03",
+          "expected_action_id": "route_approval",
+          "expected_state": {
+            "status": "APPROVAL_QUEUE"
+          },
+          "critical_wrong_actions": [],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        },
+        {
+          "case_id": "invoice_routing_r111_04",
+          "expected_action_id": "route_approval",
+          "expected_state": {
+            "status": "APPROVAL_QUEUE"
+          },
+          "critical_wrong_actions": [],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        },
+        {
+          "case_id": "invoice_routing_r111_05",
+          "expected_action_id": "route_approval",
+          "expected_state": {
+            "status": "APPROVAL_QUEUE"
+          },
+          "critical_wrong_actions": [],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        },
+        {
+          "case_id": "invoice_routing_r111_06",
+          "expected_action_id": "route_approval",
+          "expected_state": {
+            "status": "APPROVAL_QUEUE"
+          },
+          "critical_wrong_actions": [],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        },
+        {
+          "case_id": "invoice_routing_r111_07",
+          "expected_action_id": "route_approval",
+          "expected_state": {
+            "status": "APPROVAL_QUEUE"
+          },
+          "critical_wrong_actions": [],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        },
+        {
+          "case_id": "invoice_routing_r111_08",
+          "expected_action_id": "route_approval",
+          "expected_state": {
+            "status": "APPROVAL_QUEUE"
+          },
+          "critical_wrong_actions": [],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        },
+        {
+          "case_id": "invoice_routing_r111_09",
+          "expected_action_id": "hold_case",
+          "expected_state": {
+            "status": "HELD"
+          },
+          "critical_wrong_actions": [
+            "route_approval"
+          ],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        },
+        {
+          "case_id": "invoice_routing_r111_10",
+          "expected_action_id": "hold_case",
+          "expected_state": {
+            "status": "HELD"
+          },
+          "critical_wrong_actions": [
+            "route_approval"
+          ],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        },
+        {
+          "case_id": "invoice_routing_r111_11",
+          "expected_action_id": "hold_case",
+          "expected_state": {
+            "status": "HELD"
+          },
+          "critical_wrong_actions": [
+            "route_approval"
+          ],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        },
+        {
+          "case_id": "invoice_routing_r111_12",
+          "expected_action_id": "hold_case",
+          "expected_state": {
+            "status": "HELD"
+          },
+          "critical_wrong_actions": [
+            "route_approval"
+          ],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        }
+      ]
+    },
+    "support_triage": {
+      "cases": [
+        {
+          "case_id": "support_triage_r111_01",
+          "domain_id": "support_triage",
+          "split": "holdout",
+          "stratum": "normal",
+          "facts": {
+            "verified": true,
+            "interrupted": true,
+            "affected_users": 47,
+            "time_critical": false,
+            "hours_to_deadline": 4.5,
+            "workaround": true
+          },
+          "raw_text": "An authenticated outage affects a forty-seven-person facilities team. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        },
+        {
+          "case_id": "support_triage_r111_02",
+          "domain_id": "support_triage",
+          "split": "holdout",
+          "stratum": "normal",
+          "facts": {
+            "verified": true,
+            "interrupted": true,
+            "affected_users": 83,
+            "time_critical": true,
+            "hours_to_deadline": 0.7,
+            "workaround": false
+          },
+          "raw_text": "A verified interruption affects eighty-three staff at a regional scheduling centre. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        },
+        {
+          "case_id": "support_triage_r111_03",
+          "domain_id": "support_triage",
+          "split": "holdout",
+          "stratum": "normal",
+          "facts": {
+            "verified": true,
+            "interrupted": false,
+            "affected_users": 3,
+            "time_critical": false,
+            "hours_to_deadline": 6,
+            "workaround": true
+          },
+          "raw_text": "A verified request concerns display usability; the service is available. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        },
+        {
+          "case_id": "support_triage_r111_04",
+          "domain_id": "support_triage",
+          "split": "holdout",
+          "stratum": "normal",
+          "facts": {
+            "verified": true,
+            "interrupted": false,
+            "affected_users": 11,
+            "time_critical": true,
+            "hours_to_deadline": 0.6,
+            "workaround": false
+          },
+          "raw_text": "A team raises a verified configuration question without any service interruption. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        },
+        {
+          "case_id": "support_triage_r111_05",
+          "domain_id": "support_triage",
+          "split": "holdout",
+          "stratum": "transfer",
+          "facts": {
+            "verified": true,
+            "interrupted": true,
+            "affected_users": 7,
+            "time_critical": true,
+            "hours_to_deadline": 0.4,
+            "workaround": false
+          },
+          "raw_text": "Seven dispatch staff cannot complete a time-critical release, due in twenty-four minutes, with no viable workaround. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        },
+        {
+          "case_id": "support_triage_r111_06",
+          "domain_id": "support_triage",
+          "split": "holdout",
+          "stratum": "transfer",
+          "facts": {
+            "verified": true,
+            "interrupted": true,
+            "affected_users": 16,
+            "time_critical": true,
+            "hours_to_deadline": 1.7,
+            "workaround": false
+          },
+          "raw_text": "A sixteen-person assessment team is blocked from a time-critical filing due in 1.7 hours with no viable workaround. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        },
+        {
+          "case_id": "support_triage_r111_07",
+          "domain_id": "support_triage",
+          "split": "holdout",
+          "stratum": "transfer",
+          "facts": {
+            "verified": true,
+            "interrupted": true,
+            "affected_users": 6,
+            "time_critical": false,
+            "hours_to_deadline": 3.4,
+            "workaround": false
+          },
+          "raw_text": "Six users have a verified interruption; the confirmed business task is not time-critical. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        },
+        {
+          "case_id": "support_triage_r111_08",
+          "domain_id": "support_triage",
+          "split": "holdout",
+          "stratum": "transfer",
+          "facts": {
+            "verified": true,
+            "interrupted": true,
+            "affected_users": 14,
+            "time_critical": true,
+            "hours_to_deadline": 0.8,
+            "workaround": true
+          },
+          "raw_text": "Fourteen users have a verified time-critical interruption, but a viable workaround is confirmed. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        },
+        {
+          "case_id": "support_triage_r111_09",
+          "domain_id": "support_triage",
+          "split": "holdout",
+          "stratum": "must_hold",
+          "facts": {
+            "verified": true,
+            "interrupted": true,
+            "affected_users": 9,
+            "time_critical": true,
+            "hours_to_deadline": null,
+            "workaround": false
+          },
+          "raw_text": "A nine-person interruption is verified but the deadline has not been established. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        },
+        {
+          "case_id": "support_triage_r111_10",
+          "domain_id": "support_triage",
+          "split": "holdout",
+          "stratum": "must_hold",
+          "facts": {
+            "verified": true,
+            "interrupted": true,
+            "affected_users": 13,
+            "time_critical": null,
+            "hours_to_deadline": 1.2,
+            "workaround": false
+          },
+          "raw_text": "Thirteen users are affected; whether a time-critical business task is blocked is unknown. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        },
+        {
+          "case_id": "support_triage_r111_11",
+          "domain_id": "support_triage",
+          "split": "holdout",
+          "stratum": "must_hold",
+          "facts": {
+            "verified": true,
+            "interrupted": true,
+            "affected_users": 17,
+            "time_critical": true,
+            "hours_to_deadline": 1.3,
+            "workaround": null
+          },
+          "raw_text": "A seventeen-user interruption is verified but availability of a viable workaround is unconfirmed. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        },
+        {
+          "case_id": "support_triage_r111_12",
+          "domain_id": "support_triage",
+          "split": "holdout",
+          "stratum": "must_hold",
+          "facts": {
+            "verified": null,
+            "interrupted": true,
+            "affected_users": 31,
+            "time_critical": true,
+            "hours_to_deadline": 0.9,
+            "workaround": false
+          },
+          "raw_text": "A report claims thirty-one affected users; the incident evidence has not been verified. Recorded facts are authoritative; null means unknown.",
+          "initial_state": {
+            "status": "NEW"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "case_id": "support_triage_r111_01",
+          "expected_action_id": "route_high",
+          "expected_state": {
+            "status": "HIGH_PRIORITY"
+          },
+          "critical_wrong_actions": [],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        },
+        {
+          "case_id": "support_triage_r111_02",
+          "expected_action_id": "route_high",
+          "expected_state": {
+            "status": "HIGH_PRIORITY"
+          },
+          "critical_wrong_actions": [],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        },
+        {
+          "case_id": "support_triage_r111_03",
+          "expected_action_id": "route_standard",
+          "expected_state": {
+            "status": "STANDARD_PRIORITY"
+          },
+          "critical_wrong_actions": [],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        },
+        {
+          "case_id": "support_triage_r111_04",
+          "expected_action_id": "route_standard",
+          "expected_state": {
+            "status": "STANDARD_PRIORITY"
+          },
+          "critical_wrong_actions": [],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        },
+        {
+          "case_id": "support_triage_r111_05",
+          "expected_action_id": "route_high",
+          "expected_state": {
+            "status": "HIGH_PRIORITY"
+          },
+          "critical_wrong_actions": [],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        },
+        {
+          "case_id": "support_triage_r111_06",
+          "expected_action_id": "route_high",
+          "expected_state": {
+            "status": "HIGH_PRIORITY"
+          },
+          "critical_wrong_actions": [],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        },
+        {
+          "case_id": "support_triage_r111_07",
+          "expected_action_id": "route_standard",
+          "expected_state": {
+            "status": "STANDARD_PRIORITY"
+          },
+          "critical_wrong_actions": [],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        },
+        {
+          "case_id": "support_triage_r111_08",
+          "expected_action_id": "route_standard",
+          "expected_state": {
+            "status": "STANDARD_PRIORITY"
+          },
+          "critical_wrong_actions": [],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        },
+        {
+          "case_id": "support_triage_r111_09",
+          "expected_action_id": "hold_case",
+          "expected_state": {
+            "status": "HELD"
+          },
+          "critical_wrong_actions": [
+            "route_high",
+            "route_standard"
+          ],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        },
+        {
+          "case_id": "support_triage_r111_10",
+          "expected_action_id": "hold_case",
+          "expected_state": {
+            "status": "HELD"
+          },
+          "critical_wrong_actions": [
+            "route_high",
+            "route_standard"
+          ],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        },
+        {
+          "case_id": "support_triage_r111_11",
+          "expected_action_id": "hold_case",
+          "expected_state": {
+            "status": "HELD"
+          },
+          "critical_wrong_actions": [
+            "route_high",
+            "route_standard"
+          ],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        },
+        {
+          "case_id": "support_triage_r111_12",
+          "expected_action_id": "hold_case",
+          "expected_state": {
+            "status": "HELD"
+          },
+          "critical_wrong_actions": [
+            "route_high",
+            "route_standard"
+          ],
+          "rationale": "Authored from the original source procedure and expert policy before any model execution; scorer only."
+        }
+      ]
+    }
+  }
+}

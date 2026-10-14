@@ -1,0 +1,1 @@
+A repeated invoice number may be routed to approval only when the supplier is verified, an active staged-billing agreement exists, the delivery reference differs from the earlier invoice, and the delivery is verified. A missing fact or unmet condition requires a hold. This exception does not authorize payment.

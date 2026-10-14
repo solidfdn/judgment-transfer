@@ -1,0 +1,141 @@
+{
+  "status": "TARGET_MET",
+  "results": {
+    "A_SOURCE_ONLY": {
+      "attempts": 72,
+      "unique_cases": 24,
+      "correct_completion_rate": 0.3333333333333333,
+      "critical_errors": 0,
+      "failures": 1,
+      "holds": 47,
+      "cost_usd": 0.8273541,
+      "latency_ms": 315090
+    },
+    "B_TEXT_ADDED": {
+      "attempts": 72,
+      "unique_cases": 24,
+      "correct_completion_rate": 0.6666666666666666,
+      "critical_errors": 0,
+      "failures": 0,
+      "holds": 24,
+      "cost_usd": 1.3355532,
+      "latency_ms": 356930
+    },
+    "C_JT_RULES": {
+      "attempts": 72,
+      "unique_cases": 24,
+      "correct_completion_rate": 0.6666666666666666,
+      "critical_errors": 0,
+      "failures": 3,
+      "holds": 21,
+      "cost_usd": 1.1656575,
+      "latency_ms": 321254
+    }
+  },
+  "c_minus_a_percentage_points": 33.33333333333333,
+  "c_minus_b_percentage_points": 0.0,
+  "expert_inputs_total": 2,
+  "interpretation": "Observed completion differences include unequal execution failures; these results do not establish a judgment-transfer benefit.",
+  "scope": "New synthetic sample records authored before this study. Policy, field vocabulary and rule structure were already exposed during development. Invoice transfer records necessarily share the same five Boolean facts. This is a fresh-record revalidation, not independent blind validation or proof of generalization to new business policies. Original exposed holdout records and results remain unchanged.",
+  "study_id": "watchdog115",
+  "request_tier": "priority",
+  "original_workspaces": {
+    "invoice_routing": "ws_c034292e53eddbe0cdb3219fca3cc01a",
+    "support_triage": "ws_d845efa40c572b73466da65690391f69"
+  },
+  "approvals_reused_not_newly_granted": true,
+  "traffic_policy": "Request Priority for every arm; accept documented ON_DEMAND downgrade with actual-tier pricing and disclosure.",
+  "actual_traffic_by_run": {
+    "FORMAL-invoice_routing-A_SOURCE_ONLY": {
+      "requested_tier": "priority",
+      "failed_attempts": 1,
+      "actual_response_tiers": {
+        "ON_DEMAND": 35,
+        "UNKNOWN": 2
+      },
+      "downgraded_responses": 35,
+      "attempts": 37,
+      "recorded_cost_usd": 0.4611666
+    },
+    "FORMAL-invoice_routing-B_TEXT_ADDED": {
+      "requested_tier": "priority",
+      "failed_attempts": 2,
+      "actual_response_tiers": {
+        "ON_DEMAND": 36,
+        "UNKNOWN": 2
+      },
+      "downgraded_responses": 36,
+      "attempts": 38,
+      "recorded_cost_usd": 0.6397398
+    },
+    "FORMAL-invoice_routing-C_JT_RULES": {
+      "requested_tier": "priority",
+      "failed_attempts": 1,
+      "actual_response_tiers": {
+        "ON_DEMAND": 35,
+        "UNKNOWN": 2
+      },
+      "downgraded_responses": 35,
+      "attempts": 37,
+      "recorded_cost_usd": 0.4839774
+    },
+    "FORMAL-support_triage-A_SOURCE_ONLY": {
+      "requested_tier": "priority",
+      "failed_attempts": 0,
+      "actual_response_tiers": {
+        "ON_DEMAND": 36
+      },
+      "downgraded_responses": 36,
+      "attempts": 36,
+      "recorded_cost_usd": 0.3661875
+    },
+    "FORMAL-support_triage-B_TEXT_ADDED": {
+      "requested_tier": "priority",
+      "failed_attempts": 2,
+      "actual_response_tiers": {
+        "ON_DEMAND": 36,
+        "UNKNOWN": 2
+      },
+      "downgraded_responses": 36,
+      "attempts": 38,
+      "recorded_cost_usd": 0.6958134
+    },
+    "FORMAL-support_triage-C_JT_RULES": {
+      "requested_tier": "priority",
+      "failed_attempts": 2,
+      "actual_response_tiers": {
+        "ON_DEMAND": 34,
+        "UNKNOWN": 4
+      },
+      "downgraded_responses": 34,
+      "attempts": 38,
+      "recorded_cost_usd": 0.6816801
+    }
+  },
+  "development_gate": {
+    "max_latency_ms": 20000,
+    "new_checks": 15,
+    "required_checks": 18,
+    "reused_passed_checks": 3
+  },
+  "reliability_policy": {
+    "backoff_seconds": 1,
+    "consecutive_formal_failures_stop": 3,
+    "extra_retries_already_used": 1,
+    "extra_retry_attempts_total_max": 6,
+    "first_text_seconds": 10,
+    "generation_attempts_per_decision_max": 2,
+    "generation_seconds": 20,
+    "preserved_failure_replacement_uses_retry_slot": true,
+    "remaining_extra_retries": 4,
+    "total_model_seconds": 20
+  },
+  "continuation": {
+    "version": "finish115.1",
+    "provenance": "continuation-provenance.json",
+    "original_terminal_records_preserved": true,
+    "extra_retries_granted": 0,
+    "failed_cases_replayed": 0,
+    "remaining_nominal_decisions": 35
+  }
+}

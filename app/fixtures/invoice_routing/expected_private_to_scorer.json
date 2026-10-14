@@ -1,0 +1,194 @@
+[
+  {
+    "case_id": "invoice_routing_dev_01",
+    "expected_action_id": "route_approval",
+    "expected_state": {
+      "status": "APPROVAL_QUEUE"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "invoice_routing_dev_02",
+    "expected_action_id": "route_approval",
+    "expected_state": {
+      "status": "APPROVAL_QUEUE"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "invoice_routing_dev_03",
+    "expected_action_id": "route_approval",
+    "expected_state": {
+      "status": "APPROVAL_QUEUE"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "invoice_routing_dev_04",
+    "expected_action_id": "route_approval",
+    "expected_state": {
+      "status": "APPROVAL_QUEUE"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "invoice_routing_dev_05",
+    "expected_action_id": "route_approval",
+    "expected_state": {
+      "status": "APPROVAL_QUEUE"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "invoice_routing_dev_06",
+    "expected_action_id": "route_approval",
+    "expected_state": {
+      "status": "APPROVAL_QUEUE"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "invoice_routing_dev_07",
+    "expected_action_id": "hold_case",
+    "expected_state": {
+      "status": "HELD"
+    },
+    "critical_wrong_actions": [
+      "route_approval"
+    ],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "invoice_routing_dev_08",
+    "expected_action_id": "hold_case",
+    "expected_state": {
+      "status": "HELD"
+    },
+    "critical_wrong_actions": [
+      "route_approval"
+    ],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "invoice_routing_holdout_01",
+    "expected_action_id": "route_approval",
+    "expected_state": {
+      "status": "APPROVAL_QUEUE"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "invoice_routing_holdout_02",
+    "expected_action_id": "route_approval",
+    "expected_state": {
+      "status": "APPROVAL_QUEUE"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "invoice_routing_holdout_03",
+    "expected_action_id": "route_approval",
+    "expected_state": {
+      "status": "APPROVAL_QUEUE"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "invoice_routing_holdout_04",
+    "expected_action_id": "route_approval",
+    "expected_state": {
+      "status": "APPROVAL_QUEUE"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "invoice_routing_holdout_05",
+    "expected_action_id": "route_approval",
+    "expected_state": {
+      "status": "APPROVAL_QUEUE"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "invoice_routing_holdout_06",
+    "expected_action_id": "route_approval",
+    "expected_state": {
+      "status": "APPROVAL_QUEUE"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "invoice_routing_holdout_07",
+    "expected_action_id": "route_approval",
+    "expected_state": {
+      "status": "APPROVAL_QUEUE"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "invoice_routing_holdout_08",
+    "expected_action_id": "route_approval",
+    "expected_state": {
+      "status": "APPROVAL_QUEUE"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "invoice_routing_holdout_09",
+    "expected_action_id": "hold_case",
+    "expected_state": {
+      "status": "HELD"
+    },
+    "critical_wrong_actions": [
+      "route_approval"
+    ],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "invoice_routing_holdout_10",
+    "expected_action_id": "hold_case",
+    "expected_state": {
+      "status": "HELD"
+    },
+    "critical_wrong_actions": [
+      "route_approval"
+    ],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "invoice_routing_holdout_11",
+    "expected_action_id": "hold_case",
+    "expected_state": {
+      "status": "HELD"
+    },
+    "critical_wrong_actions": [
+      "route_approval"
+    ],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  },
+  {
+    "case_id": "invoice_routing_holdout_12",
+    "expected_action_id": "hold_case",
+    "expected_state": {
+      "status": "HELD"
+    },
+    "critical_wrong_actions": [
+      "route_approval"
+    ],
+    "rationale": "Expected result is frozen by the fixture author from the full policy. It must never be passed to the solving model."
+  }
+]

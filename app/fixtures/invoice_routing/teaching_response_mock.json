@@ -1,0 +1,54 @@
+{
+  "teaching_id": "invoice_routing_teach_01",
+  "question_id": "invoice_routing_question_01",
+  "human_text": "A repeated invoice number may be routed to approval only when the supplier is verified, an active staged-billing agreement exists, the delivery reference differs from the earlier invoice, and the delivery is verified. A missing fact or unmet condition requires a hold. This exception does not authorize payment.",
+  "base_domain_version": 0,
+  "proposed_rules": [
+    {
+      "rule_id": "inv_staged",
+      "priority": 10,
+      "statement": "A repeated invoice number may be routed to approval only when the supplier is verified, an active staged-billing agreement exists, the delivery reference differs from the earlier invoice, and the delivery is verified. A missing fact or unmet condition requires a hold. This exception does not authorize payment.",
+      "when": {
+        "all": [
+          {
+            "field_id": "supplier_verified",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "delivery_verified",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "number_repeated",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "staged_agreement",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "distinct_delivery",
+            "operator": "eq",
+            "value": true
+          }
+        ],
+        "any": []
+      },
+      "action_id": "route_approval",
+      "source_refs": [
+        {
+          "source_id": "invoice_teaching",
+          "version_hash": "06deaed9429468fec0a3b1d63bc94aab64c4152bd2e94cb1db08770b175077a9",
+          "locator": "human:1",
+          "quote": "A repeated invoice number may be routed to approval only when the supplier is verified, an active staged-billing agreement exists, the delivery reference differs from the earlier invoice, and the delivery is verified. A missing fact or unmet condition requires a hold. This exception does not authorize payment."
+        }
+      ],
+      "approved_by": null
+    }
+  ],
+  "approval_state": "DRAFT"
+}

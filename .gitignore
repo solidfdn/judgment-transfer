@@ -1,0 +1,8 @@
+.jt/
+.venv/
+__pycache__/
+*.pyc
+deliverables/
+*.zip
+.env
+*-credentials.json

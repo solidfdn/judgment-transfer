@@ -1,0 +1,6 @@
+Invoice routing procedure
+1. Verify the supplier and delivery evidence.
+2. Route a complete non-repeated invoice to the approval queue.
+3. A repeated invoice number requires clarification and must be held.
+4. If a required fact is missing, hold the case.
+No payment is executed in this prototype.

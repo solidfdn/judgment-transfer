@@ -1,0 +1,169 @@
+{
+  "schema_version": "1.0",
+  "domain_id": "support_triage",
+  "version": 0,
+  "title": "Business service request triage",
+  "goal": "Route service requests by verified business impact and hold missing evidence.",
+  "input_fields": [
+    {
+      "field_id": "verified",
+      "label": "verified",
+      "type": "boolean",
+      "description": "The incident evidence is verified.",
+      "required": true
+    },
+    {
+      "field_id": "interrupted",
+      "label": "interrupted",
+      "type": "boolean",
+      "description": "Service interruption exists.",
+      "required": true
+    },
+    {
+      "field_id": "affected_users",
+      "label": "affected users",
+      "type": "number",
+      "description": "Number of affected users.",
+      "required": true
+    },
+    {
+      "field_id": "time_critical",
+      "label": "time critical",
+      "type": "boolean",
+      "description": "A time-critical business task is blocked.",
+      "required": true
+    },
+    {
+      "field_id": "hours_to_deadline",
+      "label": "hours to deadline",
+      "type": "number",
+      "description": "Hours until the business deadline.",
+      "required": true
+    },
+    {
+      "field_id": "workaround",
+      "label": "workaround",
+      "type": "boolean",
+      "description": "A viable workaround exists.",
+      "required": true
+    }
+  ],
+  "state_fields": [
+    {
+      "field_id": "status",
+      "label": "status",
+      "type": "string",
+      "description": "Current isolated case status.",
+      "required": true
+    }
+  ],
+  "actions": [
+    {
+      "action_id": "route_high",
+      "label": "route high",
+      "description": "Apply the declared result to this isolated case only.",
+      "effects": [
+        {
+          "field_id": "status",
+          "value": "HIGH_PRIORITY"
+        }
+      ],
+      "terminal": true
+    },
+    {
+      "action_id": "route_standard",
+      "label": "route standard",
+      "description": "Apply the declared result to this isolated case only.",
+      "effects": [
+        {
+          "field_id": "status",
+          "value": "STANDARD_PRIORITY"
+        }
+      ],
+      "terminal": true
+    },
+    {
+      "action_id": "hold_case",
+      "label": "hold case",
+      "description": "Apply the declared result to this isolated case only.",
+      "effects": [
+        {
+          "field_id": "status",
+          "value": "HELD"
+        }
+      ],
+      "terminal": true
+    }
+  ],
+  "rules": [
+    {
+      "rule_id": "sup_wide",
+      "priority": 30,
+      "statement": "Verified interruption affects at least 20 users.",
+      "when": {
+        "all": [
+          {
+            "field_id": "verified",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "interrupted",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "affected_users",
+            "operator": "gte",
+            "value": 20
+          }
+        ],
+        "any": []
+      },
+      "action_id": "route_high",
+      "source_refs": [
+        {
+          "source_id": "support_sop",
+          "version_hash": "58b0a4f4d1b8d84a09ca48648e1f03b586fad9ac70f182bd191fe2c68f194a94",
+          "locator": "line:2",
+          "quote": "A verified service interruption affecting at least 20 users is high priority."
+        }
+      ],
+      "approved_by": "fixture-author"
+    },
+    {
+      "rule_id": "sup_available",
+      "priority": 90,
+      "statement": "Verified service is available.",
+      "when": {
+        "all": [
+          {
+            "field_id": "verified",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "interrupted",
+            "operator": "eq",
+            "value": false
+          }
+        ],
+        "any": []
+      },
+      "action_id": "route_standard",
+      "source_refs": [
+        {
+          "source_id": "support_sop",
+          "version_hash": "58b0a4f4d1b8d84a09ca48648e1f03b586fad9ac70f182bd191fe2c68f194a94",
+          "locator": "line:3",
+          "quote": "A verified available service with no reported interruption is standard priority."
+        }
+      ],
+      "approved_by": "fixture-author"
+    }
+  ],
+  "default_action_id": "hold_case",
+  "source_hashes": {
+    "support_sop": "58b0a4f4d1b8d84a09ca48648e1f03b586fad9ac70f182bd191fe2c68f194a94"
+  }
+}

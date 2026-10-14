@@ -1,0 +1,146 @@
+{
+  "product": "Judgment Transfer",
+  "owner": "SOLIFAN",
+  "spec_version": "1.0",
+  "package_version": "1.0.16",
+  "app_version": "1.0.16",
+  "baseline_spec": {
+    "path": "baseline/Judgment_Transfer_Development_Spec_v1.0_20261010.docx",
+    "sha256": "8585fe58d7fdf3511771c0214e960ee7c4091209f7cf60ab5826ca984fb82e07"
+  },
+  "contracts": {
+    "path": "app/contracts/jt_contracts.schema.json",
+    "sha256": "998724f56a7bb63cb42d94df573a74fbd53a438ec4bd2c71bbf5018d84e10d50"
+  },
+  "fixed": {
+    "delivery": "one ZIP with complete code and numbered Google Cloud Shell runbook",
+    "screens": [
+      "Sources",
+      "Teach",
+      "Results"
+    ],
+    "runtime": "Python 3.12 / Flask / vanilla JS",
+    "cloud": [
+      "Cloud Run",
+      "Firestore Native",
+      "private Cloud Storage"
+    ],
+    "model": "gemini-3.5-flash",
+    "model_location": "global",
+    "modes": [
+      "LIVE",
+      "MOCK",
+      "RECORDED read-only"
+    ],
+    "approval": "explicit human approval, immutable versions, CAS",
+    "evaluation": "24 unique holdout cases x 3 arms x 3 repeats = 216 nominal judgments",
+    "targets_not_results": {
+      "c_minus_a_percentage_points": 25,
+      "critical_errors": 0,
+      "expert_corrections_total_max": 3
+    }
+  },
+  "implementation_bounds": {
+    "case_step_cap": 8,
+    "domain_fields_max": 60,
+    "domain_actions_max": 20,
+    "domain_rules_max": 100,
+    "case_import_max": 40,
+    "source_max_files": 5,
+    "source_max_total_MiB": 20,
+    "public_session_minutes": 60,
+    "admin_judgment_allowance_including_preparation_and_retries": 320
+  },
+  "authorized_recovery_111": {
+    "request_tier": "Priority PayGo, same model and global location",
+    "additional_decisions_max": 234,
+    "development_gate": 18,
+    "formal_decisions": 216,
+    "cumulative_model_budget_usd": 20,
+    "grant": "One-time owner-bound addition from the current decision count; no reset. Existing total-call and daily caps remain.",
+    "dataset": "New synthetic records under the unchanged policies; not independent blind or new-policy generalization evidence."
+  },
+  "change_control": "Requirements need user authorization. Fixes/environment adjustments retain product behavior and are logged as a new package revision.",
+  "replacement_112": {
+    "status": "Requires explicit administrator opt-in before first preparation; not previously authorized.",
+    "additional_decisions_max_after_opt_in": 235,
+    "prior_calls_preserved": 3,
+    "development_gate": {
+      "total_checks": 18,
+      "reused_passed_checks": 2,
+      "remaining_checks": 16
+    },
+    "formal_decisions": 216,
+    "cumulative_model_budget_usd": 20,
+    "actual_traffic": "Priority requested uniformly; documented ON_DEMAND fallback accepted, priced and disclosed."
+  },
+  "bounded_recovery_113": {
+    "status": "Explicit administrator opt-in required before deploying or running this new policy.",
+    "generation_attempts_total_from_original_grant_max": 242,
+    "already_used": 8,
+    "remaining_decisions": 228,
+    "remaining_development_checks": 12,
+    "formal_decisions": 216,
+    "additional_retry_attempts_max": 6,
+    "generation_attempts_per_decision_max": 2,
+    "model_window_seconds": 20,
+    "generation_timeout_seconds": 9,
+    "retry_backoff_seconds": 1,
+    "retryable": "429, 500, 502, 503, 504 and transport timeout/network errors only",
+    "formal_stop": "3 consecutive technical failures; any safety/protocol/access/budget failure stops immediately",
+    "cumulative_model_budget_usd": 20,
+    "session_model_call_cap": 500,
+    "daily_decision_attempt_cap": 600,
+    "reused_development_checks": 6,
+    "prompt_model_rules_dataset_labels": "unchanged"
+  },
+  "streamed_revalidation_114": {
+    "status": "Explicit administrator opt-in required before deployment or the cap amendment.",
+    "generation_attempts_total_from_original_grant_max": 251,
+    "already_used": 12,
+    "remaining_development_checks": 18,
+    "reused_development_checks": 0,
+    "formal_decisions": 216,
+    "remaining_retry_attempts_max": 5,
+    "original_retry_allowance_total": 6,
+    "original_retries_used": 1,
+    "generation_attempts_per_decision_max": 2,
+    "model_window_seconds": 20,
+    "generation_timeout_seconds": "remaining part of the same 20-second window",
+    "decision_transport": "streamGenerateContent, complete stream and STOP required before decision validation",
+    "decision_schema_location": "API response_json_schema only; business instruction text unchanged",
+    "cumulative_model_budget_usd": 20,
+    "session_model_call_cap_for_grant_owner": 509,
+    "session_model_call_cap_for_other_admins": 500,
+    "daily_decision_attempt_cap": 600,
+    "formal_stop": "Three consecutive technical failures; safety/protocol/access/budget/uncertain lease failure stops immediately.",
+    "preserved": "Original grant baseline, retry_used, approvals, freeze records, historical runs, 00-08 and original outputs."
+  },
+  "watchdog_fix_115": {
+    "category": "transport defect fix within existing authorized limits",
+    "first_text_soft_timeout_seconds": 10,
+    "model_window_seconds": 20,
+    "generation_attempts_max": 2,
+    "backoff_seconds": 1,
+    "reused_unaffected_development_checks": 3,
+    "new_development_checks": 15,
+    "formal_decisions": 216,
+    "already_consumed_grant_attempts": 16,
+    "grant_attempt_cap_unchanged": 251,
+    "session_call_cap_unchanged": 509,
+    "retry_reserve_total_unchanged": 6,
+    "retry_already_used": 1,
+    "previous_failed_check_replacement_consumes_retry_slot": 1,
+    "remaining_extra_retries_after_replacement": 4,
+    "cumulative_model_budget_usd_unchanged": 20,
+    "model_prompt_schema_approvals_cases_labels": "unchanged"
+  },
+  "evidence_viewer_116": {
+    "category": "UI evidence-inspection defect fix",
+    "evaluation_version": "1.0.15",
+    "static_saved_live_evidence": true,
+    "model_calls": 0,
+    "backend_change": "VERSION only",
+    "preserved": "All existing judgments, receipts, approvals, freezes, source hashes, caps and budget counters."
+  }
+}
