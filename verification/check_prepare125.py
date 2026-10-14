@@ -22,7 +22,7 @@ APP_HASH = getattr(m, 'CODE_HASH', 'test126')
 SOURCE_HASH = getattr(m, 'SOURCE_CODE_HASH', APP_HASH)
 OUTPUT = 'release'+APP_VERSION.split('.')[0]+APP_VERSION.split('.')[-1]
 def gate_run(api, root):
-    return m.run(api, root, r, APP_HASH) if APP_VERSION == '1.0.26' else m.run(api, root, r)
+    return m.run(api, root, r, APP_HASH) if hasattr(m, 'VERSION') else m.run(api, root, r)
 checks = []
 def ok(name, value=True):
     assert value, name
@@ -48,6 +48,17 @@ class API:
             'status':'EMPTY', 'shared_trace_ids':[m.SOURCE_TRACE],
             'requirements_review':{'trace_id':m.SOURCE_TRACE,'source_hashes':{m.SOURCE:self.source_hash},
                 'goal':'Check supplied expense evidence.','questions':[{'question':'When is a company-addressed folio accepted?'}]}}
+        if hasattr(m, 'PREVIOUS_DRAFT_ID'):
+            live=json.loads((ROOT/'verification/LIVE126_GATE.json').read_text())
+            old_domain={**copy.deepcopy(live['workflow_preview']), 'schema_version':'1.0',
+                'domain_id':'test_previous_workflow','version':0,'source_hashes':{m.SOURCE:self.source_hash}}
+            self.previous={'draft_id':m.PREVIOUS_DRAFT_ID,'workspace_id':m.WORKSPACE,'base_version':-1,
+                'origin':'LIVE','domain':old_domain,'trace_ids':m.PREVIOUS_TRACE_IDS}
+            self.ws.update(draft=copy.deepcopy(self.previous),draft_id=m.PREVIOUS_DRAFT_ID)
+            self.ws['shared_trace_ids']+=m.PREVIOUS_TRACE_IDS
+            r.save(root/'.jt/upgrades/1.0.26/workflow-prepare.json', {'status':'DRAFT_READY_FOR_REVIEW',
+                'code_hash':m.PREVIOUS_CODE_HASH,'workspace_id':m.WORKSPACE,
+                'source_review_trace_id':m.SOURCE_TRACE,'draft_id':m.PREVIOUS_DRAFT_ID,'trace_ids':m.PREVIOUS_TRACE_IDS})
         self.ledger={'session':{'calls':512,'decisions':498},
             'budget':{'calls':512,'decisions':251,'spent_usd':16.8250371,'day':'2026-10-14'},
             'study':{'phase':'COMPLETE','cursor':216},'additional_decisions_used':251,
@@ -77,6 +88,7 @@ class API:
                     'origin':'LIVE','domain':domain,'trace_ids':['trace_test']}
                 self.ws['draft']=copy.deepcopy(self.requests[key]);self.ws['draft_id']='draft_test'
                 self.ws['shared_trace_ids'].append('trace_test')
+                if self.mode=='rollover':self.ledger['budget'].update(day='2026-10-15',decisions=0)
                 if self.mode=='extra_usage':self.ledger['budget']['calls']+=1
                 if self.mode=='changed_study':self.ledger['study']['cursor']=217
                 if self.mode=='approved':self.ws['version']=0
@@ -118,10 +130,36 @@ for mode in ('source_changed','wrong_source_trace','existing_draft','missing_gat
         expected='WORKSPACE_CHANGED'
         if mode=='source_changed':api.ws['sources'][0]['version_hash']='changed'
         elif mode=='wrong_source_trace':api.ws['requirements_review']['trace_id']='other'
-        elif mode=='existing_draft':api.ws['draft']={'draft_id':'other'};expected='EXISTING_DRAFT'
+        elif mode=='existing_draft':api.ws['draft']={'draft_id':'other'};expected='PREVIOUS_DRAFT_CHANGED' if hasattr(m,'PREVIOUS_DRAFT_ID') else 'EXISTING_DRAFT'
         else:(root/'.jt/upgrades/1.0.25/source-review-gate.json').unlink();expected='SOURCE_GATE_REQUIRED'
         rejects(mode+' stops before generation',lambda:gate_run(api,root),expected)
         ok(mode+' generates nothing',api.generations==0)
+
+if hasattr(m, 'PREVIOUS_DRAFT_ID'):
+    with tempfile.TemporaryDirectory() as folder, contextlib.redirect_stdout(io.StringIO()):
+        root=Path(folder);api=API(root);previous=copy.deepcopy(api.previous)
+        old_gate=r.load(root/'.jt/upgrades/1.0.26/workflow-prepare.json')
+        gate_run(api,root)
+        ok('previous complete draft archived before a new generation',r.load(root/f'deliverables/{OUTPUT}/workflow-previous-draft.json')==previous)
+        ok('previous completed gate remains unchanged',r.load(root/'.jt/upgrades/1.0.26/workflow-prepare.json')==old_gate)
+    for mutation in ('body','trace','approval','missing_checkpoint'):
+        with tempfile.TemporaryDirectory() as folder, contextlib.redirect_stdout(io.StringIO()):
+            root=Path(folder);api=API(root)
+            if mutation=='body':api.ws['draft']['domain']['input_fields'][0]['description']='Altered'
+            elif mutation=='trace':api.ws['draft']['trace_ids']=['other']
+            elif mutation=='approval':api.ws['draft']['domain']['rules'][0]['approved_by']='someone'
+            else:(root/'.jt/upgrades/1.0.26/workflow-prepare.json').unlink()
+            rejects('previous '+mutation+' stops before a new generation',lambda:gate_run(api,root),'PREVIOUS_DRAFT_CHANGED')
+            ok('previous '+mutation+' produces no model calls',api.generations==0)
+
+if hasattr(m, 'daily_counter_unchanged'):
+    with tempfile.TemporaryDirectory() as folder, contextlib.redirect_stdout(io.StringIO()):
+        root=Path(folder);api=API(root,'rollover');report=gate_run(api,root)
+        ok('next UTC day permits only the existing daily reset',report['status']=='DRAFT_READY_FOR_REVIEW' and report['judgment_calls']==0 and report['after_ledger']['decisions']==0)
+    before={'day':'2026-10-14','decisions':251}
+    for after,count in [({'day':'2026-10-15','decisions':1},1),({'day':'2026-10-13','decisions':0},1),
+                        ({'day':'2026-10-14','decisions':0},1),({'day':'2026-10-15','decisions':0},0)]:
+        ok('unexplained daily change rejected '+str((after,count)),not m.daily_counter_unchanged(before,after,count))
 
 # Exercise read-only failure diagnosis with an exact saved trace and the actual
 # installed domain/evidence validators. This is explicitly synthetic test data.
@@ -156,5 +194,5 @@ with tempfile.TemporaryDirectory() as folder, contextlib.redirect_stdout(io.Stri
 
 report={'status':'PASSED','checks':checks,'count':len(checks),'live_calls':0,'cloud_writes':0,
         'scope':'Standalone controller with explicit API/Firestore doubles; no deployed workflow success claimed.'}
-(ROOT/('verification/prepare126_offline.json' if APP_VERSION == '1.0.26' else 'verification/prepare125_offline.json')).write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+(ROOT/('verification/prepare'+APP_VERSION.split('.')[0]+APP_VERSION.split('.')[-1]+'_offline.json')).write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
 print(json.dumps({'status':'PASSED','checks':len(checks),'live_calls':0}))

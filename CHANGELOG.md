@@ -1,3 +1,11 @@
+## 1.0.27 — 2026-10-15 JST — Separate source facts from policy judgments
+
+Category: condition-generation defect fix. The actual 1.0.26 workflow was generated successfully but asks for an `is_receipt_accepted` input while omitting the receipt addressee, and reduces a party-specific payment status to an ambiguous boolean. It remains unapproved. `verification/LIVE126_GATE.json` retains the owner-provided result and semantic findings.
+
+Changed: only the shared `draft_domain` instruction in `app/adapters/model.py` and the displayed package version. Require evidence-readable scalar facts with party/stage scope; express policy comparisons in rules; preserve undefined permissions as unresolved. Existing recorded approvals and explicit checkboxes remain supported. No business-specific branches, supplied answers, schema changes or additional model review calls. This prompt correction still requires inspection of the next actual model output.
+
+`steps/prepare_workflow127.py` pins and archives the exact existing unapproved draft, retains its old checkpoint and record, then issues one new draft request using the passed source review. It recognizes the existing UTC daily-counter rollover while checking cumulative usage. Earlier installers, approvals, immutable histories, the original 216 results, budget grants and current usage remain intact. Verification: 54 bounded controller checks with explicit API/Firestore doubles, plus syntax/payload/preservation checks. Deployment and semantic validation of a new LIVE draft remain pending. See `verification/RELEASE127_STATUS.md`.
+
 ## 1.0.26 — 2026-10-15 JST — Bound and observe workflow generation
 
 Category: transport/diagnostic defect fix. The real 1.0.25 workflow proposal ended with provider 499/CANCELLED after 32,530 ms of generation (33,072 ms total) under a 35,000 ms request timeout. There was one attempt and no answer, approval or case execution. The timing does not prove that our timeout caused the cancellation. Source review had already passed and is reused.
