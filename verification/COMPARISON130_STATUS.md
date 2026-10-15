@@ -9,3 +9,7 @@ The prior baseline code hash is 63800f5130d75799709f977a396baef4bd84790a37f47351
 The native Results before/after path currently expects an A_SOURCE_ONLY run and equal package hashes. This controller supplies explicit English case-level comparison JSON and named immutable history records; it does not assert that the native before/after score UI is complete. Final browser acceptance is still required.
 
 18 bounded controller checks passed offline with explicit model/API doubles and real local service logic. No new cloud calls were made while preparing the controller. LIVE approval and after/holdout checks remain pending the user's command.
+
+## Controller environment correction
+
+Owner reported BASELINE_CHANGED before the first mutation. The installed application defaults to standard tier when imported without deployment environment variables; the cloud service uses Priority. Comparing those directly was a controller error. The corrected command verifies Priority through deployed health and uses the pinned Priority protocol consistently for baseline and freeze checks. It retains all other mismatch checks and includes precise mismatch details when needed. Six targeted separate-environment tests pass; the 18 original controller tests also pass with the corrected double. No application update, saved-record modification or new model call was used for preparation.

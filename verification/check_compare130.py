@@ -17,7 +17,7 @@ def prepared(folder):
  before=api.svc.run_view(c.BASELINE,api.ctx,True);c.BASE_CODE=before['run']['code_hash'];c.CODE_HASH='comparison-current-test';config.CODE_HASH=c.CODE_HASH
  oldcall=api.call
  def call(path,data=None,key=None,files=None):
-  if path=='/health':return {'package_version':'1.0.30','code_hash':c.CODE_HASH,'mode':'LIVE','max_cost_usd':100}
+  if path=='/health':return {'package_version':'1.0.30','code_hash':c.CODE_HASH,'mode':'LIVE','max_cost_usd':100,'request_tier':'priority'}
   if path.endswith('/approve') or path=='/workspaces/freeze':
    if key in api.cache:return copy.deepcopy(api.cache[key])
    api.ctx['operation']=key;api.posts.append((path,copy.deepcopy(data)))
@@ -27,7 +27,16 @@ def prepared(folder):
    return value
   try:return oldcall(path,data,key,files)
   except JTError as e:raise Stop(e.code,str(e)) from e
- api.call=call
+ local_settings=config.SETTINGS
+ prior=api.svc.repo.get('runs',c.BASELINE);prior['model_settings']={**prior['model_settings'],'request_tier':'priority'};api.svc.repo.put('runs',c.BASELINE,prior)
+ before=api.svc.run_view(c.BASELINE,api.ctx,True)
+ def server_call(*args,**kwargs):
+  settings=config.SETTINGS
+  try:
+   config.SETTINGS={**settings,'request_tier':'priority'}
+   return call(*args,**kwargs)
+  finally:config.SETTINGS=settings
+ api.call=server_call
  return root,api,before
 with contextlib.redirect_stdout(io.StringIO()):
  with tempfile.TemporaryDirectory() as f:

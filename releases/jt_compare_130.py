@@ -40,16 +40,19 @@ def run(api,root,r,reviewer,approve=False):
         if p['status']=='FAILED':raise r.Stop('COMPARISON_GATE_FAILED','保存済みの停止結果です。追加実行は行いません。')
         return p
     health=api.call('/health')
-    if (health.get('package_version'),health.get('code_hash'),health.get('mode'),health.get('max_cost_usd'))!=(VERSION,CODE_HASH,'LIVE',100):
+    if (health.get('package_version'),health.get('code_hash'),health.get('mode'),health.get('max_cost_usd'),health.get('request_tier'))!=(VERSION,CODE_HASH,'LIVE',100,'priority'):
         raise r.Stop('DEPLOY_MISMATCH','確認済み1.0.30・LIVE・既存上限と一致しません。')
+    expected_settings={**config.SETTINGS,'request_tier':'priority'}
     intake=r.load(root/'.jt/upgrades/1.0.28/pdf-intake-resume.json');base_domain=intake['approved_domain'];cases=[]
     for answer in intake['readings']:
         case=copy.deepcopy(answer['case']);case['initial_state']={'review_status':'NEW'};cases.append(case)
     if [x['split'] for x in cases]!=['dev']*4+['holdout']*2:raise r.Stop('CASE_SET_CHANGED','開発4件・未使用2件が必要です。')
     before_view=api.call('/exports/'+BASELINE);ws=api.call('/workspaces/'+WORKSPACE)
     if (before_view['run']['code_hash']!=BASE_CODE or before_view['run']['domain_hash']!=digest(base_domain) or
-        before_view['run']['dataset_hash']!=digest(cases[:4]) or before_view['run']['model_settings']!=config.SETTINGS or
+        before_view['run']['dataset_hash']!=digest(cases[:4]) or before_view['run']['model_settings']!=expected_settings or
         len(before_view['tasks'])!=4 or any(t['status']!='COMPLETED' for t in before_view['tasks'])):
+        r.save(out/'baseline-preflight-mismatch.json',{'read_only':True,'new_model_calls':0,'actual':{k:before_view['run'].get(k) for k in ('code_hash','domain_hash','dataset_hash','model_settings')},'expected':{'code_hash':BASE_CODE,'domain_hash':digest(base_domain),'dataset_hash':digest(cases[:4]),'model_settings':expected_settings},'task_statuses':[t.get('status') for t in before_view['tasks']]})
+        print(json.dumps(r.load(out/'baseline-preflight-mismatch.json'),ensure_ascii=False,indent=2),flush=True)
         raise r.Stop('BASELINE_CHANGED','保存済み補足前4件・判断設定が一致しません。')
     if not p:
         doc=next((t for t in ws.get('teachings',[]) if t['teaching']['teaching_id']==TEACHING),{})
@@ -98,7 +101,7 @@ def run(api,root,r,reviewer,approve=False):
                 effects={a['action_id']:{e['field_id']:e['value'] for e in a['effects']} for a in domain['actions']}
                 targets6=['ready_for_business_approval','ready_for_business_approval','hold','hold','ready_for_business_approval','return_for_correction']
                 labels=[{'case_id':case['case_id'],'expected_action_id':targets6[i],'expected_state':effects[targets6[i]],'critical_wrong_actions':['ready_for_business_approval'] if i in (2,3,5) else [],'rationale':LABEL_NOTE} for i,case in enumerate(cases)]
-                if freeze['label_hash']!=digest(labels) or freeze['dataset_hash']!=digest(cases) or freeze['domain_hash']!=digest(domain) or freeze['code_hash']!=CODE_HASH or freeze['model_settings']!=config.SETTINGS:
+                if freeze['label_hash']!=digest(labels) or freeze['dataset_hash']!=digest(cases) or freeze['domain_hash']!=digest(domain) or freeze['code_hash']!=CODE_HASH or freeze['model_settings']!=expected_settings:
                     raise r.Stop('FREEZE_CHANGED','固定された案件・条件・設定が一致しません。')
             result=call('create-'+kind,'/runs',{'workspace_id':WORKSPACE,'mode':'LIVE','arm':'C_JT_RULES','split':split,'repeats':1,'case_ids':[c['case_id'] for c in selected],
                 'reviewer_name':reviewer,'memo':'One measured pass after approved clarification. '+NOTE})
