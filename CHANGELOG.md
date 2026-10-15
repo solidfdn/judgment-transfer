@@ -1,3 +1,13 @@
+## 1.0.30 — 2026-10-15 JST — Verify and canonicalize human citation locations
+
+Category: teaching evidence handling defect fix. The actual saved teaching response succeeded and passed its rule schema, but used `line:2` and `line:1` despite the prompt requesting `human:1`. Both quotations match the exact corresponding explanation lines. The unchanged strict source validator correctly rejected these noncanonical locations. This is distinct from the prior timeout and source-review quotation failures.
+
+Changed: `app/teaching_evidence.py` validates the cited source identity/hash, bounded original TXT line location and exact nonempty quotation before mapping a human-source rule reference to `human:1`. It records both references and leaves the raw trace unchanged. It never searches elsewhere, paraphrases, alters rule conditions or relaxes the original validator. `app/service.py` applies this to normal teaching and attaches the original trace to validation failures. The new administrator-only `/teachings/recover` path checks the owned failed request, exact saved answer, source, question and active domain; reuses that answer as one named, dated, unapproved draft. Duplicate recovery keys cannot create duplicate drafts. No model call occurs in recovery.
+
+`steps/recover_teaching130.py` verifies the exact saved 1.0.29 result in memory and checks four development cases plus five relevant exception conditions before recovery. It preserves the completed baseline, failed checkpoint, usage, approval version and holdout cases. This is candidate rule evaluation, not a new measured case run. Decision model/settings/prompts, strict evidence validator and execution path are unchanged; comparison must retain the distinct package versions in provenance. No old run is resumed under new code. Earlier records and the original 216 results remain intact.
+
+Verification: 23 focused service/evidence checks and six controller checks using explicit local doubles; zero real model calls or cloud writes. Recovery in the deployed environment, new rule approval, post-supplement execution and holdout results remain pending.
+
 ## 1.0.29 — 2026-10-15 JST — Allow a complete decision attempt
 
 Category: bounded transport correction. The owner-reported third development case received zero stream chunks: the local first-text deadline cancelled attempt 1 after 10 seconds; the total 20-second window left only about 8.5 seconds for attempt 2. This establishes premature local cancellation, not a provider outage or a guaranteed outcome with more time.

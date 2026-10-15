@@ -268,6 +268,11 @@ def create_app(repo=None, adapter=None, blobs=None, testing=False):
     @app.post('/api/v1/teachings')
     @mutation
     def teaching():return service.teach(body(),g.ctx)
+    @app.post('/api/v1/teachings/recover')
+    @mutation
+    def teaching_recover():
+        from teaching_evidence import recover_teaching
+        return recover_teaching(service,body(),g.ctx)
     @app.post('/api/v1/teachings/<tid>/approve')
     @mutation
     def teaching_approve(tid):return service.approve_teaching(tid,body(),g.ctx)

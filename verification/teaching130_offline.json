@@ -1,0 +1,31 @@
+{
+  "passed": 23,
+  "checks": [
+    "two literal line references become canonical with provenance",
+    "raw model response and failed request preserved",
+    "recovery is named dated unapproved and model-free",
+    "different recovery request cannot duplicate draft",
+    "four development actions match reviewed explanation",
+    "exception receipt_employee_paid_amount=None",
+    "exception receipt_payment_status=None",
+    "exception receipt_payment_status=UNPAID",
+    "exception actual_end_date=2026-09-11",
+    "exception claimed_amount=1",
+    "wrong line rejected",
+    "out of range rejected",
+    "altered quote rejected",
+    "empty quote rejected",
+    "stale hash rejected",
+    "already canonical references unchanged",
+    "normal teaching path also canonicalizes exact human lines",
+    "validation failure carries original trace for diagnosis",
+    "nonadmin refused",
+    "another owner refused",
+    "wrong request refused",
+    "missing reviewer refused",
+    "frozen workspace refused"
+  ],
+  "new_model_calls": 0,
+  "cloud_writes": 0,
+  "scope": "Actual service and evidence validators with explicit local saved-response records; no live success claimed."
+}

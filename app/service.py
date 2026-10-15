@@ -288,18 +288,36 @@ class Service:
         source={**metadata,'source_id':sid,'workspace_id':wid,'blob_id':digest([wid,sid]),'human':True}
         self.blobs.put(source['blob_id'],text.encode(),'text/plain');self.repo.put('sources',wid+'-'+sid,source)
         result,trace=self.adapter.draft_rules(self.domain(ws),q['question'],text,source,ctx['owner'],ctx['admin'])
-        rules=result['rules']
-        for rule in rules:rule['approved_by']=None
-        teaching={'teaching_id':tid,'question_id':q['question']['question_id'],'human_text':text,'base_domain_version':ws['version'],'proposed_rules':rules,'approval_state':'DRAFT'}
-        check('Teaching',teaching)
-        merged=copy.deepcopy(self.domain(ws));merged['source_hashes'][sid]=source['version_hash']
-        replaced={r['rule_id'] for r in rules};merged['rules']=[r for r in merged['rules'] if r['rule_id'] not in replaced]+rules
-        validate_domain(merged,lambda ref:self.source_check(wid,ref))
+        return self.save_teaching(ws,q,text,source,result,trace,ctx)
+
+    def save_teaching(self,ws,q,text,source,result,trace,ctx,recovery=None):
+        from teaching_evidence import prepare_rules
+        wid=ws['workspace_id'];sid=source['source_id'];tid=ident('teaching',ctx)
+        try:
+            rules,resolutions=prepare_rules(self,wid,copy.deepcopy(result['rules']))
+            for rule in rules:rule['approved_by']=None
+            teaching={'teaching_id':tid,'question_id':q['question']['question_id'],'human_text':text,'base_domain_version':ws['version'],'proposed_rules':rules,'approval_state':'DRAFT'}
+            check('Teaching',teaching)
+            merged=copy.deepcopy(self.domain(ws));merged['source_hashes'][sid]=source['version_hash']
+            replaced={r['rule_id'] for r in rules};merged['rules']=[r for r in merged['rules'] if r['rule_id'] not in replaced]+rules
+            validate_domain(merged,lambda ref:self.source_check(wid,ref))
+        except JTError as error:
+            error.trace=trace
+            raise
         doc={'workspace_id':wid,'teaching':teaching,'source_id':sid,'trace_id':trace['trace_id'],'created_at':now()}
+        if resolutions:doc['citation_resolutions']=resolutions
+        if recovery:doc['recovery']=recovery
         wk,tk=('workspaces',wid),('teachings',tid)
         def commit(values):
-            if values[wk]['version']!=ws['version']:raise JTError('VERSION_CONFLICT','The workflow changed while drafting.',409)
-            values[tk]=doc;values[wk]['teaching_ids'].append(tid);values[wk]['shared_trace_ids'].append(trace['trace_id'])
+            current=values[wk]
+            if current['version']!=ws['version'] or current['frozen'] or current['status']!=ws['status'] or current['approved_count']!=ws['approved_count']:
+                raise JTError('VERSION_CONFLICT','The workflow changed while drafting.',409)
+            if values[tk]:
+                if values[tk].get('trace_id')!=trace['trace_id']:raise JTError('IDEMPOTENCY_CONFLICT','This draft belongs to another answer.',409)
+                return values[tk]
+            values[tk]=doc
+            if tid not in current['teaching_ids']:current['teaching_ids'].append(tid)
+            if trace['trace_id'] not in current['shared_trace_ids']:current['shared_trace_ids'].append(trace['trace_id'])
             return doc
         return self.repo.atomic([wk,tk],commit)
 
