@@ -1,3 +1,10 @@
+## 1.0.35 — explicit approved stops before AI dispatch
+
+- Defect fix: C_JT_RULES applies a known, human-approved stop through the existing rule evaluator/executor before requesting Gemini. Unknown cases, positive actions and A/B arms retain their model path. No technical error becomes a business hold.
+- Evidence: record APPROVED_RULE/RULE_ENGINE with zero attempts and validated source references; the USD publisher independently recomputes this result. Receipt/version/lease checks remain mandatory.
+- Recovery: preserve the original USD successes/failure and any stopped retry. Verify the extended-stay stop without generation, then use separate same-package USD comparison records within the original total 24 attempts and cumulative USD100 ceiling. No timeout increase or formal benchmark replay.
+- Verification: focused offline actual-code checks with explicit local doubles; live deployment and zero-model/USD gates remain pending until Cloud Shell execution.
+
 ## 1.0.34 — 2026-10-15 JST — A fictional USD demonstration for global reviewers
 
 Category: owner-requested demo requirement change. Replace the primary sample's Japanese-yen workplace setting with new fictional US-dollar transactions. The original JPY fixtures, approvals, traces and measured results remain unchanged.

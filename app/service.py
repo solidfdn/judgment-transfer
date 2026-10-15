@@ -482,7 +482,18 @@ class Service:
         task=claimed['task'];case=self.case(wid,task['case_id']);trace=None
         try:
             sources=[self.source(wid,sid) for sid in run['source_ids']]
-            raw,trace=self.adapter.decide(run['domain'],case,task['state'],run['arm'],run['human_text'],sources,ctx['owner'],ctx['admin'])
+            from approved_stop import decision as approved_stop
+            raw=approved_stop(run['domain'],case,task['state'],run['arm'])
+            origin='APPROVED_RULE' if raw is not None else 'MODEL'
+            if raw is None:
+                raw,trace=self.adapter.decide(run['domain'],case,task['state'],run['arm'],run['human_text'],sources,ctx['owner'],ctx['admin'])
+            else:
+                trace={'trace_id':'trace_'+uuid.uuid4().hex,'mode':'RULE_ENGINE','purpose':'approved_rule_hold',
+                    'settings':{'engine':'three_valued_approved_rules','code_hash':config.CODE_HASH},
+                    'source_hashes':copy.deepcopy(run['domain']['source_hashes']),
+                    'payload':{'case':copy.deepcopy(case),'state':copy.deepcopy(task['state'])},
+                    'attempts':[],'elapsed_ms':round((time.monotonic()-started)*1000),'result':copy.deepcopy(raw)}
+                self.repo.put('traces',trace['trace_id'],trace)
             for ref in raw['source_refs']:self.source_check(wid,ref)
             decision,after,terminal=execute(run['domain'],case,task['state'],raw,run['arm']=='C_JT_RULES')
             if not terminal and task['step_index']>=7:raise JTError('STEP_LIMIT','The case reached the eight-step prototype limit.',422)
@@ -497,7 +508,7 @@ class Service:
                 if time.monotonic()-started>135:raise JTError('APP_DEADLINE','The application call window expired. No operation was committed.',503,True)
                 if t['lease_token']!=lease or t['lease_until']<=time.time():raise JTError('LEASE_LOST','A later worker owns this case. Refresh the run.',409)
                 if w['status']!='READY' or w['version']!=run['active_version']:raise JTError('STALE','Workflow changed during the model call. No operation was committed.',409)
-                values[receipt_key]=receipt;t.update(state=after,decision=decision,raw_decision=raw,score=result_score,
+                values[receipt_key]=receipt;t.update(state=after,decision=decision,raw_decision=raw,decision_origin=origin,score=result_score,
                     status='COMPLETED' if terminal else 'CANCELLED' if values[rk]['cancelled'] else 'PENDING',step_index=t['step_index']+1,lease_token=None,lease_until=0,attempts=0)
                 t['receipt_ids'].append(rid);t['trace_ids'].append(trace['trace_id']);w['leases'].pop(selected,None)
                 values[opkey]={'task_id':selected,'receipt_id':rid,'done':True}

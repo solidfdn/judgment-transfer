@@ -2,8 +2,8 @@
   "product": "Judgment Transfer",
   "owner": "SOLIFAN",
   "spec_version": "1.0",
-  "package_version": "1.0.33",
-  "app_version": "1.0.33",
+  "package_version": "1.0.35",
+  "app_version": "1.0.35",
   "baseline_spec": {
     "path": "baseline/Judgment_Transfer_Development_Spec_v1.0_20261010.docx",
     "sha256": "8585fe58d7fdf3511771c0214e960ee7c4091209f7cf60ab5826ca984fb82e07"
@@ -402,5 +402,12 @@
     },
     "preserved": "Model, prompts, contracts, approval, validation, execution, cumulative USD100 deployment ceiling, administrator grants, usage and every prior run.",
     "comparison": "New runs pin this new transport protocol. Old runs are read-only; no cross-version pairing exception added."
+  },
+  "approved_stops_135": {
+    "category": "defect fix",
+    "scope": "C_JT_RULES: explicit matched human-approved default/HOLD rule before model dispatch",
+    "origin": "APPROVED_RULE / RULE_ENGINE; no generation attempts",
+    "preserve": "Unknown/default holds and positive actions use the model; A/B arms unchanged; errors are never converted to business holds.",
+    "validation": "Zero-model changed-stay check, then separate same-package USD 4+4+2 within the original total 24-attempt and USD100 ceilings."
   }
 }

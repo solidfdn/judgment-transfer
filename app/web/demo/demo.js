@@ -6,7 +6,7 @@ const names={ready_for_approval:'Precheck complete',hold_case:'Needs a person',r
 const steps=['Find the missing rule','Verify the change','Check new cases'];let step=1,caseIndex=1;
 const detail=(title,body)=>`<details><summary>${esc(title)}</summary>${body}</details>`;
 function facts(c){const f=c.facts;const rows=[['Employee',f.claimant_name],['Receipt addressed to',f.receipt_addressed_to],['Claimed amount',money(f.claimed_amount)],['Employee-paid amount',f.receipt_employee_paid_amount===null?'Not stated':money(f.receipt_employee_paid_amount)],['Employee payment status',f.receipt_payment_status??'Not stated'],['Approved stay',f.approved_start_date+' → '+f.approved_end_date],['Actual stay',f.actual_start_date+' → '+f.actual_end_date]];return '<dl class="facts">'+rows.map(([k,v])=>`<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')+'</dl>';}
-function record(c){return detail('Recorded reasoning and trace',`<p>${esc(c.explanation)}</p><pre>${esc(JSON.stringify({case_id:c.id,run_id:c.run_id,trace_id:c.trace_id,action:c.after},null,2))}</pre>`);}
+function record(c){return detail('Recorded reasoning and trace',`<p>${esc(c.explanation)}</p><pre>${esc(JSON.stringify({case_id:c.id,run_id:c.run_id,trace_id:c.trace_id,decision_origin:c.decision_origin||'MODEL',action:c.after},null,2))}</pre>`);}
 function render(){
  $('steps').innerHTML=steps.map((title,i)=>`<button data-step="${i+1}" aria-current="${step===i+1?'step':'false'}"><b>${i+1}</b>${esc(title)}</button>`).join('');
  let html='';
@@ -20,7 +20,7 @@ function render(){
 }
 $('previous').onclick=()=>{step=Math.max(1,step-1);location.hash=step;render();};$('next').onclick=()=>{step=step===3?1:step+1;location.hash=step;render();};
 function ready(){
-$('scope').textContent=evidence.scope+' Reading this page makes no model request and creates no approval.';$('protocol').textContent=evidence.protocol_note;$('record-note').textContent='Recorded by '+evidence.reviewer_name+' · '+evidence.model_calls+' decision calls in the after/holdout check · additional recorded cost USD '+evidence.incremental_cost_usd.toFixed(3)+'.';$('record-ids').textContent=JSON.stringify({baseline_run_id:evidence.baseline_run_id,after_run_id:evidence.after_run_id,holdout_run_id:evidence.holdout_run_id,baseline_code_hash:evidence.baseline_code_hash,after_code_hash:evidence.after_code_hash},null,2);
+$('scope').textContent=evidence.scope+' Reading this page makes no model request and creates no approval.';$('protocol').textContent=evidence.protocol_note;$('record-note').textContent='Recorded by '+evidence.reviewer_name+' · '+evidence.model_calls+' model attempts in the after/holdout check · additional recorded cost USD '+evidence.incremental_cost_usd.toFixed(3)+'.';$('record-ids').textContent=JSON.stringify({baseline_run_id:evidence.baseline_run_id,after_run_id:evidence.after_run_id,holdout_run_id:evidence.holdout_run_id,baseline_code_hash:evidence.baseline_code_hash,after_code_hash:evidence.after_code_hash},null,2);
 step=Math.min(3,Math.max(1,Number(location.hash.slice(1))||1));render();
 
 }
