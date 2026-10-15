@@ -1,3 +1,10 @@
+## 1.0.36 — bounded preparation transport; resume the saved guidance step
+
+- Transport defect fix: question/guidance generation now use the existing per-attempt streaming path, a 60-second attempt and one bounded transient retry. Business prompts, schemas, exact-source validation and explicit approval are unchanged. Invalid output/nontransient failures do not retry.
+- Reuse the four completed USD baseline cases and saved question. Preserve the 504 trace and original checkpoint; send only a new guidance request and remaining after/first-use executions, under the original total 24 attempts and cumulative USD100 maximum.
+- Audit the exact saved 1.0.35 baseline to verified current 1.0.36 comparison; decision request parameters/settings/prompt, evidence validation, executor and scoring are unchanged. Preserve and display both hashes. Other cross-package comparisons remain blocked.
+- Offline checks cover actual invocation, transient/nontransient failures, unchanged decision parameters, exact recovery eligibility and attempt limits using explicit doubles. Live continuation remains pending.
+
 ## 1.0.35 — explicit approved stops before AI dispatch
 
 - Defect fix: C_JT_RULES applies a known, human-approved stop through the existing rule evaluator/executor before requesting Gemini. Unknown cases, positive actions and A/B arms retain their model path. No technical error becomes a business hold.

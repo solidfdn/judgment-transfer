@@ -335,12 +335,15 @@ class LiveAdapter:
         window = 120 if long_call else 50
         call_limit = 120 if long_call else 35
         maximum_attempts = 1 if long_call else 2
-        if purpose == 'decide':
+        bounded = purpose in ('decide','propose_question','draft_rules')
+        if bounded:
             window, call_limit, maximum_attempts = (config.SETTINGS['model_window_seconds'],
                 config.SETTINGS['call_limit_seconds'], config.SETTINGS['attempts'])
             trace['runtime']['generation_client_scope'] = 'per_attempt_async_client'
         trace['settings'] = {**config.SETTINGS, 'attempts': maximum_attempts, 'model_window_seconds': window, 'call_limit_seconds': call_limit,
-                             'retry_policy': config.SETTINGS['retry_policy'] if purpose == 'decide' else 'existing_purpose_policy'}
+                             'retry_policy': config.SETTINGS['retry_policy'] if bounded else 'existing_purpose_policy'}
+        if purpose in ('propose_question','draft_rules'):
+            trace['settings'].update(transport='streamGenerateContent', code_hash=config.CODE_HASH)
         if purpose == 'extract':
             trace['settings'].update(response_schema_policy='compact_extraction_v124', schema_location='api_only',
                 transport='generateContent', response_schema_hash=digest(response_schema),
@@ -353,7 +356,7 @@ class LiveAdapter:
                 code_hash=config.CODE_HASH)
         estimate = None
         for number in range(maximum_attempts):
-            if number and purpose == 'decide':
+            if number and bounded:
                 if window - (time.monotonic() - started) < 4: break
                 time.sleep(1)
             remaining = window - (time.monotonic() - started)
@@ -364,7 +367,7 @@ class LiveAdapter:
             try:
                 entry['stage'] = 'count_tokens'
                 phase_started = time.monotonic()
-                options = self.types.HttpOptions(timeout=int(min(5 if purpose == 'decide' else 35, remaining) * 1000), headers=config.REQUEST_HEADERS,
+                options = self.types.HttpOptions(timeout=int(min(5 if bounded else 35, remaining) * 1000), headers=config.REQUEST_HEADERS,
                     retry_options=self.types.HttpRetryOptions(attempts=1))
                 entry['count_timeout_ms'] = options.timeout
                 if estimate is None:
@@ -390,7 +393,7 @@ class LiveAdapter:
                         response_mime_type='application/json', response_json_schema=response_schema,
                         max_output_tokens=8192, thinking_config=self.types.ThinkingConfig(thinking_level='LOW'),
                         http_options=options)
-                if purpose == 'decide':
+                if bounded:
                     response = asyncio.run(self._stream_response(content, generation_config, entry, options.timeout/1000))
                 elif purpose == 'draft_domain':
                     response = asyncio.run(self._stream_response(content, generation_config, entry, options.timeout/1000,
@@ -422,7 +425,7 @@ class LiveAdapter:
                 entry['cost_usd'] = actual if usage is not None else reserved
                 if purpose in ('draft_domain', 'draft_rules'):
                     trace['raw_response_text'] = response.text or ''
-                if purpose in ('decide', 'draft_domain') and entry.get('finish_reason') != 'STOP':
+                if purpose in ('decide', 'draft_domain','propose_question','draft_rules') and entry.get('finish_reason') != 'STOP':
                     raise ValueError('Incomplete response; no decision may be executed.')
                 value = json.loads(response.text or '')
                 errors = list(Draft202012Validator(output_schema).iter_errors(value))
@@ -442,7 +445,7 @@ class LiveAdapter:
             except Exception as exc:
                 code = getattr(exc, 'code', 0)
                 retry = isinstance(exc, (ValueError, TimeoutError, httpx.TimeoutException)) or code == 429 or isinstance(code, int) and 500 <= code <= 599
-                if purpose == 'decide':
+                if bounded:
                     retry = isinstance(exc, (httpx.TimeoutException, httpx.NetworkError, httpx.RemoteProtocolError)) or code in (429, 500, 502, 503, 504)
                 entry.update(status='FAILED', error_type=type(exc).__name__, provider_code=str(code), elapsed_ms=round((time.monotonic()-elapsed)*1000))
                 entry['failed_stage_elapsed_ms'] = round((time.monotonic()-phase_started)*1000)

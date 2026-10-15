@@ -1,3 +1,10 @@
+## 1.0.36 — Preparation transport and saved guidance continuation
+
+- Resolve the inspected draft_rules 504 path: use existing per-attempt streaming, 60-second attempts and one bounded transient retry. Business prompts and decision invocation behavior remain unchanged.
+- Preserve and reuse the four completed 1.0.35 USD baseline cases and saved question; keep the original failed guidance trace/checkpoint. Only failed guidance and remaining executions are requested.
+- Retain the original total 24-generation allowance and cumulative USD100 ceiling. Audit the exact 1.0.35 baseline to current 1.0.36 comparison, with original hashes visible and all other comparability checks mandatory.
+- Focused offline checks passed; live continuation awaits Cloud Shell execution. No formal benchmark replay.
+
 ## 1.0.35 — Approved stops before model dispatch
 
 - Execute explicit human-approved stop conditions before Gemini in C_JT_RULES. Retain source validation, leases, receipts and immutable prior records.

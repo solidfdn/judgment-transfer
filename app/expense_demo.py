@@ -38,13 +38,15 @@ def publish(service, body, ctx):
     targets=[v['expected_action_id'] for v in labels]
     views={k:service.run_view(body.get(k+'_run_id',''),ctx,True) for k in ('baseline','after','holdout')}
     a,b,h=[views[k] for k in ('baseline','after','holdout')]
+    comparison=compare(service,a['run']['run_id'],b['run']['run_id'],ctx)
     wid=a['run']['workspace_id'];ws=service.workspace(wid,ctx)
     if (service.adapter.mode!='LIVE' or any(v['run']['mode']!='LIVE' for v in views.values()) or
-        not compare(service,a['run']['run_id'],b['run']['run_id'],ctx)['comparable'] or
+        not comparison['comparable'] or
         not ws.get('frozen') or ws.get('version')!=1 or ws.get('approved_count')!=1 or
         len(ws.get('teaching_ids',[]))!=1 or len(ws.get('run_ids',[]))!=3 or
         {v['run']['workspace_id'] for v in views.values()}!={wid} or
-        {v['run']['code_hash'] for v in views.values()}!={a['run']['code_hash']} or
+        (a['run']['code_hash']!=b['run']['code_hash'] and not comparison.get('preparation_transport_only')) or
+        h['run']['code_hash']!=b['run']['code_hash'] or
         h['run']['model_settings']!=a['run']['model_settings'] or h['run']['split']!='holdout' or
         h['run']['domain_hash']!=b['run']['domain_hash'] or h['run']['created_at']<ws['freeze']['frozen_at']):
         raise JTError('DEMO_RESULT_MISMATCH','The USD comparison and first-use records do not match.',409)
@@ -83,7 +85,7 @@ def publish(service, body, ctx):
             'decision_origin':task.get('decision_origin','MODEL'),
             'explanation':task['decision']['explanation'],'note':notes[i]})
     traces={t['trace_id']:t for v in (b,h) for t in v.get('traces',[])}
-    data={'demo_version':'1.0.35','currency':'USD','kind':'RECORDED_LIVE_EXECUTION','recorded_at':now(),
+    data={'demo_version':'1.0.36','currency':'USD','kind':'RECORDED_LIVE_EXECUTION','recorded_at':now(),
         'reviewer_name':person['reviewer_name'],'source':policy,'source_id':'expense_sop','source_hash':digest(policy.encode()),
         'human_text':teaching['human_text'],'human_hash':digest(teaching['human_text'].encode()),
         'question':question['text'],'question_id':question['question_id'],'approval_version':1,'cases':rows,
@@ -92,7 +94,7 @@ def publish(service, body, ctx):
         'model_calls':sum(len(t.get('attempts',[])) for t in traces.values()),
         'incremental_cost_usd':sum(x.get('cost_usd',0) for t in traces.values() for x in t.get('attempts',[])),
         'scope':'Fictional USD expense-document precheck. Four matched cases and two first-use cases. A person gives final business approval.',
-        'protocol_note':'Same application, model settings, cases and starting states before and after. Explicit approved stop conditions run before Gemini; their traces identify the rule engine and contain no model attempts. Workflow conditions and case facts were explicitly reviewed; case facts are author-provided document transcriptions.'}
+        'protocol_note':(comparison.get('code_review')+' ' if comparison.get('preparation_transport_only') else '')+'Same decision model, settings, cases and starting states before and after. Explicit approved stop conditions run before Gemini; their traces identify the rule engine and contain no model attempts. Workflow conditions and case facts were explicitly reviewed; case facts are author-provided document transcriptions.'}
     key=('public_demo','expense_usd134')
     def commit(values):
         if values[key] and values[key]!=data:
