@@ -1,5 +1,15 @@
 # Standalone runbook changes
 
+## 2026-10-15 — jt_resume_usd134.py
+
+Category: standalone runbook continuation; no application/package change or deployment. The owner-reported USD baseline completed its first three cases, then case four received zero chunks on each of two 60-second attempts. The saved failure is run_065ae402f3697e77a4444deb9aaa1ef5 / trace_e43a1f7406be41798b1d78e94735200f. A provider outage or semantic answer failure is not inferred.
+
+The current API treats failed tasks as final, and publication requires a complete matched baseline. This explicitly authorized one-time retry therefore creates a separately recorded workspace from the identical reviewed USD fixture, remeasures four baseline cases, and reuses the pinned 1.0.34 workflow controller for the question/guidance pair, four after cases and two first-use holdouts. Only checkpoint/output paths and the idempotency prefix change in memory; installed files and original checkpoints are not edited. Exact source SHA-256 is mandatory. No code/model/settings/timeout change, grant enlargement, public-owner reset or historical benchmark replay occurs.
+
+Every new generation checks the existing initial USD call count, including all original attempts, against the same total ceiling of 24; the unchanged cumulative USD100 ceiling still applies. The stopped run and old checkpoint are checked for preservation. The replacement runs at most once; its saved failure cannot trigger another fresh workspace. Failure diagnostics are saved and printed without further model work. Responsible person and provenance are recorded.
+
+Verification: 17 bounded offline checks of exact source transformation, saved success/failure reopening, total attempt limits and timeout eligibility. Zero model calls and cloud writes locally. Live retry and USD publication remain pending the owner's command.
+
 ## 2026-10-15 — jt_intake_128.py
 
 Category: environment/runbook progression using existing 1.0.28 APIs. No app

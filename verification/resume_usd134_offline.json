@@ -1,0 +1,25 @@
+{
+  "passed": 17,
+  "checks": [
+    "exact original controller hash is pinned",
+    "changed installed controller refused",
+    "original checkpoint path is not used for new writes",
+    "new requests use a separate idempotency namespace",
+    "business logic and existing four-plus-four-plus-two gates are unchanged",
+    "completed replacement is reopened without API/model calls",
+    "failed replacement never triggers another fresh run",
+    "original failed checkpoint remains unchanged",
+    "two attempts fit only when original plus replacement remain within 24",
+    "no extra case attempt can exceed the original total ceiling",
+    "refused case never reaches execution endpoint",
+    "single-attempt guidance can use the last available attempt",
+    "guidance stops at the same total ceiling",
+    "saved result reads remain available after allowance exhaustion",
+    "exact inspected no-response failure is eligible",
+    "a previously executed fourth case cannot enter this retry",
+    "a different answer/validation failure is not treated as this timeout"
+  ],
+  "new_model_calls": 0,
+  "cloud_writes": 0,
+  "scope": "Actual pinned source transformation, early resume/stop, attempt ceiling and eligibility checks using explicit local/API doubles. No live retry is claimed."
+}
