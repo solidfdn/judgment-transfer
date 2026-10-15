@@ -2,8 +2,8 @@
   "product": "Judgment Transfer",
   "owner": "SOLIFAN",
   "spec_version": "1.0",
-  "package_version": "1.0.28",
-  "app_version": "1.0.28",
+  "package_version": "1.0.29",
+  "app_version": "1.0.29",
   "baseline_spec": {
     "path": "baseline/Judgment_Transfer_Development_Spec_v1.0_20261010.docx",
     "sha256": "8585fe58d7fdf3511771c0214e960ee7c4091209f7cf60ab5826ca984fb82e07"
@@ -350,5 +350,14 @@
     "preserved": "Source review, decision behavior, model, dependencies, approvals, original 216 results including four failures, previous installers and all grants/counters.",
     "validation": "Reuse the exact saved 1.0.25 review; one new journalled workflow proposal after deployment, no approval or case execution.",
     "live_status": "Pending deployed verification."
+  },
+  "decision_wait_129": {
+    "category": "bounded transport correction",
+    "attempts": 1,
+    "first_text_seconds": 35,
+    "total_seconds": 60,
+    "previous_runs": "read-only preserved; new run required for new protocol",
+    "model_schema_prompts_rules": "unchanged",
+    "authorized_budget_usd": 100
   }
 }

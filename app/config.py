@@ -2,7 +2,7 @@ import os
 import math
 from pathlib import Path
 
-VERSION = '1.0.28'
+VERSION = '1.0.29'
 MODEL = 'gemini-3.5-flash'
 LOCATION = 'global'
 MODE = os.getenv('JT_MODE', 'MOCK')
@@ -25,11 +25,11 @@ REQUEST_HEADERS = ({'X-Vertex-AI-LLM-Request-Type': 'shared',
                    if REQUEST_TIER == 'priority' else {})
 CODE_HASH = os.getenv('JT_CODE_HASH', 'local-unpackaged')
 SETTINGS = {'model': MODEL, 'location': LOCATION, 'thinking_level': 'LOW',
-            'temperature': 'provider_default', 'max_output_tokens': 8192, 'attempts': 2,
-            'request_tier': REQUEST_TIER, 'model_window_seconds': 20,
-            'call_limit_seconds': 20, 'retry_backoff_seconds': 1,
-            'retry_policy': 'first_text_watchdog_then_one_transient_retry',
-            'first_text_timeout_seconds': 10,
+            'temperature': 'provider_default', 'max_output_tokens': 8192, 'attempts': 1,
+            'request_tier': REQUEST_TIER, 'model_window_seconds': 60,
+            'call_limit_seconds': 60, 'retry_backoff_seconds': 1,
+            'retry_policy': 'single_streamed_decision_attempt',
+            'first_text_timeout_seconds': 35,
             'decision_transport': 'streamGenerateContent', 'decision_schema_location': 'api_only'}
 
 def secret():

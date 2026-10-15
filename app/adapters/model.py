@@ -313,7 +313,8 @@ class LiveAdapter:
         call_limit = 120 if long_call else 35
         maximum_attempts = 1 if long_call else 2
         if purpose == 'decide':
-            window, call_limit, maximum_attempts = 20, 20, 2
+            window, call_limit, maximum_attempts = (config.SETTINGS['model_window_seconds'],
+                config.SETTINGS['call_limit_seconds'], config.SETTINGS['attempts'])
             trace['runtime']['generation_client_scope'] = 'per_attempt_async_client'
         trace['settings'] = {**config.SETTINGS, 'attempts': maximum_attempts, 'model_window_seconds': window, 'call_limit_seconds': call_limit,
                              'retry_policy': config.SETTINGS['retry_policy'] if purpose == 'decide' else 'existing_purpose_policy'}

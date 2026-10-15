@@ -1,3 +1,13 @@
+## 1.0.29 — 2026-10-15 JST — Allow a complete decision attempt
+
+Category: bounded transport correction. The owner-reported third development case received zero stream chunks: the local first-text deadline cancelled attempt 1 after 10 seconds; the total 20-second window left only about 8.5 seconds for attempt 2. This establishes premature local cancellation, not a provider outage or a guaranteed outcome with more time.
+
+Changed: `app/config.py` and `app/adapters/model.py` use one decision attempt, a 60-second total window and a 35-second first-text limit. Complete response, strict validation and all execution controls remain required. Model, schema, prompts, business rules, dependencies, cumulative USD 100 ceiling and allowance counters remain unchanged. Other generation purposes keep their existing limits.
+
+`steps/baseline129.py` verifies and preserves the exact stopped run and reuses six existing case confirmations. Because a run pins its code and settings, it creates one separate four-case baseline under the new protocol; it never resumes or rewrites the older run. On success it saves a named history, asks a question and submits the previously authorized owner explanation for one unapproved rule proposal. No PDF extraction, new rule approval or holdout execution occurs. The incremental installer retains the existing deployment preservation gates.
+
+Verification: 22 focused stream/adapter checks and 10 controller checks using explicit doubles, with zero real model calls or cloud writes. LIVE deployment and the new baseline remain pending. See `verification/RELEASE129_STATUS.md`.
+
 ## 1.0.28 — 2026-10-15 JST — Correct absence conditions and review draft inputs
 
 Category: condition-evaluation and draft-validation defect fixes. The owner-reported 1.0.27 generation succeeded but retained a policy acceptance flag and a conditional amount. Its `exists:false` condition also exposed an evaluator defect: the operand was ignored. The actual faulty rule is reproduced in bounded tests; no live case used the draft.
