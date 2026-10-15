@@ -82,7 +82,7 @@ def verify_package(root, current, progress):
     else:
         baseline = baselines.get(current.get('version'))
         if baseline is None or current != baseline:
-            stop('PACKAGE_CHANGED', 'この更新は確認済みの1.0.30環境を対象とします。')
+            stop('PACKAGE_CHANGED', 'この更新は確認済みの1.0.31環境を対象とします。')
     if current != baseline and not (resumable and current == DATA['new']):
         stop('UPDATE_CONFLICT', '更新記録と更新元のマニフェストが一致しません。')
     for name, original in baseline['files'].items():
