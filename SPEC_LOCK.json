@@ -49,6 +49,8 @@
     "source_max_files": 5,
     "source_max_total_MiB": 20,
     "public_session_minutes": 60,
+    "public_session_minutes_scope": "CSRF renewal; preserve the owner in a valid signed browser cookie.",
+    "browser_owner_cookie_max_age_days": 31,
     "admin_judgment_allowance_including_preparation_and_retries": 320
   },
   "authorized_recovery_111": {
@@ -374,13 +376,14 @@
     "demo": "English-only recorded expense example, verified against all six saved live results before deployment; reading it creates no model call."
   },
   "completion_fixes_132": {
-    "category": "Case-selection, execution-capacity and teaching-source provenance defect fixes",
+    "category": "Case-selection, execution-capacity, teaching-source provenance and browser-session continuity defect fixes",
     "ordinary_session_limits": {
       "judgment_calls": 12,
       "model_calls": 24
     },
     "capacity": "Read-only preflight estimates selected before/after cases, maximum action steps, configured attempts and question/guidance generation. Existing per-call atomic limits remain authoritative.",
     "teaching": "The model proposes conditions; the application binds each proposal to the exact persisted human explanation. Raw model output is preserved. Strict evidence and domain validation and named approval remain required.",
+    "session": "One-hour CSRF renewal retains the owner and its allowance. Signed browser-owner cookie validity is bounded at 31 days; the cookie remains non-permanent with unchanged HttpOnly, SameSite and Secure policy. No cross-browser ownership recovery is added.",
     "preserved": "Original contracts, prior runs including failures, approvals, source versions, model identity, decision generation settings, cumulative USD100 ceiling, allowance grants and counters.",
     "documentation": "English product entry and operation guide aligned with current functionality."
   }
