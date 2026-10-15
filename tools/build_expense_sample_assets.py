@@ -2,11 +2,13 @@
 import base64,io,json,zipfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-source=ROOT/'output/Expense_Demo_Data'
+source=ROOT/'output/Expense_Demo_USD_Data'
 assets=ROOT/'app/web/samples';assets.mkdir(parents=True,exist_ok=True)
 policy=(source/'policy/source_sop.txt').read_bytes()
 (assets/'expense_policy.txt').write_bytes(policy)
-readme='''Judgment Transfer - fictional expense sample
+readme='''Judgment Transfer - fictional USD expense sample
+
+All amounts are USD. These are new fictional transactions, not currency-converted historical records.
 
 1. Choose Try expense example in the app. It adds only the starting policy.
 2. Organize the work, read the clarification questions and prepare a practice test.
@@ -32,5 +34,5 @@ with zipfile.ZipFile(buffer,'w',zipfile.ZIP_DEFLATED) as z:
   for p in sorted((source/folder).rglob('*')):
    if p.is_file():add(p.relative_to(source).as_posix(),p.read_bytes())
 raw=buffer.getvalue()
-(assets/'expense_files.json').write_text(json.dumps({'filename':'Judgment_Transfer_Expense_Inputs.zip','mime':'application/zip','base64':base64.b64encode(raw).decode()},separators=(',',':'))+'\n')
+(assets/'expense_files.json').write_text(json.dumps({'filename':'Judgment_Transfer_Expense_USD_Inputs.zip','mime':'application/zip','base64':base64.b64encode(raw).decode()},separators=(',',':'))+'\n')
 print(json.dumps({'input_zip_bytes':len(raw),'files':zipfile.ZipFile(io.BytesIO(raw)).namelist(),'model_calls':0}))

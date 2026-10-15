@@ -14,6 +14,16 @@ def authorize(service, body, ctx):
         old = values[key]
         if old:
             if old['owner'] != ctx['owner']: raise JTError('FORBIDDEN', 'The validation allowance belongs to its original owner.', 403)
+            if body.get('demo_revision') == 'USD_134' and not old.get('usd_demo_134'):
+                # One explicit new-data allowance, never a counter reset or a
+                # second recovery of the historical experiment.
+                old['additional_calls'] += 24
+                old['additional_decisions'] += 20
+                old['retry_limit'] += 10
+                old['usd_demo_134'] = {**person, 'authorized_at': now(),
+                    'additional_calls': 24, 'additional_decisions': 20,
+                    'purpose': 'New fictional USD demo: ten case decisions and one question/guidance pair, including bounded retries.'}
+                values[key] = old
             return old
         session = values[session_key] or {'calls':0,'decisions':0}
         grant = {'owner':ctx['owner'], **person, 'authorized_at':now(), 'authorized':True,

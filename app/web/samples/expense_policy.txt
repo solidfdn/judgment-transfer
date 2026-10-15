@@ -11,3 +11,4 @@ The acceptance conditions for a company-addressed hotel folio are not recorded h
 If a required value, payer allocation or payment status is missing, hold and request the specific missing evidence. Do not subtract a company payment from a total, reverse-calculate from the claim, or infer who paid.
 Changed-trip necessity and exceptions to the approved stay remain a manager's business decision. A task-owner clarification of document checks does not grant that approval.
 READY_FOR_BUSINESS_APPROVAL means only that this documentary precheck is complete. RETURNED_FOR_CORRECTION and HELD are isolated simulation states, not communications or payment instructions.
+Currency: USD. All amounts in this fictional workflow are US dollars; no currency conversion is performed.

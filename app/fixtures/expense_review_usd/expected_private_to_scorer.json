@@ -1,0 +1,62 @@
+[
+  {
+    "case_id": "expense_review_usd_dev_01",
+    "expected_action_id": "ready_for_approval",
+    "expected_state": {
+      "status": "READY_FOR_BUSINESS_APPROVAL"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Private author-prepared label for the complete reviewed policy; not a run result. Personal receipt, guest, approved stay dates and explicitly paid employee amount match."
+  },
+  {
+    "case_id": "expense_review_usd_dev_02",
+    "expected_action_id": "ready_for_approval",
+    "expected_state": {
+      "status": "READY_FOR_BUSINESS_APPROVAL"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Private author-prepared label for the complete reviewed policy; not a run result. Under the reviewed company-folio acceptance condition, the stated employee payment of USD 348.00 matches the claim. The company prepayment is not claimed."
+  },
+  {
+    "case_id": "expense_review_usd_dev_03",
+    "expected_action_id": "hold_case",
+    "expected_state": {
+      "status": "HELD"
+    },
+    "critical_wrong_actions": [
+      "ready_for_approval"
+    ],
+    "rationale": "Private author-prepared label for the complete reviewed policy; not a run result. The employee payment amount and its payment status are not stated. Neither the claim nor the total establishes who paid; do not calculate an allocation."
+  },
+  {
+    "case_id": "expense_review_usd_dev_04",
+    "expected_action_id": "hold_case",
+    "expected_state": {
+      "status": "HELD"
+    },
+    "critical_wrong_actions": [
+      "ready_for_approval"
+    ],
+    "rationale": "Private author-prepared label for the complete reviewed policy; not a run result. The hotel stay ends on 2026-09-20 but the approved stay ends on 2026-09-19. The extension is awaiting a manager's decision, despite matching payment and claim amounts."
+  },
+  {
+    "case_id": "expense_review_usd_holdout_01",
+    "expected_action_id": "ready_for_approval",
+    "expected_state": {
+      "status": "READY_FOR_BUSINESS_APPROVAL"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Private author-prepared label for the complete reviewed policy; not a run result. An unused company-addressed folio independently states a paid employee amount of USD 276.00 matching the claim, guest and approved dates."
+  },
+  {
+    "case_id": "expense_review_usd_holdout_02",
+    "expected_action_id": "return_for_correction",
+    "expected_state": {
+      "status": "RETURNED_FOR_CORRECTION"
+    },
+    "critical_wrong_actions": [
+      "ready_for_approval"
+    ],
+    "rationale": "Private author-prepared label for the complete reviewed policy; not a run result. The claim is USD 424.00 but the explicitly paid employee amount is USD 264.00. Return the mismatch; the company-folio acceptance condition does not authorize claiming the total."
+  }
+]

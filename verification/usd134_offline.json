@@ -1,0 +1,28 @@
+{
+  "passed": 20,
+  "checks": [
+    "all six cases and fields explicitly use USD",
+    "new dollar amounts retain intended payment relationships",
+    "USD reference preserves all four before/after decisions and both held-out targets",
+    "USD PDF hash and page evidence USD-261001",
+    "USD PDF hash and page evidence USD-261002",
+    "USD PDF hash and page evidence USD-261003",
+    "USD PDF hash and page evidence USD-261004",
+    "USD PDF hash and page evidence USD-261005",
+    "USD PDF hash and page evidence USD-261006",
+    "every generated USD field citation matches its exact PDF",
+    "new one-time grant adds 24 attempts and 20 decisions with original baseline intact",
+    "repeating the same USD grant cannot enlarge it",
+    "grant preserves counters and historical spend",
+    "public users cannot extend the grant",
+    "publishing needs explicit owner authorization",
+    "verified fixture-shaped records publish USD facts and original run identities",
+    "repeat publication returns the same immutable public snapshot",
+    "mock or missing trace cannot publish as live USD evidence",
+    "raw model answer cannot be relabelled as a passing USD result",
+    "changed facts or currency without a matching receipt cannot publish"
+  ],
+  "new_model_calls": 0,
+  "cloud_writes": 0,
+  "scope": "Local fixture PDF/hash/citation checks, existing rule engine, one-time grant and publication guards with explicitly fabricated saved views. No live USD result is claimed."
+}

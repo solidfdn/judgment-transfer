@@ -1,3 +1,13 @@
+## 1.0.34 — 2026-10-15 JST — A fictional USD demonstration for global reviewers
+
+Category: owner-requested demo requirement change. Replace the primary sample's Japanese-yen workplace setting with new fictional US-dollar transactions. The original JPY fixtures, approvals, traces and measured results remain unchanged.
+
+Changed: a separate `expense_review_usd` fixture set and generator create six English two-page PDFs with new fictional names and realistic USD amounts. The app's sample download and starting policy use USD. The guided page reads a separately published USD result snapshot through a read-only endpoint; the original shipped evidence remains its historical fallback until the new dataset passes. An administrator publication gate checks the exact new cases, raw decisions, execution receipts, before/after protocol, approved explanation and first-use holdout freeze before exposing only this fictional scenario. No private workspace browsing is exposed.
+
+The explicit `--validate-usd --reviewer NAME` command approves the reviewed declarative starting conditions and author-provided PDF transcriptions, runs four baseline cases, generates one question/guidance pair, verifies the candidate on the four development cases and five evidence/exception variations, records named approval, then runs four after cases and two first-use holdouts once. It preserves all old exports, records failures and stops without new request regeneration. These case inputs are confirmed author transcriptions, not newly claimed AI PDF extraction. A one-time named USD allowance adds at most 24 generation attempts and 20 decision attempts to the existing owner grant; existing baselines, counters, public limits, model settings and cumulative USD100 ceiling are preserved.
+
+Verification: focused local USD PDF/hash/citation, rule-outcome, one-time grant and publication-guard checks; read-only demo rendering; installer payload integrity. These checks do not claim new live USD results. Environment publication follows the owner's Cloud Shell execution. Reuse all passing checks for unchanged core logic and the completed ordinary-browser walkthrough.
+
 ## 1.0.33 — 2026-10-15 JST — Wait 60 seconds and recover one transient decision failure
 
 Category: bounded decision-transport recovery defect fix.

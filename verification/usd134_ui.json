@@ -1,0 +1,13 @@
+{
+  "passed": 5,
+  "checks": [
+    "page reads only the fixed public result endpoint",
+    "USD company claim displays realistic dollars with two decimal places",
+    "global fictional names replace the Japan-specific scenario",
+    "missing payment evidence remains unknown in USD",
+    "first-use cases retain both distinct outcomes"
+  ],
+  "new_model_calls": 0,
+  "cloud_writes": 0,
+  "scope": "Actual guided-page JavaScript with a local read-only response double; no live USD claims."
+}

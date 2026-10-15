@@ -1,0 +1,14 @@
+Cedarline Services | Accommodation reimbursement precheck | Initial procedure
+Fictional company policy for a six-case demonstration. This is not tax or legal guidance.
+Scope: check the submitted claim and hotel payment evidence before a manager's business approval.
+Only update the isolated review status. Never approve expenditure, send a message or execute payment.
+Use the approved stay dates recorded on the claim form. If either hotel stay date differs, hold for a manager's decision on the changed stay; matching amounts do not resolve this exception.
+The hotel guest must match the claimant. A known guest-name mismatch is returned for correction.
+For a receipt addressed to the claimant, use the explicitly stated employee-paid amount marked PAID. Compare the claim with that amount, not with a total that includes another payer.
+For an accepted receipt with an identified employee payment marked PAID, a known amount mismatch is returned for correction.
+Mark the documentary precheck complete only when claimant and guest match, both stay dates match the approved dates, the receipt is accepted, and the claimed amount equals the stated employee-paid amount marked PAID.
+The acceptance conditions for a company-addressed hotel folio are not recorded here, including how to use its payer allocation. Ask the expense task owner before treating that arrangement as accepted evidence.
+If a required value, payer allocation or payment status is missing, hold and request the specific missing evidence. Do not subtract a company payment from a total, reverse-calculate from the claim, or infer who paid.
+Changed-trip necessity and exceptions to the approved stay remain a manager's business decision. A task-owner clarification of document checks does not grant that approval.
+READY_FOR_BUSINESS_APPROVAL means only that this documentary precheck is complete. RETURNED_FOR_CORRECTION and HELD are isolated simulation states, not communications or payment instructions.
+Currency: USD. All amounts in this fictional workflow are US dollars; no currency conversion is performed.
