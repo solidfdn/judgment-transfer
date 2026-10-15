@@ -2,7 +2,7 @@ import os
 import math
 from pathlib import Path
 
-VERSION = '1.0.30'
+VERSION = '1.0.31'
 MODEL = 'gemini-3.5-flash'
 LOCATION = 'global'
 MODE = os.getenv('JT_MODE', 'MOCK')

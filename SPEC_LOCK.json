@@ -2,8 +2,8 @@
   "product": "Judgment Transfer",
   "owner": "SOLIFAN",
   "spec_version": "1.0",
-  "package_version": "1.0.30",
-  "app_version": "1.0.30",
+  "package_version": "1.0.31",
+  "app_version": "1.0.31",
   "baseline_spec": {
     "path": "baseline/Judgment_Transfer_Development_Spec_v1.0_20261010.docx",
     "sha256": "8585fe58d7fdf3511771c0214e960ee7c4091209f7cf60ab5826ca984fb82e07"
@@ -365,5 +365,12 @@
     "scope": "Human TXT line citations become human:1 only after exact original line/hash/quotation validation; raw answer and original reference retained.",
     "saved_recovery": "Administrator-only owned failed request, exact question/domain/source/answer matching, named dated unapproved draft, no generation.",
     "decision_protocol": "Model, prompts, settings, decision source validator and execution path unchanged; completed 1.0.29 baseline preserved."
+  },
+  "saved_comparison_ui_131": {
+    "category": "Read-only result presentation defect fix",
+    "before_after": "Original instructions or an earlier approved rule version versus later guidance, same cases/settings/source versions.",
+    "cross_package": "Only the exact audited 1.0.29/1.0.30 teaching patch pair, with visible disclosure; all other unequal package hashes are rejected.",
+    "preserved": "Execution, validation, model, settings, histories, usage and frozen experiments.",
+    "demo": "English-only recorded expense example, verified against all six saved live results before deployment; reading it creates no model call."
   }
 }

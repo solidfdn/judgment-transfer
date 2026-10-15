@@ -11,3 +11,4 @@ details{font-size:13px;color:var(--muted);margin-top:18px}summary{cursor:pointer
 @media(max-width:380px){header{flex-wrap:wrap}.header-actions{width:100%;flex-direction:row;justify-content:space-between;align-items:center}.case-tabs button{font-size:11px;padding:10px 5px}.comparison b{font-size:18px}}
 
 .language[hidden]{display:none}
+.handover-box{margin-top:24px;padding:24px 0;border-top:1px solid var(--line)}.handover-box h3{font-size:20px;margin:0 0 10px}.handover-box p{max-width:760px;margin:0}.handover-box .note{margin-top:12px}.case-tabs{flex-wrap:wrap}@media(max-width:560px){.case-tabs button{flex:1 1 45%}}

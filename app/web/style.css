@@ -37,3 +37,5 @@ footer{font-size:11px;line-height:1.8;color:var(--muted);padding:24px 0}.admin{c
 
 .record-person{display:grid;grid-template-columns:minmax(160px,1fr) minmax(180px,2fr) minmax(160px,1fr);align-items:center;gap:16px;padding:12px 0 24px}.record-person label{font-size:13px}.record-person label span{display:block;font-weight:400}.record-person details{margin:0}.history-panel{margin:28px 0}.history-compare{display:grid;gap:24px;margin-top:24px}.two-records{grid-template-columns:repeat(2,minmax(0,1fr))}.history-compare article{min-width:0}.history-compare pre{max-height:400px;overflow:auto} @media(max-width:720px){.record-person,.two-records{grid-template-columns:1fr}.record-person{gap:8px}}
 .history-actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:16px}.history-actions .danger{color:#9d322b}
+
+.saved-tests{margin:12px 0 22px}.saved-tests select{min-width:240px;max-width:100%;padding:10px;font:inherit;border:1px solid #dce5df;border-radius:6px;background:#fff}.saved-tests label{font-size:13px}

@@ -1,0 +1,17 @@
+{
+  "passed": 9,
+  "checks": [
+    "predeployment verifies all six cases without new endpoint",
+    "postdeployment also requires the read-only comparison endpoint",
+    "changed payment amount blocks deployment",
+    "changed action blocks deployment",
+    "wrong trace blocks deployment",
+    "altered explanation blocks deployment",
+    "missing case blocks deployment",
+    "unverified native comparison stops display gate",
+    "unexpected model usage detected"
+  ],
+  "new_model_calls": 0,
+  "cloud_writes": 0,
+  "scope": "Actual display pre/post controller using explicit local saved-export doubles. No cloud success claimed."
+}

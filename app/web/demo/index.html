@@ -1,15 +1,9 @@
 <!doctype html>
-<html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Judgment Transfer — Check what AI can handle</title><link rel="stylesheet" href="demo.css"></head>
-<body>
-<header><a class="brand" href="#1">Judgment Transfer <span>by SOLIFAN</span></a><div class="header-actions"><div class="language" hidden role="group" aria-label="Language"><button id="ja" aria-pressed="false">日本語</button><button id="en" aria-pressed="true">English</button></div><a id="workspace" class="workspace" href="/">Try your own workflow ↗</a></div></header>
-<main>
-<section class="intro"><p class="eyebrow" id="eyebrow"></p><h1 id="headline"></h1><p class="lead" id="lead"></p></section>
-<div class="demo-bar"><span class="recording" id="recording"></span><span id="example-label"></span></div>
-<nav id="steps" aria-label="Demo steps"></nav>
-<section id="stage" aria-live="polite"></section>
-<div class="step-controls"><button id="previous" class="secondary"></button><span id="progress"></span><button id="next"></button></div>
-<footer><details><summary id="about-label"></summary><p id="scope"></p><div class="roles" id="roles"></div></details><a id="evidence-link" href="/assets/review/index.html"></a><span> · </span><span id="version"></span></footer>
-</main>
-<script src="evidence.js"></script><script src="demo.js"></script>
-</body></html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Judgment Transfer — See what the explanation changes</title><link rel="stylesheet" href="demo.css"></head>
+<body><header><a class="brand" href="#1">Judgment Transfer <span>by SOLIFAN</span></a><a class="workspace" href="/">Try your own workflow ↗</a></header>
+<main><section class="intro"><p class="eyebrow">BEFORE YOU HAND A JOB TO AI</p><h1>Find the missing judgment.<br>Verify what AI can handle.</h1><p class="lead">The task owner explains the gap. The same cases show what changed—and what still needs a person.</p></section>
+<div class="demo-bar"><span class="recording">Recorded live Gemini results</span><span>Fictional expense-document check · 15 Oct 2026</span></div>
+<nav id="steps" aria-label="Demo steps"></nav><section id="stage" aria-live="polite"></section>
+<div class="step-controls"><button id="previous" class="secondary">Back</button><span id="progress"></span><button id="next">Next</button></div>
+<footer><details><summary>Evidence and scope</summary><p id="scope"></p><p id="protocol"></p><p id="record-note"></p><p>Gemini reads the policy and claim documents. Cloud Run executes the isolated checks; Firestore retains versioned decisions and evidence links.</p><pre id="record-ids"></pre></details><a href="/assets/review/index.html">Earlier evaluation records</a><span> · Judgment Transfer by SOLIFAN</span></footer></main>
+<script src="evidence.js"></script><script src="demo.js"></script></body></html>

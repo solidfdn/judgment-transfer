@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "scope": "Exact two-code-hash comparison exception only; decision protocol was unchanged.",
+  "versions": {
+    "1.0.29": {
+      "file_hashes": {
+        "app/adapters/model.py": "17d637611baabea6e0a72673745eb4bcb05c0277ce5f3a1c3079605114ea1f47",
+        "app/adapters/evidence.py": "fa6e83e14c8debac878b8d97da133b497b83a3d4a02418c388716fc526c72f69",
+        "app/core/models.py": "c9499ca42105fd52b39febb7d36e1157654fdc5f38d3ae5f220453bf2ce79fa4",
+        "app/contracts/jt_contracts.schema.json": "fd1cde811044a19a89e4090d17f62e18e010e4b6b272abdf57b7a6f767a10648"
+      },
+      "execution_methods_hash": "a9e319a7acdacb443c9f175a6db77545ee6fd0ff32cbf2c0e4dd676c4fc56277"
+    },
+    "1.0.30": {
+      "file_hashes": {
+        "app/adapters/model.py": "17d637611baabea6e0a72673745eb4bcb05c0277ce5f3a1c3079605114ea1f47",
+        "app/adapters/evidence.py": "fa6e83e14c8debac878b8d97da133b497b83a3d4a02418c388716fc526c72f69",
+        "app/core/models.py": "c9499ca42105fd52b39febb7d36e1157654fdc5f38d3ae5f220453bf2ce79fa4",
+        "app/contracts/jt_contracts.schema.json": "fd1cde811044a19a89e4090d17f62e18e010e4b6b272abdf57b7a6f767a10648"
+      },
+      "execution_methods_hash": "a9e319a7acdacb443c9f175a6db77545ee6fd0ff32cbf2c0e4dd676c4fc56277"
+    }
+  }
+}

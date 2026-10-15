@@ -1,0 +1,24 @@
+{
+  "passed": 16,
+  "checks": [
+    "same-build C version zero can compare to later guidance",
+    "only audited teaching-only package pair is accepted with disclosure",
+    "comparison never edits original run views",
+    "different workspace rejected",
+    "different cases rejected",
+    "different split rejected",
+    "different repeats rejected",
+    "different settings rejected",
+    "different package rejected",
+    "reordered case ids rejected",
+    "stale evidence rejected",
+    "unfinished run rejected",
+    "changed source hash rejected",
+    "not a later rule version rejected",
+    "text arm not guidance rejected",
+    "cross-owner view refused"
+  ],
+  "new_model_calls": 0,
+  "cloud_writes": 0,
+  "scope": "Actual read-only comparison implementation with explicit owned-view doubles."
+}
