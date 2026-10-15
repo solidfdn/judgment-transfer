@@ -1,0 +1,3 @@
+CONTRACTOR requests may join the same collection queue as EMPLOYEE requests when requested loan days are from 1 to 5 inclusive, equipment available is Yes, and sponsor confirmed is Yes. In that situation, set the isolated review status to READY_FOR_COLLECTION.
+Requests for more than 5 days still require the desk manager’s decision and must remain HELD. This explanation does not grant that decision.
+Missing values, a No checkbox, an unknown borrower type, or requested loan days below 1 still require a hold. Do not infer a missing fact or reserve or release equipment.

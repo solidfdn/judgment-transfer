@@ -1,3 +1,17 @@
+## 1.0.32 — 2026-10-15 JST — Select a feasible comparison and bind guidance to its saved explanation
+
+Category: execution-capacity and teaching-source provenance defect fixes; current product documentation cleanup.
+
+Cause: the normal UI sent every saved case to a run, bypassing the server's representative-case default. A known oversized before/after comparison could exhaust the existing session allowance mid-test. The ordinary-browser equipment-loan check also completed source review, a reviewed workflow and three baseline cases, then stopped at strict teaching-citation validation (`req_367b7b6a73523a7cda075b4f`). The raw failed answer was not available through the ordinary UI; its exact malformed reference is not inferred.
+
+Changed: `app/run_capacity.py`, `app/service.py`, `app/main.py`, the Budget helper in `app/adapters/model.py`, and application UI files provide explicit selection, read-only capacity estimates and a repeated start-time check. Estimates include both runs, up to eight steps per case, configured attempts, and question/guidance generation. The guidance run names its owned baseline and reuses its exact case order. Existing atomic per-call counters and administrator controls remain authoritative; the preview does not reserve capacity or guarantee completion under concurrent consumption.
+
+Teaching generation now returns proposed conditions without generated citation identifiers or quotations. The application checks the persisted human source and content hash, then binds a separate derived rule result to the exact full explanation at `human:1`. The raw provider response and parsed result are retained unchanged. The teaching record identifies this application association separately from semantic support, which still requires human review. Existing Rule contracts, strict source validation, conflict checks and named approval remain mandatory. This change prevents citation-format generation errors in new teaching proposals; it does not reinterpret the unseen failed answer or activate any guidance.
+
+`README.md` and the new English `START_HERE.md` describe the current product, measured expense example, operation and Google components. The Japanese owner runbook is updated separately. Unrequested development caveats are removed from the entry/result copy. `steps/verify_display132.py` and the versioned installer preserve and read-check the existing six displayed results and comparison records before/after deployment. No installer step generates a new model answer.
+
+Verification: focused capacity and source-binding checks, affected budget/history and comparison/display regressions, syntax and payload-integrity checks. The exact case-decision method, streaming transport, model settings and original evidence validator remain unchanged. See `verification/RELEASE132_STATUS.md` and the bounded check reports. The observed browser stop and its three completed baseline cases remain recorded in `verification/LIVE132_BROWSER_GATE.json`. New-version browser acceptance follows deployment; no completed new comparison is claimed here.
+
 ## 1.0.31 — 2026-10-15 JST — Open and compare the verified expense results
 
 Category: result presentation and demo defect fixes. The owner-reported after/holdout controller passed six measured cases, preserving the original baseline, with six calls and cumulative recorded USD 17.925671999999985. Existing Results pairing recognized only A_SOURCE_ONLY and required identical whole-package hashes, so the saved C-version-zero baseline could not be opened as its before result.

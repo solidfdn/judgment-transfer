@@ -252,6 +252,8 @@ def create_app(repo=None, adapter=None, blobs=None, testing=False):
     @app.post('/api/v1/workspaces/freeze')
     @mutation
     def freeze():return service.freeze(body(),g.ctx)
+    @app.post('/api/v1/runs/plan')
+    def run_plan():return jsonify(service.plan_run(body(),g.ctx))
     @app.post('/api/v1/runs')
     @mutation
     def run_create():return service.create_run(body(),g.ctx)

@@ -39,3 +39,5 @@ footer{font-size:11px;line-height:1.8;color:var(--muted);padding:24px 0}.admin{c
 .history-actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:16px}.history-actions .danger{color:#9d322b}
 
 .saved-tests{margin:12px 0 22px}.saved-tests select{min-width:240px;max-width:100%;padding:10px;font:inherit;border:1px solid #dce5df;border-radius:6px;background:#fff}.saved-tests label{font-size:13px}
+
+.case-selection{border:0;border-top:1px solid var(--line);padding:16px 0;margin:12px 0}.case-selection legend{font-size:14px;font-weight:600;padding-right:12px}.case-selection label{display:flex;align-items:flex-start;gap:10px;margin:10px 0;font-weight:400}.case-selection input{flex:none;margin-top:5px}.case-selection span{overflow-wrap:anywhere}#run-capacity:empty,#replay-selection:empty{display:none}

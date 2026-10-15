@@ -2,8 +2,8 @@
   "product": "Judgment Transfer",
   "owner": "SOLIFAN",
   "spec_version": "1.0",
-  "package_version": "1.0.31",
-  "app_version": "1.0.31",
+  "package_version": "1.0.32",
+  "app_version": "1.0.32",
   "baseline_spec": {
     "path": "baseline/Judgment_Transfer_Development_Spec_v1.0_20261010.docx",
     "sha256": "8585fe58d7fdf3511771c0214e960ee7c4091209f7cf60ab5826ca984fb82e07"
@@ -372,5 +372,16 @@
     "cross_package": "Only the exact audited 1.0.29/1.0.30 teaching patch pair, with visible disclosure; all other unequal package hashes are rejected.",
     "preserved": "Execution, validation, model, settings, histories, usage and frozen experiments.",
     "demo": "English-only recorded expense example, verified against all six saved live results before deployment; reading it creates no model call."
+  },
+  "completion_fixes_132": {
+    "category": "Case-selection, execution-capacity and teaching-source provenance defect fixes",
+    "ordinary_session_limits": {
+      "judgment_calls": 12,
+      "model_calls": 24
+    },
+    "capacity": "Read-only preflight estimates selected before/after cases, maximum action steps, configured attempts and question/guidance generation. Existing per-call atomic limits remain authoritative.",
+    "teaching": "The model proposes conditions; the application binds each proposal to the exact persisted human explanation. Raw model output is preserved. Strict evidence and domain validation and named approval remain required.",
+    "preserved": "Original contracts, prior runs including failures, approvals, source versions, model identity, decision generation settings, cumulative USD100 ceiling, allowance grants and counters.",
+    "documentation": "English product entry and operation guide aligned with current functionality."
   }
 }

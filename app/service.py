@@ -305,6 +305,8 @@ class Service:
             error.trace=trace
             raise
         doc={'workspace_id':wid,'teaching':teaching,'source_id':sid,'trace_id':trace['trace_id'],'created_at':now()}
+        if result.get('application_source_binding'):
+            doc['application_source_binding']=copy.deepcopy(result['application_source_binding'])
         if resolutions:doc['citation_resolutions']=resolutions
         if recovery:doc['recovery']=recovery
         wk,tk=('workspaces',wid),('teachings',tid)
@@ -366,10 +368,8 @@ class Service:
             return frozen
         return self.repo.atomic([('workspaces',wid),hk],commit)
 
-    def create_run(self,body,ctx):
+    def run_inputs(self,body,ctx):
         wid=required(body,'workspace_id');ws=self.workspace(wid,ctx)
-        from history import actor
-        person=actor(body)
         if ws.get('recovery_study') and not ctx.get('_recovery111'):
             raise JTError('CONTROLLED_STUDY','This frozen study is advanced through its bounded controller only.',409)
         if ws['status']!='READY':raise JTError('STALE','Review the workflow and source changes before running.',409)
@@ -382,19 +382,33 @@ class Service:
             raise JTError('FROZEN_EXPERIMENT','The frozen experiment uses a different code or model configuration. Saved results remain readable; do not reuse this holdout as a new unseen evaluation.',409)
         domain=self.domain(ws,ws['version'] if arm=='C_JT_RULES' else 0)
         cases=[self.case(wid,c) for c in ws['case_ids'] if self.case(wid,c)['split']==split]
-        if body.get('case_ids'):
-            chosen=body['case_ids']
-            if not set(chosen).issubset({c['case_id'] for c in cases}):raise JTError('INVALID_INPUT','Case selection is outside this split.')
-            cases=[c for c in cases if c['case_id'] in chosen]
-        elif not ctx['admin']:
-            selected=[]
-            for stratum in ('normal','transfer','must_hold'):
-                selected += [c for c in cases if c['stratum']==stratum][:1]
-            cases=selected or cases[:3]
+        from run_capacity import select_cases
+        cases=select_cases(self,body,ctx,ws,domain,cases,arm,split)
         if not cases:raise JTError('CASES_REQUIRED','Import cases first.')
         for case in cases:validate_case(case,domain)
+        return ws,domain,cases,arm,split,repeats
+
+    def plan_run(self,body,ctx):
+        from run_capacity import plan
+        return plan(self,body,ctx,self.run_inputs(body,ctx))
+
+    def create_run(self,body,ctx):
+        # Repeated successful requests remain readable even after their allowance
+        # has been consumed or the workspace has moved to a later version.
         run_id=ident('run',ctx);old=self.repo.get('runs',run_id)
-        if old:return self.run_view(run_id,ctx)
+        if old:
+            self.workspace(required(body,'workspace_id'),ctx)
+            if old['workspace_id']!=body['workspace_id']:
+                raise JTError('IDEMPOTENCY_CONFLICT','This request already identifies a different workspace.',409)
+            return self.run_view(run_id,ctx)
+        from history import actor
+        person=actor(body)
+        selected=self.run_inputs(body,ctx)
+        ws,domain,cases,arm,split,repeats=selected;wid=ws['workspace_id']
+        from run_capacity import plan
+        capacity=plan(self,body,ctx,selected)
+        if not capacity['can_start']:
+            raise JTError('RUN_CAPACITY',capacity['message'],429)
         texts=[self.repo.get('teachings',tid)['teaching']['human_text'] for tid in ws['teaching_ids'] if self.repo.get('teachings',tid)['teaching']['approval_state']=='APPROVED']
         # B gets exactly the approved expert text, with its real citation metadata.
         # It still uses the v0 domain, never the approved v1 rule structure.
@@ -407,7 +421,7 @@ class Service:
                     'status':'PENDING','lease_token':None,'lease_until':0,'attempts':0,'state':copy.deepcopy(case['initial_state']),'step_index':0,'receipt_ids':[],'trace_ids':[]}
         run={**person,'run_id':run_id,'workspace_id':wid,'domain':domain,'domain_hash':digest(domain),'dataset_hash':digest(cases),'prompt_hash':digest({'settings':config.SETTINGS,'arm':arm}),
              'code_hash':config.CODE_HASH,'mode':self.adapter.mode,'model_settings':config.SETTINGS,'arm':arm,'split':split,'repeats':repeats,'case_ids':[c['case_id'] for c in cases],
-             'task_ids':task_ids,'created_at':now(),'cancelled':False,'active_version':ws['version'],'human_text':'\n\n'.join(texts),'source_ids':[s['source_id'] for s in sources],
+             'baseline_run_id':body.get('baseline_run_id'),'task_ids':task_ids,'created_at':now(),'cancelled':False,'active_version':ws['version'],'human_text':'\n\n'.join(texts),'source_ids':[s['source_id'] for s in sources],
              'source_hashes':{s['source_id']:s['version_hash'] for s in self.sources(ws,True)},'evidence_sources_snapshot':copy.deepcopy(self.sources(ws,True)),
              'human_inputs':ws['approved_count'],'shared_trace_ids':list(ws['shared_trace_ids'])}
         wk,rk=('workspaces',wid),('runs',run_id)

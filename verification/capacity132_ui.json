@@ -1,0 +1,20 @@
+{
+  "passed": 13,
+  "checks": [
+    "default UI chooses three representative cases instead of all forty",
+    "baseline sends explicit selected cases and pair preflight",
+    "reopened baseline controls after cases, regardless of current checkboxes",
+    "approved newer guidance enables replay for an opened completed baseline",
+    "unfinished baseline disables replay",
+    "capacity feedback reports a practical case limit",
+    "preflight uses only read-only plan endpoint",
+    "known insufficient allowance stops before run creation",
+    "after execution uses identical saved baseline IDs in plan and creation",
+    "no saved baseline disables replay",
+    "empty selection disables original test with a clear action",
+    "selection and allowance are visible next to the baseline action",
+    "unrequested scope and historical copy removed from entry"
+  ],
+  "new_model_calls": 0,
+  "scope": "Actual UI functions with DOM/API doubles; no browser or cloud mutation."
+}
