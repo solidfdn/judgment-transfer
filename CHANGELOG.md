@@ -1,3 +1,17 @@
+## 1.0.33 — 2026-10-15 JST — Wait 60 seconds and recover one transient decision failure
+
+Category: bounded decision-transport recovery defect fix.
+
+Observed: the ordinary browser walkthrough on deployed 1.0.32 completed source review, named workflow approval and three manual cases. Its first case completed. Its second decision received zero stream chunks and hit the local 35-second first-text cutoff after 35,314 ms. The third case stayed pending. The exact stopped export and original draft are preserved in `verification/browser133/`. No after run or successful recovery is inferred. The reviewer corrected two fixed reason labels before approval; no generated condition changed. Reopening saved work after a page reload passed without model calls.
+
+Changed: `app/config.py` gives each decision generation up to 60 seconds, including the first response, with at most two attempts inside a 125-second model window. The existing one-second backoff and transient-only retry classifier are reused. The unchanged 135-second application commit window remains the outer guard. Invalid or incomplete JSON, schema/evidence rejection, authorization and budget errors never activate a decision or gain a validation retry. Every generation attempt consumes and records its own allowance and cost; failed attempts retain their conservative cost reservation.
+
+`Budget.PUBLIC_DECISIONS` is aligned from 12 to 24 with the unchanged 24-model-call cap, so a three-case before/after plan can account for both attempts without resetting existing usage. The capacity preflight already includes configured attempts. The global USD100 deployment ceiling, daily cap, administrator grants and all counters are unchanged. Source prompts, business decision prompt, contracts, strict validation, approvals and execution are unchanged.
+
+Verification: 27 actual adapter/async-stream/service checks using explicit transport doubles, including zero-text timeout recovery, retry exhaustion, invalid-answer rejection, one committed receipt, idempotency and budget enforcement; 33 affected capacity checks. These are local checks, not new live success claims. The versioned installer preserves and read-checks the existing six expense results and does not generate answers. Old runs keep their code/settings; ordinary browser acceptance continues with a new baseline using the already saved source, approved conditions and case facts after deployment.
+
+Reference: Google Cloud recommends bounded retries with a minimum one-second delay for transient inference failures: https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/api-errors
+
 ## 1.0.32 — 2026-10-15 JST — Select a feasible comparison and bind guidance to its saved explanation
 
 Category: execution-capacity, teaching-source provenance and browser-session continuity defect fixes; current product documentation cleanup.

@@ -2,8 +2,8 @@
   "product": "Judgment Transfer",
   "owner": "SOLIFAN",
   "spec_version": "1.0",
-  "package_version": "1.0.32",
-  "app_version": "1.0.32",
+  "package_version": "1.0.33",
+  "app_version": "1.0.33",
   "baseline_spec": {
     "path": "baseline/Judgment_Transfer_Development_Spec_v1.0_20261010.docx",
     "sha256": "8585fe58d7fdf3511771c0214e960ee7c4091209f7cf60ab5826ca984fb82e07"
@@ -386,5 +386,21 @@
     "session": "One-hour CSRF renewal retains the owner and its allowance. Signed browser-owner cookie validity is bounded at 31 days; the cookie remains non-permanent with unchanged HttpOnly, SameSite and Secure policy. No cross-browser ownership recovery is added.",
     "preserved": "Original contracts, prior runs including failures, approvals, source versions, model identity, decision generation settings, cumulative USD100 ceiling, allowance grants and counters.",
     "documentation": "English product entry and operation guide aligned with current functionality."
+  },
+  "bounded_transport_133": {
+    "category": "Transient decision transport recovery defect fix",
+    "observed_failure": "1.0.32 ordinary browser case received zero chunks for 35 seconds, then stopped after one attempt. Saved export retained.",
+    "generation_seconds_per_attempt": 60,
+    "maximum_attempts": 2,
+    "total_model_window_seconds": 125,
+    "retry_delay_seconds": 1,
+    "retry_only": "HTTP/network timeouts, network/protocol errors, HTTP429/500/502/503/504. No retry of invalid JSON, schema, source evidence, permissions or budget errors.",
+    "ordinary_limits": {
+      "model_calls": 24,
+      "judgment_attempts": 24,
+      "change": "Align decision sublimit with the existing 24-model-call cap; retain all consumed calls and decisions."
+    },
+    "preserved": "Model, prompts, contracts, approval, validation, execution, cumulative USD100 deployment ceiling, administrator grants, usage and every prior run.",
+    "comparison": "New runs pin this new transport protocol. Old runs are read-only; no cross-version pairing exception added."
   }
 }
