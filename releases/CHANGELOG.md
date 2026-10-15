@@ -40,3 +40,9 @@ Changed: baseline controller, focused test/report and BASELINE128_STATUS.
 Compare current-rule compliance separately from complete-policy target metrics;
 keep safe baseline holds distinct from unsafe actions. Preserve terminal failures
 and resume lost responses with the same operation keys. Actual execution pending.
+
+## 2026-10-15 — jt_inspect_teaching_129.py
+
+Category: read-only diagnostic for the owner-reported 1.0.29 teaching citation failure. The four baseline decisions and the source-grounded question succeeded. The teaching request returned INVALID_INPUT after generation. No assumption is made about which quotation failed.
+
+The standalone command pins the installed package, failed checkpoint, request ID, human-source hash, question and current domain; reads the single saved model answer via Firestore GETs; replays the existing rule/evidence validators in memory; prints exact invalid references, the original explanation and proposed rules. Whitespace-only recoverability is diagnostic and never applied to saved rules. It saves local diagnostic copies only. No model, deployment, approval, application POST or cloud write. Four bounded diagnostic checks passed with synthetic sources. Actual saved-answer diagnosis remains pending the owner command. The installed package, previous controllers and all evidence remain unchanged.
