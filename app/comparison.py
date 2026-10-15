@@ -17,8 +17,7 @@ PREPARATION_136='80510025398bd5c2f601462122e60210aa451ef8914fe535370078c3af4282a
 def preparation_transport_pair(a,b):
     if a.get('code_hash')!=PREPARATION_BASELINE:return False
     if b.get('code_hash')==PREPARATION_136:return True
-    return (config.VERSION=='1.0.37' and config.CODE_HASH not in ('local-unpackaged','',PREPARATION_BASELINE,PREPARATION_136) and
-        b.get('code_hash')==config.CODE_HASH)
+    return b.get('code_hash')=='d45fc6052024e9852054fff188aec41b9558c1886d4950c1876bc6cc82f6d036'
 
 def compare(service,before_id,after_id,ctx):
     before=service.run_view(before_id,ctx);after=service.run_view(after_id,ctx)
@@ -28,7 +27,7 @@ def compare(service,before_id,after_id,ctx):
     preparation_patch=preparation_transport_pair(a,b)
     checks={k:a.get(k) is not None and a.get(k)==b.get(k) for k in
             ('workspace_id','mode','split','dataset_hash','repeats','case_ids','model_settings')}
-    checks.update(code=same_code or audited or preparation_patch,complete=before['metrics']['complete'] and after['metrics']['complete'],
+    checks.update(execution_protocol=a.get('execution_protocol')==b.get('execution_protocol'),code=same_code or audited or preparation_patch,complete=before['metrics']['complete'] and after['metrics']['complete'],
                   current_evidence=not before['metrics']['stale'] and not after['metrics']['stale'],
                   guidance_order=a['domain']['version']<b['domain']['version'],
                   arms=a['arm'] in ('A_SOURCE_ONLY','C_JT_RULES') and b['arm']=='C_JT_RULES',

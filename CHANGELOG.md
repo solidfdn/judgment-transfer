@@ -1,3 +1,12 @@
+## 1.0.38 — approved conditions execute without repeated model judgment
+
+- Category: user-authorized execution-policy revision to meet stable automation requirements. This is not a provider or transport fix and changes the C execution protocol. A/B remain model-proposed study paths; historical results are unchanged.
+- Cause: two 60-second, zero-response decision attempts on an already-approved company receipt. Upstream cause remains undetermined. Repeating generative decisions for deterministic approved conditions unnecessarily made case execution depend on model availability.
+- Shared declarative engine applies positive actions, explicit holds and default holds; requires human approval, validates all source references and versions, and keeps existing executor, receipt, lease and CAS guards. No business-specific branch, scoring target, fixture answer or technical-error-to-business-hold fallback.
+- New runs record APPROVED_RULE_ENGINE_V1, APPROVED_RULE / APPROVED_RULE_DEFAULT, source hashes and zero-attempt rule-engine traces. Ordinary UI tests approved v0 before approved guidance, using the same engine after. Mixed model/engine comparisons are refused.
+- USD gate replays existing approved v0/v1 in three new runs (4 before, 4 after, 2 first-use cases); no generation, reapproval or allowance change. Prior baseline, partial after run, pending tasks and failures remain immutable. Publish only verified matching traces/receipts and truthful method labels.
+- Verification: 38 bounded offline checks exercise actual engine, Service create/step/freeze, comparison, controller and publisher with explicit boundary doubles; JS request mapping and syntax checks. Live deployment and zero-model replay remain pending.
+
 ## 1.0.37 — audited compatibility at run creation
 
 - Integration defect fix: apply the existing narrowly audited preparation-only compatibility check in run_capacity.select_cases, as well as comparison/publication. Model settings, mode, workspace, case order, source freshness and earlier approved version checks remain mandatory; old unfinished runs remain immutable.

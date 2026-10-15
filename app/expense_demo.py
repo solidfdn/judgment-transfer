@@ -13,6 +13,17 @@ def recorded_decision_matches(view, task, case, target):
     traces={t['trace_id']:t for t in view.get('traces',[])}
     ids=task.get('trace_ids',[])
     if not ids:return False
+    from approved_execution import decision as approved_decision, PROTOCOL
+    if view['run'].get('execution_protocol')==PROTOCOL:
+        expected=approved_decision(view['run']['domain'],case,case['initial_state'])
+        origin='APPROVED_RULE' if expected['rule_ids'] else 'APPROVED_RULE_DEFAULT'
+        trace=traces.get(ids[0],{})
+        return (len(ids)==1 and expected['action_id']==target and task.get('decision_origin')==origin and
+            task.get('raw_decision')==expected and task.get('decision')==expected and
+            trace.get('mode')=='RULE_ENGINE' and trace.get('purpose')=='approved_rule_execution' and trace.get('attempts')==[] and
+            trace.get('settings')=={'engine':PROTOCOL,'code_hash':view['run']['code_hash']} and
+            trace.get('source_hashes')==view['run']['domain']['source_hashes'] and
+            trace.get('payload')=={'case':case,'state':case['initial_state'],'approved_version':view['run']['domain']['version']} and trace.get('result')==expected)
     if task.get('decision_origin')=='APPROVED_RULE':
         from approved_stop import decision
         expected=decision(view['run']['domain'],case,case['initial_state'],view['run']['arm'])
@@ -40,10 +51,15 @@ def publish(service, body, ctx):
     a,b,h=[views[k] for k in ('baseline','after','holdout')]
     comparison=compare(service,a['run']['run_id'],b['run']['run_id'],ctx)
     wid=a['run']['workspace_id'];ws=service.workspace(wid,ctx)
-    if (service.adapter.mode!='LIVE' or any(v['run']['mode']!='LIVE' for v in views.values()) or
+    from approved_execution import PROTOCOL
+    selected_ids={v['run']['run_id'] for v in views.values()}
+    if (len(selected_ids)!=3 or not selected_ids.issubset(set(ws.get('run_ids',[]))) or
+        any(v['run'].get('execution_protocol')!=PROTOCOL for v in views.values()) or
+        any(v['run']['code_hash']!=a['run']['code_hash'] for v in views.values()) or
+        service.adapter.mode!='LIVE' or any(v['run']['mode']!='LIVE' for v in views.values()) or
         not comparison['comparable'] or
         not ws.get('frozen') or ws.get('version')!=1 or ws.get('approved_count')!=1 or
-        len(ws.get('teaching_ids',[]))!=1 or len(ws.get('run_ids',[]))!=3 or
+        len(ws.get('teaching_ids',[]))!=1 or
         {v['run']['workspace_id'] for v in views.values()}!={wid} or
         (a['run']['code_hash']!=b['run']['code_hash'] and not comparison.get('preparation_transport_only')) or
         h['run']['code_hash']!=b['run']['code_hash'] or
@@ -52,6 +68,8 @@ def publish(service, body, ctx):
         raise JTError('DEMO_RESULT_MISMATCH','The USD comparison and first-use records do not match.',409)
     for kind, selected, expected in [('baseline',cases[:4],['ready_for_approval','hold_case','hold_case','hold_case']),('after',cases[:4],targets[:4]),('holdout',cases[4:],targets[4:])]:
         view=views[kind]
+        from core.models import validate_domain
+        validate_domain(view['run']['domain'],lambda ref:service.source_check(wid,ref))
         if (not view['metrics']['complete'] or view['metrics']['stale'] or
             view['run']['dataset_hash']!=digest(selected) or view['run']['case_ids']!=[c['case_id'] for c in selected] or
             len(view['tasks'])!=len(selected)):
@@ -85,7 +103,7 @@ def publish(service, body, ctx):
             'decision_origin':task.get('decision_origin','MODEL'),
             'explanation':task['decision']['explanation'],'note':notes[i]})
     traces={t['trace_id']:t for v in (b,h) for t in v.get('traces',[])}
-    data={'demo_version':'1.0.37','currency':'USD','kind':'RECORDED_LIVE_EXECUTION','recorded_at':now(),
+    data={'demo_version':'1.0.38','execution_protocol':PROTOCOL,'currency':'USD','kind':'RECORDED_LIVE_EXECUTION','recorded_at':now(),
         'reviewer_name':person['reviewer_name'],'source':policy,'source_id':'expense_sop','source_hash':digest(policy.encode()),
         'human_text':teaching['human_text'],'human_hash':digest(teaching['human_text'].encode()),
         'question':question['text'],'question_id':question['question_id'],'approval_version':1,'cases':rows,
@@ -94,7 +112,7 @@ def publish(service, body, ctx):
         'model_calls':sum(len(t.get('attempts',[])) for t in traces.values()),
         'incremental_cost_usd':sum(x.get('cost_usd',0) for t in traces.values() for x in t.get('attempts',[])),
         'scope':'Fictional USD expense-document precheck. Four matched cases and two first-use cases. A person gives final business approval.',
-        'protocol_note':(comparison.get('code_review')+' ' if comparison.get('preparation_transport_only') else '')+'Same decision model, settings, cases and starting states before and after. Explicit approved stop conditions run before Gemini; their traces identify the rule engine and contain no model attempts. Workflow conditions and case facts were explicitly reviewed; case facts are author-provided document transcriptions.'}
+        'protocol_note':'Same approved-rule engine, code, cases and starting states for both saved workflow versions. Gemini generated the recorded question and guidance proposal; the owner approved the conditions. These ten case executions use no model calls. The comparison replays the already-approved versions, not fresh Gemini judgments. Case facts are author-reviewed document transcriptions.'}
     key=('public_demo','expense_usd134')
     def commit(values):
         if values[key] and values[key]!=data:

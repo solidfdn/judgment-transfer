@@ -1,0 +1,10 @@
+'use strict';
+const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
+const root=path.resolve(__dirname,'..'),s=fs.readFileSync(path.join(root,'app/web/app.js'),'utf8');
+const start=s.indexOf('function runRequest('),end=s.indexOf('function updateRunControls',start);
+const ctx={ws:{workspace_id:'w',version:1},selectedCases:()=>['c'],beforeRun:{run:{workspace_id:'w',run_id:'r',case_ids:['c']},metrics:{complete:true}}};
+vm.createContext(ctx);vm.runInContext(s.slice(start,end),ctx);
+const b=ctx.runRequest('A_SOURCE_ONLY'),a=ctx.runRequest('C_JT_RULES');
+assert.equal(b.arm,'C_JT_RULES');assert.equal(b.approved_version,0);assert.equal(b.plan_comparison,true);assert.equal(a.arm,'C_JT_RULES');assert.equal(a.baseline_run_id,'r');assert(!('approved_version' in a));
+const text='UI request mapping passed: approved v0 baseline and current approved after use the same engine. No browser or cloud operation.';
+fs.writeFileSync(path.join(root,'verification/execution_ui138_offline.json'),JSON.stringify({status:'PASSED',check:text},null,2)+'\n');console.log(text);

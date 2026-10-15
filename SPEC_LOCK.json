@@ -2,8 +2,8 @@
   "product": "Judgment Transfer",
   "owner": "SOLIFAN",
   "spec_version": "1.0",
-  "package_version": "1.0.37",
-  "app_version": "1.0.37",
+  "package_version": "1.0.38",
+  "app_version": "1.0.38",
   "baseline_spec": {
     "path": "baseline/Judgment_Transfer_Development_Spec_v1.0_20261010.docx",
     "sha256": "8585fe58d7fdf3511771c0214e960ee7c4091209f7cf60ab5826ca984fb82e07"
@@ -431,5 +431,15 @@
     "resume": "Reuse saved baseline, question, guidance and approval; start after run only",
     "unchanged": "Provider invocation, model, decision settings, prompt, schema, evidence validation, executor and scorer",
     "limits": "24 total USD attempts including previous calls; USD100 cumulative; 60 seconds per attempt"
+  },
+  "approved_execution_138": {
+    "category": "User-authorized execution-policy revision for stable approved-condition automation; not a transport-only patch.",
+    "engine": "C_JT_RULES executes approved declarative conditions through the shared three-valued engine. Gemini still proposes materials/questions/guidance; A/B retain original model paths.",
+    "protocol": "APPROVED_RULE_ENGINE_V1",
+    "comparison": "Replay saved approved versions 0 and 1 under the same current implementation, cases and starting states. Do not compare the old model baseline against the new engine as a guidance-only experiment.",
+    "generation_calls_in_usd_gate": 0,
+    "new_case_executions": 10,
+    "preserved": "All old successful/failed/pending tasks, approval/source versions, model configuration and cumulative counters. No new generation, repeat approval, cap increase or timeout extension.",
+    "claim_boundary": "Approved workflow execution, not fresh model judgment or proof that silent upstream responses have recovered."
   }
 }

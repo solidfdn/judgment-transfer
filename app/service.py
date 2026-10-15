@@ -380,7 +380,16 @@ class Service:
         if split=='holdout' and not ws['frozen']:raise JTError('FREEZE_REQUIRED','Freeze cases, labels, prompts and rules before evaluation.',409)
         if split=='holdout' and (ws['freeze'].get('code_hash')!=config.CODE_HASH or ws['freeze'].get('model_settings')!=config.SETTINGS):
             raise JTError('FROZEN_EXPERIMENT','The frozen experiment uses a different code or model configuration. Saved results remain readable; do not reuse this holdout as a new unseen evaluation.',409)
-        domain=self.domain(ws,ws['version'] if arm=='C_JT_RULES' else 0)
+        version=body.get('approved_version',ws['version'] if arm=='C_JT_RULES' else 0)
+        if type(version) is not int or version<0 or version>ws['version'] or ('approved_version' in body and arm!='C_JT_RULES') or (split=='holdout' and version!=ws['version']):
+            raise JTError('INVALID_INPUT','Select an existing approved workflow version.')
+        approved=self.repo.get('domains',wid+'-v'+str(version))
+        if not approved or not approved.get('approved_at') or not approved.get('reviewer_name'):
+            raise JTError('APPROVAL_REQUIRED','This workflow version has no recorded human approval.',409)
+        domain=approved['domain']
+        validate_domain(domain,lambda ref:self.source_check(wid,ref))
+        if any(self.source(wid,sid)['version_hash']!=value for sid,value in domain['source_hashes'].items()):
+            raise JTError('STALE','The approved source version has changed.',409)
         cases=[self.case(wid,c) for c in ws['case_ids'] if self.case(wid,c)['split']==split]
         from run_capacity import select_cases
         cases=select_cases(self,body,ctx,ws,domain,cases,arm,split)
@@ -412,7 +421,8 @@ class Service:
         texts=[self.repo.get('teachings',tid)['teaching']['human_text'] for tid in ws['teaching_ids'] if self.repo.get('teachings',tid)['teaching']['approval_state']=='APPROVED']
         # B gets exactly the approved expert text, with its real citation metadata.
         # It still uses the v0 domain, never the approved v1 rule structure.
-        sources=self.sources(ws,human=arm=='B_TEXT_ADDED')
+        sources=([self.source(wid,sid) for sid in domain['source_hashes']] if arm=='C_JT_RULES' else self.sources(ws,human=arm=='B_TEXT_ADDED'))
+        if arm=='C_JT_RULES':texts=[]
         task_ids=[];tasks={}
         for repeat in range(1,repeats+1):
             for case in cases:
@@ -422,8 +432,11 @@ class Service:
         run={**person,'run_id':run_id,'workspace_id':wid,'domain':domain,'domain_hash':digest(domain),'dataset_hash':digest(cases),'prompt_hash':digest({'settings':config.SETTINGS,'arm':arm}),
              'code_hash':config.CODE_HASH,'mode':self.adapter.mode,'model_settings':config.SETTINGS,'arm':arm,'split':split,'repeats':repeats,'case_ids':[c['case_id'] for c in cases],
              'baseline_run_id':body.get('baseline_run_id'),'task_ids':task_ids,'created_at':now(),'cancelled':False,'active_version':ws['version'],'human_text':'\n\n'.join(texts),'source_ids':[s['source_id'] for s in sources],
-             'source_hashes':{s['source_id']:s['version_hash'] for s in self.sources(ws,True)},'evidence_sources_snapshot':copy.deepcopy(self.sources(ws,True)),
-             'human_inputs':ws['approved_count'],'shared_trace_ids':list(ws['shared_trace_ids'])}
+             'source_hashes':{s['source_id']:s['version_hash'] for s in (sources if arm=='C_JT_RULES' else self.sources(ws,True))},'evidence_sources_snapshot':copy.deepcopy(sources if arm=='C_JT_RULES' else self.sources(ws,True)),
+             'human_inputs':(0 if domain['version']==0 else ws['approved_count']),'shared_trace_ids':([] if arm=='C_JT_RULES' and domain['version']==0 else list(ws['shared_trace_ids']))}
+        if arm=='C_JT_RULES':
+            from approved_execution import PROTOCOL
+            run['execution_protocol']=PROTOCOL
         wk,rk=('workspaces',wid),('runs',run_id)
         def commit(values):
             if values[wk]['version']!=ws['version'] or values[wk]['status']!='READY':raise JTError('VERSION_CONFLICT','Workflow changed before the run began.',409)
@@ -482,18 +495,24 @@ class Service:
         task=claimed['task'];case=self.case(wid,task['case_id']);trace=None
         try:
             sources=[self.source(wid,sid) for sid in run['source_ids']]
-            from approved_stop import decision as approved_stop
-            raw=approved_stop(run['domain'],case,task['state'],run['arm'])
-            origin='APPROVED_RULE' if raw is not None else 'MODEL'
-            if raw is None:
-                raw,trace=self.adapter.decide(run['domain'],case,task['state'],run['arm'],run['human_text'],sources,ctx['owner'],ctx['admin'])
-            else:
-                trace={'trace_id':'trace_'+uuid.uuid4().hex,'mode':'RULE_ENGINE','purpose':'approved_rule_hold',
-                    'settings':{'engine':'three_valued_approved_rules','code_hash':config.CODE_HASH},
+            origin='MODEL'
+            if run['arm']=='C_JT_RULES':
+                from approved_execution import decision as approved_decision, PROTOCOL
+                if run.get('execution_protocol')!=PROTOCOL:
+                    raise JTError('RUN_PROTOCOL_CHANGED','Start a separate approved-workflow execution.',409)
+                validate_domain(run['domain'],lambda ref:self.source_check(wid,ref))
+                if any(self.source(wid,sid)['version_hash']!=value for sid,value in run['domain']['source_hashes'].items()):
+                    raise JTError('STALE','The approved source version has changed.',409)
+                raw=approved_decision(run['domain'],case,task['state'])
+                origin='APPROVED_RULE' if raw['rule_ids'] else 'APPROVED_RULE_DEFAULT'
+                trace={'trace_id':'trace_'+uuid.uuid4().hex,'mode':'RULE_ENGINE','purpose':'approved_rule_execution',
+                    'settings':{'engine':PROTOCOL,'code_hash':config.CODE_HASH},
                     'source_hashes':copy.deepcopy(run['domain']['source_hashes']),
-                    'payload':{'case':copy.deepcopy(case),'state':copy.deepcopy(task['state'])},
+                    'payload':{'case':copy.deepcopy(case),'state':copy.deepcopy(task['state']),'approved_version':run['domain']['version']},
                     'attempts':[],'elapsed_ms':round((time.monotonic()-started)*1000),'result':copy.deepcopy(raw)}
                 self.repo.put('traces',trace['trace_id'],trace)
+            else:
+                raw,trace=self.adapter.decide(run['domain'],case,task['state'],run['arm'],run['human_text'],sources,ctx['owner'],ctx['admin'])
             for ref in raw['source_refs']:self.source_check(wid,ref)
             decision,after,terminal=execute(run['domain'],case,task['state'],raw,run['arm']=='C_JT_RULES')
             if not terminal and task['step_index']>=7:raise JTError('STEP_LIMIT','The case reached the eight-step prototype limit.',422)

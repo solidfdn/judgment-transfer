@@ -23,6 +23,9 @@ def select_cases(service, body, ctx, ws, domain, cases, arm, split):
         from comparison import preparation_transport_pair
         compatible_code=(run['code_hash']==config.CODE_HASH or
                          preparation_transport_pair(run,{'code_hash':config.CODE_HASH}))
+        from approved_execution import PROTOCOL
+        if run.get('execution_protocol')!=PROTOCOL:
+            raise JTError('RUN_PROTOCOL_CHANGED','Compare separate executions using the same approved-rule engine.',409)
         if not compatible_code or run['model_settings'] != config.SETTINGS or run['mode'] != service.adapter.mode:
             raise JTError('RUN_PROTOCOL_CHANGED', 'Start a baseline with the current application before comparing new guidance.', 409)
         if chosen is not None and chosen != run['case_ids']:
@@ -50,7 +53,8 @@ def plan(service, body, ctx, inputs):
     pair = body.get('plan_comparison', False)
     if pair and (body.get('baseline_run_id') or split != 'dev' or repeats != 1):
         raise JTError('INVALID_INPUT', 'Plan a comparison from a single development baseline.')
-    decisions = len(cases) * repeats * steps * attempts * (2 if pair else 1)
+    engine=arm=='C_JT_RULES'
+    decisions = 0 if engine else len(cases) * repeats * steps * attempts * (2 if pair else 1)
     # Question and guidance each have at most two generation attempts.
     preparation_attempts=2*attempts if pair else 0
     required = {'judgment_calls': decisions, 'model_calls': decisions + preparation_attempts}
@@ -58,12 +62,12 @@ def plan(service, body, ctx, inputs):
     remaining = service.adapter.budget.public_allowance(ctx['owner']) if limited else None
     can_start = not limited or all(required[key] <= remaining[key] for key in required)
     unit = steps * attempts * (2 if pair else 1)
-    max_cases = max(0, min(40, remaining['judgment_calls'] // unit,
-                          (remaining['model_calls'] - preparation_attempts) // unit)) if limited else None
+    max_cases = (40 if can_start else 0) if engine else (max(0, min(40, remaining['judgment_calls'] // unit,
+                          (remaining['model_calls'] - preparation_attempts) // unit)) if limited else None)
     scope = 'this comparison' if pair else 'this test'
     message = ('Select up to '+str(max_cases)+' cases for '+scope+'.' if max_cases else
                'The remaining allowance is too small for '+scope+'. Ask the application owner to review the test allowance.') if not can_start else ''
     return {'selected_case_ids': [case['case_id'] for case in cases], 'limited': limited,
             'comparison_planned': pair, 'max_cases': max_cases, 'max_steps_per_case': steps, 'attempts_per_step': attempts,
             'required': required, 'remaining': remaining, 'can_start': can_start, 'message': message,
-            'basis': 'Current approved conditions. Allowance is checked again when each AI call starts.'}
+            'basis': ('Approved conditions execute without model calls; question and guidance generation remain budgeted separately.' if engine else 'Model calls remain subject to the recorded allowance.')}
