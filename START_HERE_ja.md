@@ -18,11 +18,11 @@
 
 ## 既存環境を更新する
 
-案内された更新スクリプトをCloud ShellのHOMEに保存し、既存のフォルダで実行します。1.0.32の更新コマンドは次のとおりです。
+案内された更新スクリプトをCloud ShellのHOMEに保存し、既存のフォルダで実行します。1.0.33の更新コマンドは次のとおりです。
 
 ```bash
 cd "$HOME/Judgment_Transfer_Runbook_v1.0" &&
-python3 "$HOME/jt_release_132.py" --deploy
+python3 "$HOME/jt_release_133.py" --deploy
 ```
 
 更新プログラムは元のファイルを照合し、変更対象をバックアップしてデプロイします。`.jt`、既存の資料・承認・検証結果・利用量を保持します。デプロイ後の照合結果と表示URLを確認してください。

@@ -118,7 +118,9 @@ def runtime_diagnostic(client):
             'client_scope': 'process_shared'}
 
 class Budget:
-    PUBLIC_DECISIONS = 12
+    # Every retry consumes the unchanged 24-call session budget. Align the
+    # decision sublimit so a three-case comparison can budget both attempts.
+    PUBLIC_DECISIONS = 24
     PUBLIC_CALLS = 24
     DAILY_DECISIONS = 600
 

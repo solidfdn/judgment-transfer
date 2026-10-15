@@ -1,0 +1,188 @@
+{
+  "actions": [
+    {
+      "action_id": "queue_collection",
+      "description": "Mark the request as ready for collection and add to the queue.",
+      "effects": [
+        {
+          "field_id": "review_status",
+          "value": "READY_FOR_COLLECTION"
+        },
+        {
+          "field_id": "reason",
+          "value": "Employee request meets standard loan requirements"
+        }
+      ],
+      "label": "Ready for Collection",
+      "terminal": true
+    },
+    {
+      "action_id": "hold_request",
+      "description": "Hold request for desk manager's decision or missing information.",
+      "effects": [
+        {
+          "field_id": "review_status",
+          "value": "HELD"
+        },
+        {
+          "field_id": "reason",
+          "value": "Requires desk manager decision, missing information, or is a contractor request"
+        }
+      ],
+      "label": "Hold Request",
+      "terminal": true
+    }
+  ],
+  "default_action_id": "hold_request",
+  "domain_id": "workflow_0b95eb1629b5b4fc71a0982c54620a97",
+  "goal": "Review an equipment loan request and decide whether it can join the collection queue or needs the desk manager’s decision. Record the review status and reason.",
+  "input_fields": [
+    {
+      "description": "The type of the borrower requesting the loan, typically EMPLOYEE or CONTRACTOR.",
+      "field_id": "borrower_type",
+      "label": "Borrower Type",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "description": "The number of days requested for the equipment loan.",
+      "field_id": "requested_loan_days",
+      "label": "Requested Loan Days",
+      "required": true,
+      "type": "number"
+    },
+    {
+      "description": "Checkbox indicating if the requested equipment is available.",
+      "field_id": "equipment_available",
+      "label": "Equipment Available",
+      "required": true,
+      "type": "boolean"
+    },
+    {
+      "description": "Checkbox indicating if the loan sponsor has confirmed the request.",
+      "field_id": "sponsor_confirmed",
+      "label": "Sponsor Confirmed",
+      "required": true,
+      "type": "boolean"
+    }
+  ],
+  "rules": [
+    {
+      "action_id": "queue_collection",
+      "approved_by": null,
+      "priority": 1,
+      "rule_id": "approve_employee_loan",
+      "source_refs": [
+        {
+          "locator": "line:7",
+          "quote": "An EMPLOYEE request may be marked READY_FOR_COLLECTION when requested loan days are from 1 to 5 inclusive, equipment available is Yes, and sponsor confirmed is Yes.",
+          "source_id": "src_1478e0c98965c1c3085a467625e68e76",
+          "version_hash": "e558dbcf12531bf51a06124e6575ef80ebe9c12948e0956db2aa3e1a0d159028"
+        }
+      ],
+      "statement": "An EMPLOYEE request may be marked READY_FOR_COLLECTION when requested loan days are from 1 to 5 inclusive, equipment available is Yes, and sponsor confirmed is Yes.",
+      "when": {
+        "all": [
+          {
+            "field_id": "borrower_type",
+            "operator": "eq",
+            "value": "EMPLOYEE"
+          },
+          {
+            "field_id": "requested_loan_days",
+            "operator": "gte",
+            "value": 1
+          },
+          {
+            "field_id": "requested_loan_days",
+            "operator": "lte",
+            "value": 5
+          },
+          {
+            "field_id": "equipment_available",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "field_id": "sponsor_confirmed",
+            "operator": "eq",
+            "value": true
+          }
+        ],
+        "any": []
+      }
+    },
+    {
+      "action_id": "hold_request",
+      "approved_by": null,
+      "priority": 2,
+      "rule_id": "hold_long_loan",
+      "source_refs": [
+        {
+          "locator": "line:8",
+          "quote": "A request for more than 5 days requires the desk manager's decision and must remain HELD, even when equipment is available and the sponsor has confirmed.",
+          "source_id": "src_1478e0c98965c1c3085a467625e68e76",
+          "version_hash": "e558dbcf12531bf51a06124e6575ef80ebe9c12948e0956db2aa3e1a0d159028"
+        }
+      ],
+      "statement": "A request for more than 5 days requires the desk manager's decision and must remain HELD.",
+      "when": {
+        "all": [
+          {
+            "field_id": "requested_loan_days",
+            "operator": "gt",
+            "value": 5
+          }
+        ],
+        "any": []
+      }
+    },
+    {
+      "action_id": "hold_request",
+      "approved_by": null,
+      "priority": 3,
+      "rule_id": "hold_invalid_days",
+      "source_refs": [
+        {
+          "locator": "line:9",
+          "quote": "If a required value is missing, a checkbox is No, the borrower type is unknown, or requested loan days are less than 1, keep the request HELD",
+          "source_id": "src_1478e0c98965c1c3085a467625e68e76",
+          "version_hash": "e558dbcf12531bf51a06124e6575ef80ebe9c12948e0956db2aa3e1a0d159028"
+        }
+      ],
+      "statement": "If requested loan days are less than 1, keep the request HELD.",
+      "when": {
+        "all": [
+          {
+            "field_id": "requested_loan_days",
+            "operator": "lt",
+            "value": 1
+          }
+        ],
+        "any": []
+      }
+    }
+  ],
+  "schema_version": "1.0",
+  "source_hashes": {
+    "src_1478e0c98965c1c3085a467625e68e76": "e558dbcf12531bf51a06124e6575ef80ebe9c12948e0956db2aa3e1a0d159028"
+  },
+  "state_fields": [
+    {
+      "description": "The current status of the loan request review.",
+      "field_id": "review_status",
+      "label": "Review Status",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "description": "The recorded justification or reason for the review outcome status.",
+      "field_id": "reason",
+      "label": "Reason",
+      "required": true,
+      "type": "string"
+    }
+  ],
+  "title": "Equipment Loan Request Review",
+  "version": 0
+}

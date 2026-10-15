@@ -1,0 +1,24 @@
+{
+  "status": "STOPPED_AT_DECISION_TRANSPORT",
+  "observed_version": "1.0.32",
+  "channel": "Ordinary browser UI",
+  "workspace_id": "ws_fe1de7a5189162de7368e33317d0ea8a",
+  "run_id": "run_9e5d3f037feb5508f246c2baf45a7a0f",
+  "source_review": "PASSED",
+  "workflow_review": "Approved after changing static reason text to refer to the saved per-case decision explanation. No rule or condition changed.",
+  "manual_cases": 3,
+  "completed_cases": 1,
+  "failed_cases": 1,
+  "pending_cases": 1,
+  "failure": {
+    "trace_id": "trace_d95b02fa71404bcc9e5ae94ff3eeb61a",
+    "chunk_count": 0,
+    "first_text_timeout_ms": 35000,
+    "attempts": 1,
+    "error_type": "ReadTimeout"
+  },
+  "after_run_performed": false,
+  "source_regeneration": false,
+  "scope": "Preserved actual 1.0.32 browser stop. No successful recovery is claimed.",
+  "saved_work_reload": "PASSED: original inputs, three cases and saved work reopened through Continue saved work without model calls."
+}
