@@ -1,0 +1,485 @@
+{
+  "schema_version": "1.0",
+  "domain_id": "expense_review",
+  "version": 1,
+  "title": "Accommodation reimbursement precheck",
+  "goal": "Check fictional reimbursement documents, identify missing evidence or business exceptions, and record only an isolated precheck status before human expense approval.",
+  "input_fields": [
+    {
+      "field_id": "claimant_name",
+      "label": "Claimant",
+      "type": "string",
+      "description": "Employee name on the reimbursement request.",
+      "required": true
+    },
+    {
+      "field_id": "claimed_amount_jpy",
+      "label": "Claimed amount (JPY)",
+      "type": "number",
+      "description": "Amount entered on the claim; do not replace it with a corrected amount.",
+      "required": true
+    },
+    {
+      "field_id": "approved_stay_start",
+      "label": "Approved stay start",
+      "type": "string",
+      "description": "Approved trip start date as written on the claim, in YYYY-MM-DD format.",
+      "required": true
+    },
+    {
+      "field_id": "approved_stay_end",
+      "label": "Approved stay end",
+      "type": "string",
+      "description": "Approved trip end date as written on the claim, in YYYY-MM-DD format.",
+      "required": true
+    },
+    {
+      "field_id": "receipt_addressee_name",
+      "label": "Receipt addressee",
+      "type": "string",
+      "description": "Exact Bill to name on the hotel payment document.",
+      "required": true
+    },
+    {
+      "field_id": "receipt_guest_name",
+      "label": "Hotel guest",
+      "type": "string",
+      "description": "Exact guest name on the hotel payment document.",
+      "required": true
+    },
+    {
+      "field_id": "receipt_stay_start",
+      "label": "Hotel stay start",
+      "type": "string",
+      "description": "Actual stay start stated on the hotel document, in YYYY-MM-DD format.",
+      "required": true
+    },
+    {
+      "field_id": "receipt_stay_end",
+      "label": "Hotel stay end",
+      "type": "string",
+      "description": "Actual stay end stated on the hotel document, in YYYY-MM-DD format.",
+      "required": true
+    },
+    {
+      "field_id": "employee_payment_amount_jpy",
+      "label": "Employee-paid amount (JPY)",
+      "type": "number",
+      "description": "Employee card payment explicitly stated by the hotel; null if not stated. Never derive it by subtraction.",
+      "required": true
+    },
+    {
+      "field_id": "employee_payment_status",
+      "label": "Employee payment status",
+      "type": "string",
+      "description": "Status of the employee payment, not the overall bill. Null when not stated.",
+      "required": true
+    },
+    {
+      "field_id": "receipt_total_jpy",
+      "label": "Total lodging charge (JPY)",
+      "type": "number",
+      "description": "Hotel total, which may include payments by different payers.",
+      "required": true
+    },
+    {
+      "field_id": "company_payment_amount_jpy",
+      "label": "Company prepayment (JPY)",
+      "type": "number",
+      "description": "Company payment explicitly stated by the hotel; null when not stated.",
+      "required": true
+    },
+    {
+      "field_id": "exception_note",
+      "label": "Employee note",
+      "type": "string",
+      "description": "Verbatim employee note. A note is not a manager's approval.",
+      "required": true
+    }
+  ],
+  "state_fields": [
+    {
+      "field_id": "status",
+      "label": "Review status",
+      "type": "string",
+      "description": "Isolated documentary precheck status; never a payment status.",
+      "required": true
+    }
+  ],
+  "actions": [
+    {
+      "action_id": "ready_for_approval",
+      "label": "Complete documentary precheck",
+      "description": "Mark this isolated case ready for a manager's business approval. This is not expense approval or payment.",
+      "effects": [
+        {
+          "field_id": "status",
+          "value": "READY_FOR_BUSINESS_APPROVAL"
+        }
+      ],
+      "terminal": true
+    },
+    {
+      "action_id": "return_for_correction",
+      "label": "Mark for correction",
+      "description": "Record a known document mismatch in this isolated case. Do not contact the claimant or change a payment.",
+      "effects": [
+        {
+          "field_id": "status",
+          "value": "RETURNED_FOR_CORRECTION"
+        }
+      ],
+      "terminal": true
+    },
+    {
+      "action_id": "hold_case",
+      "label": "Hold for clarification or review",
+      "description": "Keep incomplete evidence or a business exception for human review in this isolated simulation.",
+      "effects": [
+        {
+          "field_id": "status",
+          "value": "HELD"
+        }
+      ],
+      "terminal": true
+    }
+  ],
+  "rules": [
+    {
+      "rule_id": "expense_changed_stay",
+      "priority": 10,
+      "statement": "A stay outside the recorded approved dates requires a manager's decision.",
+      "when": {
+        "all": [],
+        "any": [
+          {
+            "field_id": "receipt_stay_start",
+            "operator": "ne",
+            "rhs_field_id": "approved_stay_start"
+          },
+          {
+            "field_id": "receipt_stay_end",
+            "operator": "ne",
+            "rhs_field_id": "approved_stay_end"
+          }
+        ]
+      },
+      "action_id": "hold_case",
+      "source_refs": [
+        {
+          "source_id": "expense_sop",
+          "version_hash": "8548c15f795f156db72efbd3b91c332e8ef08a590e31509070a35f7e2e355d47",
+          "locator": "line:5",
+          "quote": "Use the approved stay dates recorded on the claim form. If either hotel stay date differs, hold for a manager's decision on the changed stay; matching amounts do not resolve this exception."
+        },
+        {
+          "source_id": "expense_sop",
+          "version_hash": "8548c15f795f156db72efbd3b91c332e8ef08a590e31509070a35f7e2e355d47",
+          "locator": "line:12",
+          "quote": "Changed-trip necessity and exceptions to the approved stay remain a manager's business decision. A task-owner clarification of document checks does not grant that approval."
+        }
+      ],
+      "approved_by": null
+    },
+    {
+      "rule_id": "expense_guest_mismatch",
+      "priority": 20,
+      "statement": "Return a known mismatch between the claimant and the hotel guest.",
+      "when": {
+        "all": [
+          {
+            "field_id": "receipt_guest_name",
+            "operator": "ne",
+            "rhs_field_id": "claimant_name"
+          }
+        ],
+        "any": []
+      },
+      "action_id": "return_for_correction",
+      "source_refs": [
+        {
+          "source_id": "expense_sop",
+          "version_hash": "8548c15f795f156db72efbd3b91c332e8ef08a590e31509070a35f7e2e355d47",
+          "locator": "line:6",
+          "quote": "The hotel guest must match the claimant. A known guest-name mismatch is returned for correction."
+        }
+      ],
+      "approved_by": null
+    },
+    {
+      "rule_id": "expense_personal_amount_mismatch",
+      "priority": 30,
+      "statement": "Return a personal receipt when the stated paid employee amount differs from the claim.",
+      "when": {
+        "all": [
+          {
+            "field_id": "receipt_addressee_name",
+            "operator": "eq",
+            "rhs_field_id": "claimant_name"
+          },
+          {
+            "field_id": "receipt_guest_name",
+            "operator": "eq",
+            "rhs_field_id": "claimant_name"
+          },
+          {
+            "field_id": "employee_payment_status",
+            "operator": "eq",
+            "value": "PAID"
+          },
+          {
+            "field_id": "claimed_amount_jpy",
+            "operator": "ne",
+            "rhs_field_id": "employee_payment_amount_jpy"
+          }
+        ],
+        "any": []
+      },
+      "action_id": "return_for_correction",
+      "source_refs": [
+        {
+          "source_id": "expense_sop",
+          "version_hash": "8548c15f795f156db72efbd3b91c332e8ef08a590e31509070a35f7e2e355d47",
+          "locator": "line:7",
+          "quote": "For a receipt addressed to the claimant, use the explicitly stated employee-paid amount marked PAID. Compare the claim with that amount, not with a total that includes another payer."
+        },
+        {
+          "source_id": "expense_sop",
+          "version_hash": "8548c15f795f156db72efbd3b91c332e8ef08a590e31509070a35f7e2e355d47",
+          "locator": "line:8",
+          "quote": "For an accepted receipt with an identified employee payment marked PAID, a known amount mismatch is returned for correction."
+        }
+      ],
+      "approved_by": null
+    },
+    {
+      "rule_id": "expense_personal_complete",
+      "priority": 90,
+      "statement": "Complete the documentary precheck for a matching personal receipt with an explicitly stated paid employee amount.",
+      "when": {
+        "all": [
+          {
+            "field_id": "receipt_addressee_name",
+            "operator": "eq",
+            "rhs_field_id": "claimant_name"
+          },
+          {
+            "field_id": "receipt_guest_name",
+            "operator": "eq",
+            "rhs_field_id": "claimant_name"
+          },
+          {
+            "field_id": "receipt_stay_start",
+            "operator": "eq",
+            "rhs_field_id": "approved_stay_start"
+          },
+          {
+            "field_id": "receipt_stay_end",
+            "operator": "eq",
+            "rhs_field_id": "approved_stay_end"
+          },
+          {
+            "field_id": "employee_payment_status",
+            "operator": "eq",
+            "value": "PAID"
+          },
+          {
+            "field_id": "claimed_amount_jpy",
+            "operator": "eq",
+            "rhs_field_id": "employee_payment_amount_jpy"
+          }
+        ],
+        "any": []
+      },
+      "action_id": "ready_for_approval",
+      "source_refs": [
+        {
+          "source_id": "expense_sop",
+          "version_hash": "8548c15f795f156db72efbd3b91c332e8ef08a590e31509070a35f7e2e355d47",
+          "locator": "line:7",
+          "quote": "For a receipt addressed to the claimant, use the explicitly stated employee-paid amount marked PAID. Compare the claim with that amount, not with a total that includes another payer."
+        },
+        {
+          "source_id": "expense_sop",
+          "version_hash": "8548c15f795f156db72efbd3b91c332e8ef08a590e31509070a35f7e2e355d47",
+          "locator": "line:9",
+          "quote": "Mark the documentary precheck complete only when claimant and guest match, both stay dates match the approved dates, the receipt is accepted, and the claimed amount equals the stated employee-paid amount marked PAID."
+        },
+        {
+          "source_id": "expense_sop",
+          "version_hash": "8548c15f795f156db72efbd3b91c332e8ef08a590e31509070a35f7e2e355d47",
+          "locator": "line:13",
+          "quote": "READY_FOR_BUSINESS_APPROVAL means only that this documentary precheck is complete. RETURNED_FOR_CORRECTION and HELD are isolated simulation states, not communications or payment instructions."
+        }
+      ],
+      "approved_by": null
+    },
+    {
+      "rule_id": "expense_company_amount_mismatch",
+      "priority": 30,
+      "statement": "Return a company-addressed folio when its explicitly stated paid employee amount differs from the claim.",
+      "when": {
+        "all": [
+          {
+            "field_id": "receipt_addressee_name",
+            "operator": "eq",
+            "value": "Cedarline Services"
+          },
+          {
+            "field_id": "receipt_guest_name",
+            "operator": "eq",
+            "rhs_field_id": "claimant_name"
+          },
+          {
+            "field_id": "employee_payment_status",
+            "operator": "eq",
+            "value": "PAID"
+          },
+          {
+            "field_id": "claimed_amount_jpy",
+            "operator": "ne",
+            "rhs_field_id": "employee_payment_amount_jpy"
+          }
+        ],
+        "any": []
+      },
+      "action_id": "return_for_correction",
+      "source_refs": [
+        {
+          "source_id": "expense_sop",
+          "version_hash": "8548c15f795f156db72efbd3b91c332e8ef08a590e31509070a35f7e2e355d47",
+          "locator": "line:8",
+          "quote": "For an accepted receipt with an identified employee payment marked PAID, a known amount mismatch is returned for correction."
+        },
+        {
+          "source_id": "expense_sop",
+          "version_hash": "8548c15f795f156db72efbd3b91c332e8ef08a590e31509070a35f7e2e355d47",
+          "locator": "line:11",
+          "quote": "If a required value, payer allocation or payment status is missing, hold and request the specific missing evidence. Do not subtract a company payment from a total, reverse-calculate from the claim, or infer who paid."
+        },
+        {
+          "source_id": "expense_teaching_draft",
+          "version_hash": "0617df4ddadcf832ae931e4657581741bc5201684a82a0b2f08c3d9287cd8188",
+          "locator": "line:3",
+          "quote": "A folio addressed to Cedarline Services may be accepted for this precheck when the named guest matches the claimant, the employee-paid amount is explicitly identified, and that employee payment is marked PAID."
+        },
+        {
+          "source_id": "expense_teaching_draft",
+          "version_hash": "0617df4ddadcf832ae931e4657581741bc5201684a82a0b2f08c3d9287cd8188",
+          "locator": "line:4",
+          "quote": "Compare the claimed amount directly with that stated employee-paid amount, not the total lodging charge. A known mismatch is returned for correction."
+        },
+        {
+          "source_id": "expense_teaching_draft",
+          "version_hash": "0617df4ddadcf832ae931e4657581741bc5201684a82a0b2f08c3d9287cd8188",
+          "locator": "line:6",
+          "quote": "Do not calculate or infer a missing payment allocation. Hold and request evidence that explicitly identifies the employee-paid amount and its payment status."
+        }
+      ],
+      "approved_by": null
+    },
+    {
+      "rule_id": "expense_company_complete",
+      "priority": 90,
+      "statement": "Complete the precheck for an accepted company-addressed folio only when identity, approved stay dates and the explicitly stated paid employee amount match.",
+      "when": {
+        "all": [
+          {
+            "field_id": "receipt_addressee_name",
+            "operator": "eq",
+            "value": "Cedarline Services"
+          },
+          {
+            "field_id": "receipt_guest_name",
+            "operator": "eq",
+            "rhs_field_id": "claimant_name"
+          },
+          {
+            "field_id": "receipt_stay_start",
+            "operator": "eq",
+            "rhs_field_id": "approved_stay_start"
+          },
+          {
+            "field_id": "receipt_stay_end",
+            "operator": "eq",
+            "rhs_field_id": "approved_stay_end"
+          },
+          {
+            "field_id": "employee_payment_status",
+            "operator": "eq",
+            "value": "PAID"
+          },
+          {
+            "field_id": "claimed_amount_jpy",
+            "operator": "eq",
+            "rhs_field_id": "employee_payment_amount_jpy"
+          }
+        ],
+        "any": []
+      },
+      "action_id": "ready_for_approval",
+      "source_refs": [
+        {
+          "source_id": "expense_sop",
+          "version_hash": "8548c15f795f156db72efbd3b91c332e8ef08a590e31509070a35f7e2e355d47",
+          "locator": "line:9",
+          "quote": "Mark the documentary precheck complete only when claimant and guest match, both stay dates match the approved dates, the receipt is accepted, and the claimed amount equals the stated employee-paid amount marked PAID."
+        },
+        {
+          "source_id": "expense_sop",
+          "version_hash": "8548c15f795f156db72efbd3b91c332e8ef08a590e31509070a35f7e2e355d47",
+          "locator": "line:11",
+          "quote": "If a required value, payer allocation or payment status is missing, hold and request the specific missing evidence. Do not subtract a company payment from a total, reverse-calculate from the claim, or infer who paid."
+        },
+        {
+          "source_id": "expense_sop",
+          "version_hash": "8548c15f795f156db72efbd3b91c332e8ef08a590e31509070a35f7e2e355d47",
+          "locator": "line:12",
+          "quote": "Changed-trip necessity and exceptions to the approved stay remain a manager's business decision. A task-owner clarification of document checks does not grant that approval."
+        },
+        {
+          "source_id": "expense_sop",
+          "version_hash": "8548c15f795f156db72efbd3b91c332e8ef08a590e31509070a35f7e2e355d47",
+          "locator": "line:13",
+          "quote": "READY_FOR_BUSINESS_APPROVAL means only that this documentary precheck is complete. RETURNED_FOR_CORRECTION and HELD are isolated simulation states, not communications or payment instructions."
+        },
+        {
+          "source_id": "expense_teaching_draft",
+          "version_hash": "0617df4ddadcf832ae931e4657581741bc5201684a82a0b2f08c3d9287cd8188",
+          "locator": "line:3",
+          "quote": "A folio addressed to Cedarline Services may be accepted for this precheck when the named guest matches the claimant, the employee-paid amount is explicitly identified, and that employee payment is marked PAID."
+        },
+        {
+          "source_id": "expense_teaching_draft",
+          "version_hash": "0617df4ddadcf832ae931e4657581741bc5201684a82a0b2f08c3d9287cd8188",
+          "locator": "line:4",
+          "quote": "Compare the claimed amount directly with that stated employee-paid amount, not the total lodging charge. A known mismatch is returned for correction."
+        },
+        {
+          "source_id": "expense_teaching_draft",
+          "version_hash": "0617df4ddadcf832ae931e4657581741bc5201684a82a0b2f08c3d9287cd8188",
+          "locator": "line:6",
+          "quote": "Do not calculate or infer a missing payment allocation. Hold and request evidence that explicitly identifies the employee-paid amount and its payment status."
+        },
+        {
+          "source_id": "expense_teaching_draft",
+          "version_hash": "0617df4ddadcf832ae931e4657581741bc5201684a82a0b2f08c3d9287cd8188",
+          "locator": "line:7",
+          "quote": "Both hotel stay dates must match the approved stay dates. A changed stay still requires a manager's decision; this clarification does not approve an extension."
+        },
+        {
+          "source_id": "expense_teaching_draft",
+          "version_hash": "0617df4ddadcf832ae931e4657581741bc5201684a82a0b2f08c3d9287cd8188",
+          "locator": "line:8",
+          "quote": "Matching evidence permits only READY_FOR_BUSINESS_APPROVAL in the isolated simulation, never final expense approval or payment."
+        }
+      ],
+      "approved_by": null
+    }
+  ],
+  "default_action_id": "hold_case",
+  "source_hashes": {
+    "expense_sop": "8548c15f795f156db72efbd3b91c332e8ef08a590e31509070a35f7e2e355d47",
+    "expense_teaching_draft": "0617df4ddadcf832ae931e4657581741bc5201684a82a0b2f08c3d9287cd8188"
+  }
+}

@@ -180,6 +180,11 @@ class API:
         if admin:self.headers['X-JT-Admin']=gc('secrets','versions','access','latest','--secret=jt-admin',sensitive=True)
         if private:self.headers['Authorization']='Bearer '+gc('auth','print-identity-token',project=False,sensitive=True)
     def call(self,path,data=None,key=None,files=None):
+        named = path in ('/domains/approve','/domains/rollback','/cases/import','/cases/confirm','/runs','/workspaces/freeze','/history/fix') or path.startswith('/teachings/') and path.endswith('/approve')
+        if data is not None and named:
+            data=dict(data)
+            if not data.get('reviewer_name'):data['reviewer_name']=os.getenv('JT_REVIEWER_NAME','').strip()
+            if not data['reviewer_name']:raise Stop('REVIEWER_REQUIRED','記録を確定する担当者名を JT_REVIEWER_NAME に設定してください。自動で別の氏名は補いません。')
         headers=dict(self.headers);headers['Idempotency-Key']=key or str(uuid.uuid4())
         if files:
             boundary='jt'+hashed(key or str(uuid.uuid4()))[:24];chunks=[]
@@ -193,11 +198,13 @@ class API:
         try:
             with urllib.request.urlopen(req,timeout=170) as response:value=json.load(response)
         except urllib.error.HTTPError as error:
+            detail={}
             try:detail=json.loads(error.read()).get('error',{});message=detail.get('code','HTTP_'+str(error.code))+': '+detail.get('message','Request stopped.')
             except (ValueError,AttributeError):message='HTTP_'+str(error.code)+'。Cloud Runの権限またはポリシーを確認してください。'
-            raise Stop('APP_REQUEST_FAILED',message)
+            failure=Stop('APP_REQUEST_FAILED',message);failure.detail=detail;raise failure
         except (urllib.error.URLError,TimeoutError):raise Stop('NETWORK_INTERRUPTED','通信が中断されました。保存済みrun IDと同じrequest IDで再開できます。')
-        if 'error' in value:raise Stop('APP_REQUEST_FAILED',value['error']['code']+': '+value['error']['message'])
+        if 'error' in value:
+            failure=Stop('APP_REQUEST_FAILED',value['error']['code']+': '+value['error']['message']);failure.detail=value['error'];raise failure
         return value
 
 def step05():

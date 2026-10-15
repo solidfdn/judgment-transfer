@@ -1,0 +1,30 @@
+{
+  "passed": 22,
+  "checks": [
+    "provider construction does not mutate the validation contract",
+    "wire retains object keys, required fields and additional-property rejection",
+    "wire retains the six aspect identifiers",
+    "schema property names that match constraint names are retained",
+    "review provider grammar has no array, string-length or pattern bounds",
+    "case provider grammar has no array, string-length or pattern bounds",
+    "legacy extraction provider grammar has no array, string-length or pattern bounds",
+    "real invoke sends compact schema and no duplicated contract in system prompt",
+    "actual trace records both schemas and nonstream extraction transport",
+    "real service saves the six-perspective review with exact evidence",
+    "too few perspectives remains rejected by strict server contract",
+    "long finding remains rejected by strict server contract",
+    "too many questions remains rejected by strict server contract",
+    "invalid field identifier remains rejected by strict server contract",
+    "wrong count is rejected after generation, within the existing two-attempt cap",
+    "contract failure trace includes path and keyword, no returned content",
+    "failed review cannot replace the last valid review",
+    "duplicate aspect rejected by real service evidence/coverage validation",
+    "invented quotation rejected by real service evidence/coverage validation",
+    "400 is recorded once and not automatically retried",
+    "administrator receives only this request bounded diagnostic",
+    "public caller receives no provider diagnostic"
+  ],
+  "provider": "explicit SDK/HTTP doubles",
+  "real_google_acceptance": "not executed here; required deployed gate",
+  "new_model_calls": 0
+}

@@ -1,0 +1,42 @@
+{
+  "version": "1.0.18",
+  "date": "2026-10-14",
+  "scope": "Presentation and case-entry changes only; backend VERSION only.",
+  "checks": {
+    "javascript_syntax": "PASS",
+    "custom_case_input_types_nulls_initial_state_limit_and_lock": "PASS - Node VM with minimal DOM",
+    "live_ui_saved_exports": "PASS - six exports, 216 decisions, four failures retained",
+    "comparable_before_after_case_display": "PASS - recorded support A/C",
+    "guided_demo": {
+      "passed": true,
+      "scope": "DOM logic simulation, not a browser rendering test",
+      "languages": 2,
+      "stages_per_language": 5,
+      "cases_per_language": 3,
+      "checks": [
+        "case/decision/receipt association",
+        "forward/back/restart",
+        "language switch",
+        "checklist download",
+        "no model request"
+      ],
+      "browser_visual_qa": "not executed: cloud browser blocks local file URLs; Cloud Console unavailable",
+      "new_model_calls": 0
+    },
+    "saved_demo_evidence": "PASS - nine task decisions, receipts and case facts match the saved exports; approved explanation hash and original source match",
+    "installer": "PASS - offline baseline install, backup, idempotence, collision/mixed-state rejection, recorded interruption resume, original .jt record protection, read-only six-export snapshot, stubbed deployment/served asset checks",
+    "new_model_calls": 0,
+    "new_cloud_calls": 0
+  },
+  "not_executed": {
+    "rendered_browser_acceptance": "Not executed. Cloud Console was unavailable; local-file browser access was rejected by browser policy. DOM execution is not rendered browser acceptance.",
+    "cloud_deployment": "Not executed in this preparation session."
+  },
+  "preserved_limits": {
+    "authorized_grant": 251,
+    "owner_session_calls": 509,
+    "retry_allowance": 6,
+    "cumulative_model_budget_usd": 20
+  },
+  "claim_boundary": "No new measured performance, whole-job automation, superiority to text-only input, deployment completion or award likelihood is claimed."
+}

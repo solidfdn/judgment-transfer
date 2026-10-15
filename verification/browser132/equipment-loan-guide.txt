@@ -1,0 +1,11 @@
+Cedarline Services — equipment loan desk guide
+Purpose: review an equipment loan request and decide whether it can join the collection queue or needs the desk manager's decision.
+Work only in the isolated review record. Do not reserve or release equipment, contact anyone, or change an inventory system.
+The request records borrower type as EMPLOYEE or CONTRACTOR, requested loan days as a whole number, and two checkboxes: equipment available and sponsor confirmed.
+Copy the two checkboxes as recorded. They are facts from the request, not judgments made by the reviewer.
+Every new request begins with review status NEW.
+An EMPLOYEE request may be marked READY_FOR_COLLECTION when requested loan days are from 1 to 5 inclusive, equipment available is Yes, and sponsor confirmed is Yes.
+A request for more than 5 days requires the desk manager's decision and must remain HELD, even when equipment is available and the sponsor has confirmed.
+If a required value is missing, a checkbox is No, the borrower type is unknown, or requested loan days are less than 1, keep the request HELD and ask for the specific missing information or decision.
+This guide does not state whether CONTRACTOR requests can join the ordinary collection queue. Ask the equipment desk owner to explain that rule.
+The review is complete when the isolated review status is READY_FOR_COLLECTION or HELD and the reason is recorded.

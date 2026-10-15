@@ -1,0 +1,26 @@
+{
+  "passed": 18,
+  "checks": [
+    "exactly six decisions with no rereading or generation",
+    "named approval and version one",
+    "same four development cases compared",
+    "two first-use holdouts ready and correction",
+    "original baseline immutable despite dynamic export metadata",
+    "both package hashes disclosed",
+    "named approval freeze and two result histories",
+    "terminal rerun adds no write or call",
+    "pause on lost approve",
+    "resume same writes and six decisions approve",
+    "pause on lost /workspaces/freeze",
+    "resume same writes and six decisions /workspaces/freeze",
+    "pause on lost /runs",
+    "resume same writes and six decisions /runs",
+    "pause on lost step",
+    "resume same writes and six decisions step",
+    "real failed task stops before freeze",
+    "failed result never automatically reruns"
+  ],
+  "new_model_calls": 0,
+  "cloud_writes": 0,
+  "scope": "Real local approval, run, freeze and history services with explicit decision/API doubles; identity pins substituted only in test."
+}

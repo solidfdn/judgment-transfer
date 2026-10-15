@@ -1,0 +1,17 @@
+{
+  "passed": 11,
+  "checks": [
+    "flagged approval visibility",
+    "flagged revise visibility",
+    "flagged draft emphasizes revision",
+    "untrusted field text is escaped",
+    "clean approval visibility",
+    "clean revise visibility",
+    "approved approval visibility",
+    "approved revise visibility",
+    "absence text agrees with evaluator",
+    "legacy presence wording retained",
+    "revision control has one stable ID"
+  ],
+  "scope": "Actual UI functions with DOM doubles; rendered browser validation pending."
+}

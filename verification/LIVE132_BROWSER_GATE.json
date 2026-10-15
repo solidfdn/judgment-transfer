@@ -1,0 +1,59 @@
+{
+  "status": "STOPPED_AT_TEACHING_VALIDATION",
+  "observed_version": "1.0.31",
+  "channel": "Ordinary browser UI, no admin token or runbook API calls",
+  "reviewer_name": "SOLIFAN UI validation",
+  "workspace_id": "ws_7710d55d484f06b3df60b6f218347a88",
+  "baseline_run_id": "run_346711c04d7d36df0853bc6b7d880a11",
+  "code_hash": "59739e251b9de15c7d82fbca292152abe16752cd6397d75cb5346587733de2f8",
+  "source_review": "PASSED; identified missing contractor eligibility condition",
+  "workflow_draft": "PASSED; reviewed and approved through the form",
+  "manual_cases": 3,
+  "baseline": [
+    {
+      "case_id": "case_b0a8226885d04f6b8761d5bd72c55010",
+      "status": "COMPLETED",
+      "raw_model_action": "mark_ready_for_collection",
+      "saved_state": {
+        "review_status": "READY_FOR_COLLECTION"
+      },
+      "trace_ids": [
+        "trace_75af0bacde1f43cba72104e0e47fb20a"
+      ]
+    },
+    {
+      "case_id": "case_3eb65ae543c845a99cbf426b224cf490",
+      "status": "COMPLETED",
+      "raw_model_action": "hold_request",
+      "saved_state": {
+        "review_status": "HELD"
+      },
+      "trace_ids": [
+        "trace_86457da4c9fa4a09b4894907f50e0456"
+      ]
+    },
+    {
+      "case_id": "case_c498e60065d743b9b674db7b6c5fbe34",
+      "status": "COMPLETED",
+      "raw_model_action": "hold_request",
+      "saved_state": {
+        "review_status": "HELD"
+      },
+      "trace_ids": [
+        "trace_921bcf5379a249dcb57946c5f57b6594"
+      ]
+    }
+  ],
+  "baseline_export_sha256": "12bc84c73be7c1d2e1c970ca6e5e5db45d6e33003c9a480d971450e77be75fc6",
+  "baseline_model_attempts": 3,
+  "question": "Under what conditions, if any, can CONTRACTOR requests join the ordinary collection queue?",
+  "teaching_failure": {
+    "code": "INVALID_INPUT",
+    "message": "Evidence location or quotation is invalid.",
+    "request_id": "req_367b7b6a73523a7cda075b4f",
+    "retry_performed": false
+  },
+  "raw_failed_answer_accessed": false,
+  "new_guidance_approved": false,
+  "after_run_performed": false
+}

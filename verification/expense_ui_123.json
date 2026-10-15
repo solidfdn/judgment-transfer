@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "checks": [
+    "chooser cancellation sends no request",
+    "case reading populates observed facts",
+    "unknown values and initial state stay blank",
+    "source quote shown with case evidence",
+    "read does not approve or save",
+    "failed confirmation preserves draft and edits",
+    "explicit confirmation saves reviewed values",
+    "manual addition appends without replacing hidden cases",
+    "read failure adds no case",
+    "requirements review displays concrete question without automatic conditions",
+    "prepare test is separate explicit action",
+    "field-to-field conditions show both labels",
+    "no test run or guidance activation is triggered"
+  ],
+  "test_mode": "offline DOM stubs",
+  "real_model_calls": 0
+}

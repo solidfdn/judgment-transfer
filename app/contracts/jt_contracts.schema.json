@@ -128,12 +128,27 @@
             "array",
             "null"
           ]
+        },
+        "rhs_field_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$"
         }
       },
       "required": [
         "field_id",
-        "operator",
-        "value"
+        "operator"
+      ],
+      "oneOf": [
+        {
+          "required": [
+            "value"
+          ]
+        },
+        {
+          "required": [
+            "rhs_field_id"
+          ]
+        }
       ],
       "additionalProperties": false
     },
@@ -508,7 +523,7 @@
           "items": {
             "$ref": "#/$defs/SourceRef"
           },
-          "minItems": 1
+          "minItems": 0
         },
         "status": {
           "enum": [

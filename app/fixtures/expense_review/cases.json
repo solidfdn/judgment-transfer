@@ -1,0 +1,152 @@
+[
+  {
+    "case_id": "expense_review_dev_01",
+    "domain_id": "expense_review",
+    "split": "dev",
+    "stratum": "normal",
+    "facts": {
+      "claimant_name": "Mika Sato",
+      "claimed_amount_jpy": 26800,
+      "approved_stay_start": "2026-09-03",
+      "approved_stay_end": "2026-09-05",
+      "receipt_addressee_name": "Mika Sato",
+      "receipt_guest_name": "Mika Sato",
+      "receipt_stay_start": "2026-09-03",
+      "receipt_stay_end": "2026-09-05",
+      "employee_payment_amount_jpy": 26800,
+      "employee_payment_status": "PAID",
+      "receipt_total_jpy": 26800,
+      "company_payment_amount_jpy": 0,
+      "exception_note": "Accommodation cost for the approved trip."
+    },
+    "raw_text": "Page 1: Cedarline Services | Expense reimbursement request\nClaim ID: EXP-261001\nSubmitted: 2026-09-06\nClaimant: Mika Sato\nExpense category: Business-trip accommodation\nBusiness purpose: Internal process planning meeting\nApproved trip reference: TRIP-261001\nApproved stay start: 2026-09-03\nApproved stay end: 2026-09-05\nClaimed amount (JPY): 26,800\nAttached payment document: RECEIPT-H4101\nEmployee note: Accommodation cost for the approved trip.\n\nPage 2: Willowmere House Hotel | Hotel payment statement\nDocument ID: RECEIPT-H4101\nIssued: 2026-09-05\nBill to: Mika Sato\nGuest: Mika Sato\nStay start: 2026-09-03\nStay end: 2026-09-05\nTotal lodging charge (JPY): 26,800\nCompany prepayment (JPY): 0\nEmployee card payment (JPY): 26,800\nEmployee card payment status: PAID\nTotal settlement status: PAID",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "expense_review_dev_02",
+    "domain_id": "expense_review",
+    "split": "dev",
+    "stratum": "transfer",
+    "facts": {
+      "claimant_name": "Aya Mori",
+      "claimed_amount_jpy": 34800,
+      "approved_stay_start": "2026-09-08",
+      "approved_stay_end": "2026-09-10",
+      "receipt_addressee_name": "Cedarline Services",
+      "receipt_guest_name": "Aya Mori",
+      "receipt_stay_start": "2026-09-08",
+      "receipt_stay_end": "2026-09-10",
+      "employee_payment_amount_jpy": 34800,
+      "employee_payment_status": "PAID",
+      "receipt_total_jpy": 52800,
+      "company_payment_amount_jpy": 18000,
+      "exception_note": "The attached folio records the company prepayment and my card payment."
+    },
+    "raw_text": "Page 1: Cedarline Services | Expense reimbursement request\nClaim ID: EXP-261002\nSubmitted: 2026-09-11\nClaimant: Aya Mori\nExpense category: Business-trip accommodation\nBusiness purpose: Internal process planning meeting\nApproved trip reference: TRIP-261002\nApproved stay start: 2026-09-08\nApproved stay end: 2026-09-10\nClaimed amount (JPY): 34,800\nAttached payment document: FOLIO-H4102\nEmployee note: The attached folio records the company prepayment and my card payment.\n\nPage 2: Aster Quay Lodge | Hotel payment statement\nDocument ID: FOLIO-H4102\nIssued: 2026-09-10\nBill to: Cedarline Services\nGuest: Aya Mori\nStay start: 2026-09-08\nStay end: 2026-09-10\nTotal lodging charge (JPY): 52,800\nCompany prepayment (JPY): 18,000\nEmployee card payment (JPY): 34,800\nEmployee card payment status: PAID\nTotal settlement status: PAID",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "expense_review_dev_03",
+    "domain_id": "expense_review",
+    "split": "dev",
+    "stratum": "must_hold",
+    "facts": {
+      "claimant_name": "Jun Aoki",
+      "claimed_amount_jpy": 31200,
+      "approved_stay_start": "2026-09-12",
+      "approved_stay_end": "2026-09-14",
+      "receipt_addressee_name": "Cedarline Services",
+      "receipt_guest_name": "Jun Aoki",
+      "receipt_stay_start": "2026-09-12",
+      "receipt_stay_end": "2026-09-14",
+      "employee_payment_amount_jpy": null,
+      "employee_payment_status": null,
+      "receipt_total_jpy": 49200,
+      "company_payment_amount_jpy": null,
+      "exception_note": "The hotel supplied a statement showing only the total payment."
+    },
+    "raw_text": "Page 1: Cedarline Services | Expense reimbursement request\nClaim ID: EXP-261003\nSubmitted: 2026-09-15\nClaimant: Jun Aoki\nExpense category: Business-trip accommodation\nBusiness purpose: Internal process planning meeting\nApproved trip reference: TRIP-261003\nApproved stay start: 2026-09-12\nApproved stay end: 2026-09-14\nClaimed amount (JPY): 31,200\nAttached payment document: FOLIO-H4103\nEmployee note: The hotel supplied a statement showing only the total payment.\n\nPage 2: Birchhaven Court Hotel | Hotel payment statement\nDocument ID: FOLIO-H4103\nIssued: 2026-09-14\nBill to: Cedarline Services\nGuest: Jun Aoki\nStay start: 2026-09-12\nStay end: 2026-09-14\nTotal lodging charge (JPY): 49,200\nCompany prepayment (JPY): Not stated\nEmployee card payment (JPY): Not stated\nEmployee card payment status: Not stated\nTotal settlement status: PAID",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "expense_review_dev_04",
+    "domain_id": "expense_review",
+    "split": "dev",
+    "stratum": "must_hold",
+    "facts": {
+      "claimant_name": "Ren Kato",
+      "claimed_amount_jpy": 39600,
+      "approved_stay_start": "2026-09-18",
+      "approved_stay_end": "2026-09-19",
+      "receipt_addressee_name": "Ren Kato",
+      "receipt_guest_name": "Ren Kato",
+      "receipt_stay_start": "2026-09-18",
+      "receipt_stay_end": "2026-09-20",
+      "employee_payment_amount_jpy": 39600,
+      "employee_payment_status": "PAID",
+      "receipt_total_jpy": 39600,
+      "company_payment_amount_jpy": 0,
+      "exception_note": "An additional night was needed after the meeting was rescheduled. Approval for the extension is pending."
+    },
+    "raw_text": "Page 1: Cedarline Services | Expense reimbursement request\nClaim ID: EXP-261004\nSubmitted: 2026-09-21\nClaimant: Ren Kato\nExpense category: Business-trip accommodation\nBusiness purpose: Internal process planning meeting\nApproved trip reference: TRIP-261004\nApproved stay start: 2026-09-18\nApproved stay end: 2026-09-19\nClaimed amount (JPY): 39,600\nAttached payment document: RECEIPT-H4104\nEmployee note: An additional night was needed after the meeting was rescheduled. Approval for the extension is pending.\n\nPage 2: Linden Crest Inn | Hotel payment statement\nDocument ID: RECEIPT-H4104\nIssued: 2026-09-20\nBill to: Ren Kato\nGuest: Ren Kato\nStay start: 2026-09-18\nStay end: 2026-09-20\nTotal lodging charge (JPY): 39,600\nCompany prepayment (JPY): 0\nEmployee card payment (JPY): 39,600\nEmployee card payment status: PAID\nTotal settlement status: PAID",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "expense_review_holdout_01",
+    "domain_id": "expense_review",
+    "split": "holdout",
+    "stratum": "transfer",
+    "facts": {
+      "claimant_name": "Nao Ito",
+      "claimed_amount_jpy": 27600,
+      "approved_stay_start": "2026-09-23",
+      "approved_stay_end": "2026-09-25",
+      "receipt_addressee_name": "Cedarline Services",
+      "receipt_guest_name": "Nao Ito",
+      "receipt_stay_start": "2026-09-23",
+      "receipt_stay_end": "2026-09-25",
+      "employee_payment_amount_jpy": 27600,
+      "employee_payment_status": "PAID",
+      "receipt_total_jpy": 47600,
+      "company_payment_amount_jpy": 20000,
+      "exception_note": "My card payment is listed separately from the company prepayment."
+    },
+    "raw_text": "Page 1: Cedarline Services | Expense reimbursement request\nClaim ID: EXP-261005\nSubmitted: 2026-09-26\nClaimant: Nao Ito\nExpense category: Business-trip accommodation\nBusiness purpose: Internal process planning meeting\nApproved trip reference: TRIP-261005\nApproved stay start: 2026-09-23\nApproved stay end: 2026-09-25\nClaimed amount (JPY): 27,600\nAttached payment document: FOLIO-H4105\nEmployee note: My card payment is listed separately from the company prepayment.\n\nPage 2: Cloverstone Rooms | Hotel payment statement\nDocument ID: FOLIO-H4105\nIssued: 2026-09-25\nBill to: Cedarline Services\nGuest: Nao Ito\nStay start: 2026-09-23\nStay end: 2026-09-25\nTotal lodging charge (JPY): 47,600\nCompany prepayment (JPY): 20,000\nEmployee card payment (JPY): 27,600\nEmployee card payment status: PAID\nTotal settlement status: PAID",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "expense_review_holdout_02",
+    "domain_id": "expense_review",
+    "split": "holdout",
+    "stratum": "transfer",
+    "facts": {
+      "claimant_name": "Yui Ono",
+      "claimed_amount_jpy": 42400,
+      "approved_stay_start": "2026-09-27",
+      "approved_stay_end": "2026-09-29",
+      "receipt_addressee_name": "Cedarline Services",
+      "receipt_guest_name": "Yui Ono",
+      "receipt_stay_start": "2026-09-27",
+      "receipt_stay_end": "2026-09-29",
+      "employee_payment_amount_jpy": 26400,
+      "employee_payment_status": "PAID",
+      "receipt_total_jpy": 42400,
+      "company_payment_amount_jpy": 16000,
+      "exception_note": "The requested amount was entered from the total lodging charge."
+    },
+    "raw_text": "Page 1: Cedarline Services | Expense reimbursement request\nClaim ID: EXP-261006\nSubmitted: 2026-09-30\nClaimant: Yui Ono\nExpense category: Business-trip accommodation\nBusiness purpose: Internal process planning meeting\nApproved trip reference: TRIP-261006\nApproved stay start: 2026-09-27\nApproved stay end: 2026-09-29\nClaimed amount (JPY): 42,400\nAttached payment document: FOLIO-H4106\nEmployee note: The requested amount was entered from the total lodging charge.\n\nPage 2: Mapleford Terrace Hotel | Hotel payment statement\nDocument ID: FOLIO-H4106\nIssued: 2026-09-29\nBill to: Cedarline Services\nGuest: Yui Ono\nStay start: 2026-09-27\nStay end: 2026-09-29\nTotal lodging charge (JPY): 42,400\nCompany prepayment (JPY): 16,000\nEmployee card payment (JPY): 26,400\nEmployee card payment status: PAID\nTotal settlement status: PAID",
+    "initial_state": {
+      "status": "NEW"
+    }
+  }
+]

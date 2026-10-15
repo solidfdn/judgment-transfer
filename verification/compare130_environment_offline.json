@@ -1,0 +1,14 @@
+{
+  "passed": 6,
+  "checks": [
+    "local standard does not reject recorded Priority",
+    "after and holdout run under deployed Priority",
+    "six intended calls only",
+    "real protocol change still stops before approval",
+    "mismatch details saved without another diagnosis call",
+    "deployed standard is refused"
+  ],
+  "new_model_calls": 0,
+  "cloud_writes": 0,
+  "scope": "Actual controller/local services with separate simulated server settings and fixed original records. No LIVE result claimed."
+}

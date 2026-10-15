@@ -2,7 +2,7 @@ import os
 import math
 from pathlib import Path
 
-VERSION = '1.0.17'
+VERSION = '1.0.32'
 MODEL = 'gemini-3.5-flash'
 LOCATION = 'global'
 MODE = os.getenv('JT_MODE', 'MOCK')
@@ -16,8 +16,8 @@ OUTPUT_PRICE = float(os.getenv('JT_OUTPUT_USD_PER_MILLION', '9.00'))
 REQUEST_TIER = os.getenv('JT_REQUEST_TIER', 'standard')
 if REQUEST_TIER not in ('standard', 'priority'):
     raise RuntimeError('Unsupported request tier.')
-if not all(math.isfinite(x) and x > 0 for x in (MAX_COST, INPUT_PRICE, OUTPUT_PRICE)) or MAX_COST > 20:
-    raise RuntimeError('A finite cumulative model budget of at most USD 20 is required.')
+if not all(math.isfinite(x) and x > 0 for x in (MAX_COST, INPUT_PRICE, OUTPUT_PRICE)) or MAX_COST > 100:
+    raise RuntimeError('A finite cumulative model budget of at most USD 100 is required.')
 if REQUEST_TIER == 'priority' and (INPUT_PRICE, OUTPUT_PRICE) != (2.70, 16.20):
     raise RuntimeError('Priority requires the reviewed Gemini 3.5 Flash prices.')
 REQUEST_HEADERS = ({'X-Vertex-AI-LLM-Request-Type': 'shared',
@@ -25,11 +25,11 @@ REQUEST_HEADERS = ({'X-Vertex-AI-LLM-Request-Type': 'shared',
                    if REQUEST_TIER == 'priority' else {})
 CODE_HASH = os.getenv('JT_CODE_HASH', 'local-unpackaged')
 SETTINGS = {'model': MODEL, 'location': LOCATION, 'thinking_level': 'LOW',
-            'temperature': 'provider_default', 'max_output_tokens': 8192, 'attempts': 2,
-            'request_tier': REQUEST_TIER, 'model_window_seconds': 20,
-            'call_limit_seconds': 20, 'retry_backoff_seconds': 1,
-            'retry_policy': 'first_text_watchdog_then_one_transient_retry',
-            'first_text_timeout_seconds': 10,
+            'temperature': 'provider_default', 'max_output_tokens': 8192, 'attempts': 1,
+            'request_tier': REQUEST_TIER, 'model_window_seconds': 60,
+            'call_limit_seconds': 60, 'retry_backoff_seconds': 1,
+            'retry_policy': 'single_streamed_decision_attempt',
+            'first_text_timeout_seconds': 35,
             'decision_transport': 'streamGenerateContent', 'decision_schema_location': 'api_only'}
 
 def secret():

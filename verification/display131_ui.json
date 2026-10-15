@@ -1,0 +1,28 @@
+{
+  "passed": 21,
+  "checks": [
+    "a safe baseline hold is displayed as a hold despite the later complete-policy score",
+    "different builds cannot compare without server verification",
+    "server verification applies only to exact selected run ids",
+    "saved guided result loads earlier version via GET comparison",
+    "holdout result never shows a development comparison",
+    "six recorded cases retain matching result and trace identities",
+    "missing employee payment stays null",
+    "holdout mismatch is a recorded return",
+    "English-only demo has no legacy request-routing example",
+    "recorded demo never invokes a model or application mutation",
+    "frozen data and distinct package hashes disclosed",
+    "first demo stage explains the actual payment gap",
+    "next stage opens the company receipt by default",
+    "development case 0 renders its preserved result",
+    "development case 1 renders its preserved result",
+    "development case 2 renders its preserved result",
+    "development case 3 renders its preserved result",
+    "third stage renders both measured holdouts",
+    "handover checklist downloads a plain-text artifact",
+    "restart returns to the first stage",
+    "hash navigation renders the requested stage"
+  ],
+  "new_model_calls": 0,
+  "scope": "Actual UI functions and recorded demo evidence with DOM/API doubles; rendered acceptance follows deployment."
+}

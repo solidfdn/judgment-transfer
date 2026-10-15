@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "checks": [
+    "six previous confirmations reused without new confirmation or import",
+    "new baseline contains four cases and four new decision calls",
+    "old run and new run remain separate",
+    "old successful failed and pending records preserved",
+    "old checkpoint byte preserved",
+    "new protocol records sixty seconds and one attempt",
+    "finished restart no additional writes",
+    "lost new-run response pauses",
+    "lost new-run response resumes same run",
+    "different failure refuses new model work"
+  ],
+  "new_model_calls": 0,
+  "cloud_writes": 0,
+  "scope": "Real service and PDF provenance, explicit model/HTTP doubles and substituted test identity pins."
+}

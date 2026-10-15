@@ -71,9 +71,30 @@ def create_app(repo=None, adapter=None, blobs=None, testing=False):
             'X-Request-ID':getattr(g,'request_id','')})
         return response
 
+    def error_body(error):
+        detail = {'code':error.code,'message':error.message,'retryable':error.retryable,'request_id':getattr(g,'request_id','req_unknown')}
+        trace = getattr(error, 'trace', None)
+        if trace and getattr(g, 'ctx', {}).get('admin'):
+            # This request's bounded diagnostics only; no prompt, source text,
+            # model output, credentials or arbitrary trace lookup is exposed.
+            detail['diagnostic'] = {'trace_id':trace['trace_id'], 'attempts':[
+                {k:a[k] for k in ('attempt','stage','status','provider_code','error_type','validation_errors',
+                    'elapsed_ms','failed_stage_elapsed_ms','generation_timeout_ms','count_elapsed_ms',
+                    'transport','chunk_count','first_chunk_ms','first_text_ms','last_chunk_ms','last_text_ms',
+                    'received_text_chars','complete_stream','finish_reason','local_first_text_deadline_reached',
+                    'local_total_deadline_reached') if k in a}
+                for a in trace.get('attempts', [])[:2]]}
+            detail['diagnostic']['elapsed_ms'] = trace.get('elapsed_ms')
+            detail['diagnostic']['settings'] = {k:trace.get('settings',{})[k] for k in
+                ('transport','schema_location','model_window_seconds','call_limit_seconds','first_text_timeout_seconds','attempts')
+                if k in trace.get('settings',{})}
+            if getattr(error, 'validation', None):
+                detail['diagnostic']['validation'] = error.validation
+        return {'error': detail}
+
     @app.errorhandler(JTError)
     def named_error(error):
-        return jsonify({'error':{'code':error.code,'message':error.message,'retryable':error.retryable,'request_id':getattr(g,'request_id','req_unknown')}}),error.status
+        return jsonify(error_body(error)),error.status
     @app.errorhandler(HTTPException)
     def http_error(error):return named_error(JTError('HTTP_'+str(error.code),error.description,error.code))
     @app.errorhandler(Exception)
@@ -95,13 +116,13 @@ def create_app(repo=None, adapter=None, blobs=None, testing=False):
                     if prior['until']>time.time():raise JTError('BUSY','This request is still running.',409,True)
                     # The caller can inspect saved entities before explicitly retrying a new operation.
                     raise JTError('REQUEST_INTERRUPTED','The request was interrupted. Reopen the workspace to inspect saved state before retrying.',409)
-                window=180 if request.path=='/api/v1/teachings' or request.path.endswith('/step') else 90
+                window=180 if request.path in ('/api/v1/teachings','/api/v1/domains/draft') or request.path.endswith('/step') else 90
                 values[key]={'body_hash':bodyhash,'until':time.time()+window,'result':None};return None
             cached=repo.atomic([key],claim)
             if cached is not None:return jsonify(cached)
             try:value=fn(*args,**kwargs)
             except JTError as error:
-                def fail(values):values[key]['result']={'error':{'code':error.code,'message':error.message,'retryable':error.retryable,'request_id':g.request_id}}
+                def fail(values):values[key]['result']=error_body(error)
                 repo.atomic([key],fail);raise
             def save(values):values[key]['result']=value
             repo.atomic([key],save);return jsonify(value)
@@ -147,7 +168,7 @@ def create_app(repo=None, adapter=None, blobs=None, testing=False):
     def recovery114_advance():return jsonify(recovery114.advance(g.ctx, request_key=g.ctx['operation']))
 
     @app.get('/api/v1/session')
-    def who():return jsonify({'csrf':session['csrf'],'mode':adapter.mode,'admin':g.ctx['admin'],'expires':session['expires'],'version':config.VERSION})
+    def who():return jsonify({'csrf':session['csrf'],'mode':adapter.mode,'admin':g.ctx['admin'],'expires':session['expires'],'version':config.VERSION,'code_hash':config.CODE_HASH})
     @app.post('/api/v1/workspaces')
     @mutation
     def workspace_create():return service.create_workspace(body(),g.ctx)
@@ -169,6 +190,56 @@ def create_app(repo=None, adapter=None, blobs=None, testing=False):
     @app.post('/api/v1/sources/extract')
     @mutation
     def source_extract():return service.extract_sources(body(),g.ctx)
+    @app.post('/api/v1/requirements/review')
+    @mutation
+    def requirements_review():
+        from requirements_review import review_requirements
+        return review_requirements(service,body(),g.ctx)
+    @app.post('/api/v1/cases/read')
+    @mutation
+    def case_read():
+        from case_intake import read_case
+        file=request.files.get('file')
+        if file is None:raise JTError('INVALID_INPUT','Choose a case file.')
+        return read_case(service,request.form,file.filename,file.read(),file.mimetype,g.ctx)
+    @app.post('/api/v1/cases/confirm')
+    @mutation
+    def case_confirm():
+        from case_intake import confirm_case
+        return confirm_case(service,body(),g.ctx)
+    @app.post('/api/v1/history/fix')
+    @mutation
+    def history_fix():
+        from history import fix_review,fix_result
+        data=body()
+        return fix_result(service,data,g.ctx) if data.get('run_id') else fix_review(service,data,g.ctx)
+    @app.post('/api/v1/history/delete')
+    @mutation
+    def history_delete():
+        from history import remove
+        return remove(service,body(),g.ctx)
+    @app.post('/api/v1/history/reset')
+    @mutation
+    def history_reset():
+        from history import remove
+        return remove(service,body(),g.ctx,reset=True)
+    @app.get('/api/v1/workspaces/<wid>/history')
+    def history_list(wid):
+        from history import records
+        return jsonify({'records':records(service,wid,g.ctx)})
+    @app.get('/api/v1/history/<rid>')
+    def history_get(rid):return jsonify(service.owned('history',rid,g.ctx))
+    @app.get('/api/v1/history/<rid>/sources/<sid>')
+    def history_source(rid,sid):
+        record=service.owned('history',rid,g.ctx)
+        source=next((s for s in record['source_metadata'] if s['source_id']==sid),None)
+        if not source:raise JTError('NOT_FOUND','Source is not part of this finalized record.',404)
+        return send_file(io.BytesIO(blobs.get(source['blob_id'])),mimetype=source['mime'],download_name=source['name'],as_attachment=True)
+    @app.post('/api/v1/validation123/authorize')
+    @mutation
+    def validation_authorize():
+        from validation123 import authorize
+        return authorize(service,body(),g.ctx)
     @app.post('/api/v1/domains/approve')
     @mutation
     def domain_approve():return service.approve_domain(body(),g.ctx)
@@ -181,6 +252,8 @@ def create_app(repo=None, adapter=None, blobs=None, testing=False):
     @app.post('/api/v1/workspaces/freeze')
     @mutation
     def freeze():return service.freeze(body(),g.ctx)
+    @app.post('/api/v1/runs/plan')
+    def run_plan():return jsonify(service.plan_run(body(),g.ctx))
     @app.post('/api/v1/runs')
     @mutation
     def run_create():return service.create_run(body(),g.ctx)
@@ -197,9 +270,18 @@ def create_app(repo=None, adapter=None, blobs=None, testing=False):
     @app.post('/api/v1/teachings')
     @mutation
     def teaching():return service.teach(body(),g.ctx)
+    @app.post('/api/v1/teachings/recover')
+    @mutation
+    def teaching_recover():
+        from teaching_evidence import recover_teaching
+        return recover_teaching(service,body(),g.ctx)
     @app.post('/api/v1/teachings/<tid>/approve')
     @mutation
     def teaching_approve(tid):return service.approve_teaching(tid,body(),g.ctx)
+    @app.get('/api/v1/comparisons/<before_id>/<after_id>')
+    def comparison(before_id,after_id):
+        from comparison import compare
+        return jsonify(compare(service,before_id,after_id,g.ctx))
     @app.get('/api/v1/exports/<rid>')
     def export(rid):
         value=service.run_view(rid,g.ctx,True)

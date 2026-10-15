@@ -1,0 +1,362 @@
+{
+  "status": "DRAFT_READY_FOR_REVIEW",
+  "workspace_id": "ws_1fc7f906adcf832815c6347e20fde077",
+  "source_review_trace_id": "trace_62e5bd652ea8480b8a8c4372b7b9cdb8",
+  "draft_id": "draft_63bab9807f91bd34bad6e8a05ef99486",
+  "trace_ids": [
+    "trace_0d6f14a4b9f14aaa81e450f7ba74f446"
+  ],
+  "model_calls": 1,
+  "judgment_calls": 0,
+  "approval_created": false,
+  "before_ledger": {
+    "calls": 513,
+    "day": "2026-10-14",
+    "decisions": 251,
+    "spent_usd": 16.968660900000003
+  },
+  "after_ledger": {
+    "calls": 514,
+    "day": "2026-10-14",
+    "decisions": 251,
+    "spent_usd": 17.017019400000002
+  },
+  "question_preview": [
+    "What are the specific acceptance conditions and payer allocation rules for company-addressed hotel folios?"
+  ],
+  "workflow_preview": {
+    "title": "Accommodation Reimbursement Precheck",
+    "goal": "Check hotel expense claims against the supplied policy and evidence. Identify what can proceed to a person for business approval, what needs clarification and what must stay on hold. Never approve or pay expenses.",
+    "input_fields": [
+      {
+        "description": "The name of the employee who submitted the expense claim.",
+        "field_id": "claimant",
+        "label": "Claimant Name",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "description": "The name of the hotel guest as shown on the receipt.",
+        "field_id": "guest_name",
+        "label": "Guest Name",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "description": "The start date of the stay approved on the claim form.",
+        "field_id": "claim_start_date",
+        "label": "Approved Claim Start Date",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "description": "The start date of the stay as shown on the hotel receipt.",
+        "field_id": "actual_start_date",
+        "label": "Actual Stay Start Date",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "description": "The end date of the stay approved on the claim form.",
+        "field_id": "claim_end_date",
+        "label": "Approved Claim End Date",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "description": "The end date of the stay as shown on the hotel receipt.",
+        "field_id": "actual_end_date",
+        "label": "Actual Stay End Date",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "description": "The reimbursement amount claimed by the employee.",
+        "field_id": "claim_amount",
+        "label": "Claimed Amount",
+        "required": true,
+        "type": "number"
+      },
+      {
+        "description": "The stated employee-paid amount marked PAID on the receipt.",
+        "field_id": "employee_paid_amount",
+        "label": "Employee Paid Amount",
+        "required": true,
+        "type": "number"
+      },
+      {
+        "description": "Whether the receipt is an accepted document under company guidelines.",
+        "field_id": "is_receipt_accepted",
+        "label": "Is Receipt Accepted",
+        "required": true,
+        "type": "boolean"
+      },
+      {
+        "description": "Whether the receipt contains an identified payment marked PAID.",
+        "field_id": "has_paid_status",
+        "label": "Has Paid Status",
+        "required": true,
+        "type": "boolean"
+      }
+    ],
+    "state_fields": [
+      {
+        "description": "The current status of the hotel precheck review process.",
+        "field_id": "review_status",
+        "label": "Review Status",
+        "required": true,
+        "type": "string"
+      }
+    ],
+    "actions": [
+      {
+        "action_id": "ready_for_approval",
+        "description": "The documentary precheck is complete and is ready for business approval.",
+        "effects": [
+          {
+            "field_id": "review_status",
+            "value": "READY_FOR_BUSINESS_APPROVAL"
+          }
+        ],
+        "label": "Ready for Business Approval",
+        "terminal": true
+      },
+      {
+        "action_id": "return_for_correction",
+        "description": "Return the claim to the employee for correct name or amount details.",
+        "effects": [
+          {
+            "field_id": "review_status",
+            "value": "RETURNED_FOR_CORRECTION"
+          }
+        ],
+        "label": "Return for Correction",
+        "terminal": true
+      },
+      {
+        "action_id": "hold",
+        "description": "Place a hold on the review due to date mismatches, unaccepted receipts, or missing evidence.",
+        "effects": [
+          {
+            "field_id": "review_status",
+            "value": "HELD"
+          }
+        ],
+        "label": "Hold",
+        "terminal": true
+      }
+    ],
+    "default_action_id": "hold",
+    "rules": [
+      {
+        "action_id": "hold",
+        "approved_by": null,
+        "priority": 1,
+        "rule_id": "stay_date_mismatch_rule",
+        "source_refs": [
+          {
+            "locator": "line:5",
+            "quote": "If either hotel stay date differs, hold for a manager's decision on the changed stay; matching amounts do not resolve this exception.",
+            "source_id": "expense_policy_124",
+            "version_hash": "8548c15f795f156db72efbd3b91c332e8ef08a590e31509070a35f7e2e355d47"
+          }
+        ],
+        "statement": "If either hotel stay date differs, hold for a manager's decision on the changed stay.",
+        "when": {
+          "all": [],
+          "any": [
+            {
+              "field_id": "actual_start_date",
+              "operator": "ne",
+              "rhs_field_id": "claim_start_date"
+            },
+            {
+              "field_id": "actual_end_date",
+              "operator": "ne",
+              "rhs_field_id": "claim_end_date"
+            }
+          ]
+        }
+      },
+      {
+        "action_id": "return_for_correction",
+        "approved_by": null,
+        "priority": 2,
+        "rule_id": "guest_mismatch_rule",
+        "source_refs": [
+          {
+            "locator": "line:6",
+            "quote": "The hotel guest must match the claimant. A known guest-name mismatch is returned for correction.",
+            "source_id": "expense_policy_124",
+            "version_hash": "8548c15f795f156db72efbd3b91c332e8ef08a590e31509070a35f7e2e355d47"
+          }
+        ],
+        "statement": "The hotel guest must match the claimant. A known guest-name mismatch is returned for correction.",
+        "when": {
+          "all": [],
+          "any": [
+            {
+              "field_id": "guest_name",
+              "operator": "ne",
+              "rhs_field_id": "claimant"
+            }
+          ]
+        }
+      },
+      {
+        "action_id": "return_for_correction",
+        "approved_by": null,
+        "priority": 3,
+        "rule_id": "amount_mismatch_rule",
+        "source_refs": [
+          {
+            "locator": "line:8",
+            "quote": "For an accepted receipt with an identified employee payment marked PAID, a known amount mismatch is returned for correction.",
+            "source_id": "expense_policy_124",
+            "version_hash": "8548c15f795f156db72efbd3b91c332e8ef08a590e31509070a35f7e2e355d47"
+          }
+        ],
+        "statement": "For an accepted receipt with an identified employee payment marked PAID, a known amount mismatch is returned for correction.",
+        "when": {
+          "all": [
+            {
+              "field_id": "is_receipt_accepted",
+              "operator": "eq",
+              "value": true
+            },
+            {
+              "field_id": "has_paid_status",
+              "operator": "eq",
+              "value": true
+            },
+            {
+              "field_id": "claim_amount",
+              "operator": "ne",
+              "rhs_field_id": "employee_paid_amount"
+            }
+          ],
+          "any": []
+        }
+      },
+      {
+        "action_id": "hold",
+        "approved_by": null,
+        "priority": 4,
+        "rule_id": "unaccepted_receipt_rule",
+        "source_refs": [
+          {
+            "locator": "line:10",
+            "quote": "The acceptance conditions for a company-addressed hotel folio are not recorded here, including how to use its payer allocation.",
+            "source_id": "expense_policy_124",
+            "version_hash": "8548c15f795f156db72efbd3b91c332e8ef08a590e31509070a35f7e2e355d47"
+          }
+        ],
+        "statement": "If the hotel receipt is not accepted under policy (e.g. company-addressed folios), hold the case.",
+        "when": {
+          "all": [
+            {
+              "field_id": "is_receipt_accepted",
+              "operator": "eq",
+              "value": false
+            }
+          ],
+          "any": []
+        }
+      },
+      {
+        "action_id": "hold",
+        "approved_by": null,
+        "priority": 5,
+        "rule_id": "missing_payment_status_rule",
+        "source_refs": [
+          {
+            "locator": "line:11",
+            "quote": "If a required value, payer allocation or payment status is missing, hold and request the specific missing evidence.",
+            "source_id": "expense_policy_124",
+            "version_hash": "8548c15f795f156db72efbd3b91c332e8ef08a590e31509070a35f7e2e355d47"
+          }
+        ],
+        "statement": "If required paid status is missing, hold the review.",
+        "when": {
+          "all": [
+            {
+              "field_id": "has_paid_status",
+              "operator": "eq",
+              "value": false
+            }
+          ],
+          "any": []
+        }
+      },
+      {
+        "action_id": "ready_for_approval",
+        "approved_by": null,
+        "priority": 6,
+        "rule_id": "documentary_precheck_complete_rule",
+        "source_refs": [
+          {
+            "locator": "line:9",
+            "quote": "Mark the documentary precheck complete only when claimant and guest match, both stay dates match the approved dates, the receipt is accepted, and the claimed amount equals the stated employee-paid amount marked PAID.",
+            "source_id": "expense_policy_124",
+            "version_hash": "8548c15f795f156db72efbd3b91c332e8ef08a590e31509070a35f7e2e355d47"
+          }
+        ],
+        "statement": "Mark precheck complete when claimant matches guest, stay dates match, receipt is accepted, and claim amount equals paid amount.",
+        "when": {
+          "all": [
+            {
+              "field_id": "guest_name",
+              "operator": "eq",
+              "rhs_field_id": "claimant"
+            },
+            {
+              "field_id": "actual_start_date",
+              "operator": "eq",
+              "rhs_field_id": "claim_start_date"
+            },
+            {
+              "field_id": "actual_end_date",
+              "operator": "eq",
+              "rhs_field_id": "claim_end_date"
+            },
+            {
+              "field_id": "is_receipt_accepted",
+              "operator": "eq",
+              "value": true
+            },
+            {
+              "field_id": "has_paid_status",
+              "operator": "eq",
+              "value": true
+            },
+            {
+              "field_id": "claim_amount",
+              "operator": "eq",
+              "rhs_field_id": "employee_paid_amount"
+            }
+          ],
+          "any": []
+        }
+      }
+    ]
+  },
+  "evidence_origin": "Owner-provided Cloud Shell output; not an independent cloud read.",
+  "semantic_review": {
+    "status": "CHANGES_REQUIRED",
+    "approval_created": false,
+    "findings": [
+      {
+        "field_id": "is_receipt_accepted",
+        "issue": "A policy acceptance decision is requested as an input fact. The receipt addressee needed to derive that decision is not declared."
+      },
+      {
+        "field_id": "has_paid_status",
+        "issue": "The description identifies any PAID payment, without preserving whether the employee payment is PAID. It can mix another payer with the employee."
+      },
+      {
+        "rule_id": "unaccepted_receipt_rule",
+        "issue": "An unspecified acceptance criterion is represented as a false acceptance input. Unknown permission must remain unresolved; apply explicit source conditions and default hold."
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "passed": 6,
+  "checks": [
+    "controller reaches an unapproved recovered draft without new calls",
+    "all four cases and five boundaries checked before save",
+    "prior checkpoint byte preserved",
+    "terminal rerun adds no write",
+    "lost response resumes one saved draft",
+    "wrong checkpoint reviewer stops before writing"
+  ],
+  "new_model_calls": 0,
+  "cloud_writes": 0,
+  "scope": "Real local services, model failure and HTTP doubles; identity pins substituted only in test."
+}

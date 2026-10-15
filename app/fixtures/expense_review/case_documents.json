@@ -1,0 +1,1309 @@
+{
+  "schema_version": "1.0",
+  "fictional": true,
+  "case_field_origin": "Author-prepared transcription of the exact generated document lines; not model extraction.",
+  "documents": [
+    {
+      "case_id": "expense_review_dev_01",
+      "claim_id": "EXP-261001",
+      "source_id": "expense_document_261001",
+      "filename": "EXP-261001.pdf",
+      "relative_path": "case_inputs/dev/EXP-261001.pdf",
+      "version_hash": "0100c793fde64e80cb8cab9ee5b8fbf6413d53eba90ea52d1b604278100e57d2",
+      "pages": [
+        {
+          "page": 1,
+          "organization": "Cedarline Services",
+          "title": "Expense reimbursement request",
+          "lines": [
+            "Claim ID: EXP-261001",
+            "Submitted: 2026-09-06",
+            "Claimant: Mika Sato",
+            "Expense category: Business-trip accommodation",
+            "Business purpose: Internal process planning meeting",
+            "Approved trip reference: TRIP-261001",
+            "Approved stay start: 2026-09-03",
+            "Approved stay end: 2026-09-05",
+            "Claimed amount (JPY): 26,800",
+            "Attached payment document: RECEIPT-H4101",
+            "Employee note: Accommodation cost for the approved trip."
+          ]
+        },
+        {
+          "page": 2,
+          "organization": "Willowmere House Hotel",
+          "title": "Hotel payment statement",
+          "lines": [
+            "Document ID: RECEIPT-H4101",
+            "Issued: 2026-09-05",
+            "Bill to: Mika Sato",
+            "Guest: Mika Sato",
+            "Stay start: 2026-09-03",
+            "Stay end: 2026-09-05",
+            "Total lodging charge (JPY): 26,800",
+            "Company prepayment (JPY): 0",
+            "Employee card payment (JPY): 26,800",
+            "Employee card payment status: PAID",
+            "Total settlement status: PAID"
+          ]
+        }
+      ],
+      "field_evidence": {
+        "claimant_name": {
+          "value": "Mika Sato",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "0100c793fde64e80cb8cab9ee5b8fbf6413d53eba90ea52d1b604278100e57d2",
+              "locator": "page:1",
+              "quote": "Claimant: Mika Sato"
+            }
+          ],
+          "content_line": 3
+        },
+        "approved_stay_start": {
+          "value": "2026-09-03",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "0100c793fde64e80cb8cab9ee5b8fbf6413d53eba90ea52d1b604278100e57d2",
+              "locator": "page:1",
+              "quote": "Approved stay start: 2026-09-03"
+            }
+          ],
+          "content_line": 7
+        },
+        "approved_stay_end": {
+          "value": "2026-09-05",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "0100c793fde64e80cb8cab9ee5b8fbf6413d53eba90ea52d1b604278100e57d2",
+              "locator": "page:1",
+              "quote": "Approved stay end: 2026-09-05"
+            }
+          ],
+          "content_line": 8
+        },
+        "claimed_amount_jpy": {
+          "value": 26800,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "0100c793fde64e80cb8cab9ee5b8fbf6413d53eba90ea52d1b604278100e57d2",
+              "locator": "page:1",
+              "quote": "Claimed amount (JPY): 26,800"
+            }
+          ],
+          "content_line": 9
+        },
+        "exception_note": {
+          "value": "Accommodation cost for the approved trip.",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "0100c793fde64e80cb8cab9ee5b8fbf6413d53eba90ea52d1b604278100e57d2",
+              "locator": "page:1",
+              "quote": "Employee note: Accommodation cost for the approved trip."
+            }
+          ],
+          "content_line": 11
+        },
+        "receipt_addressee_name": {
+          "value": "Mika Sato",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "0100c793fde64e80cb8cab9ee5b8fbf6413d53eba90ea52d1b604278100e57d2",
+              "locator": "page:2",
+              "quote": "Bill to: Mika Sato"
+            }
+          ],
+          "content_line": 3
+        },
+        "receipt_guest_name": {
+          "value": "Mika Sato",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "0100c793fde64e80cb8cab9ee5b8fbf6413d53eba90ea52d1b604278100e57d2",
+              "locator": "page:2",
+              "quote": "Guest: Mika Sato"
+            }
+          ],
+          "content_line": 4
+        },
+        "receipt_stay_start": {
+          "value": "2026-09-03",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "0100c793fde64e80cb8cab9ee5b8fbf6413d53eba90ea52d1b604278100e57d2",
+              "locator": "page:2",
+              "quote": "Stay start: 2026-09-03"
+            }
+          ],
+          "content_line": 5
+        },
+        "receipt_stay_end": {
+          "value": "2026-09-05",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "0100c793fde64e80cb8cab9ee5b8fbf6413d53eba90ea52d1b604278100e57d2",
+              "locator": "page:2",
+              "quote": "Stay end: 2026-09-05"
+            }
+          ],
+          "content_line": 6
+        },
+        "receipt_total_jpy": {
+          "value": 26800,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "0100c793fde64e80cb8cab9ee5b8fbf6413d53eba90ea52d1b604278100e57d2",
+              "locator": "page:2",
+              "quote": "Total lodging charge (JPY): 26,800"
+            }
+          ],
+          "content_line": 7
+        },
+        "company_payment_amount_jpy": {
+          "value": 0,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "0100c793fde64e80cb8cab9ee5b8fbf6413d53eba90ea52d1b604278100e57d2",
+              "locator": "page:2",
+              "quote": "Company prepayment (JPY): 0"
+            }
+          ],
+          "content_line": 8
+        },
+        "employee_payment_amount_jpy": {
+          "value": 26800,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "0100c793fde64e80cb8cab9ee5b8fbf6413d53eba90ea52d1b604278100e57d2",
+              "locator": "page:2",
+              "quote": "Employee card payment (JPY): 26,800"
+            }
+          ],
+          "content_line": 9
+        },
+        "employee_payment_status": {
+          "value": "PAID",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "0100c793fde64e80cb8cab9ee5b8fbf6413d53eba90ea52d1b604278100e57d2",
+              "locator": "page:2",
+              "quote": "Employee card payment status: PAID"
+            }
+          ],
+          "content_line": 10
+        }
+      }
+    },
+    {
+      "case_id": "expense_review_dev_02",
+      "claim_id": "EXP-261002",
+      "source_id": "expense_document_261002",
+      "filename": "EXP-261002.pdf",
+      "relative_path": "case_inputs/dev/EXP-261002.pdf",
+      "version_hash": "915a7d923c50198005e2e04a4a77844a77914df96c2cab32656dbb59b99abe4c",
+      "pages": [
+        {
+          "page": 1,
+          "organization": "Cedarline Services",
+          "title": "Expense reimbursement request",
+          "lines": [
+            "Claim ID: EXP-261002",
+            "Submitted: 2026-09-11",
+            "Claimant: Aya Mori",
+            "Expense category: Business-trip accommodation",
+            "Business purpose: Internal process planning meeting",
+            "Approved trip reference: TRIP-261002",
+            "Approved stay start: 2026-09-08",
+            "Approved stay end: 2026-09-10",
+            "Claimed amount (JPY): 34,800",
+            "Attached payment document: FOLIO-H4102",
+            "Employee note: The attached folio records the company prepayment and my card payment."
+          ]
+        },
+        {
+          "page": 2,
+          "organization": "Aster Quay Lodge",
+          "title": "Hotel payment statement",
+          "lines": [
+            "Document ID: FOLIO-H4102",
+            "Issued: 2026-09-10",
+            "Bill to: Cedarline Services",
+            "Guest: Aya Mori",
+            "Stay start: 2026-09-08",
+            "Stay end: 2026-09-10",
+            "Total lodging charge (JPY): 52,800",
+            "Company prepayment (JPY): 18,000",
+            "Employee card payment (JPY): 34,800",
+            "Employee card payment status: PAID",
+            "Total settlement status: PAID"
+          ]
+        }
+      ],
+      "field_evidence": {
+        "claimant_name": {
+          "value": "Aya Mori",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "915a7d923c50198005e2e04a4a77844a77914df96c2cab32656dbb59b99abe4c",
+              "locator": "page:1",
+              "quote": "Claimant: Aya Mori"
+            }
+          ],
+          "content_line": 3
+        },
+        "approved_stay_start": {
+          "value": "2026-09-08",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "915a7d923c50198005e2e04a4a77844a77914df96c2cab32656dbb59b99abe4c",
+              "locator": "page:1",
+              "quote": "Approved stay start: 2026-09-08"
+            }
+          ],
+          "content_line": 7
+        },
+        "approved_stay_end": {
+          "value": "2026-09-10",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "915a7d923c50198005e2e04a4a77844a77914df96c2cab32656dbb59b99abe4c",
+              "locator": "page:1",
+              "quote": "Approved stay end: 2026-09-10"
+            }
+          ],
+          "content_line": 8
+        },
+        "claimed_amount_jpy": {
+          "value": 34800,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "915a7d923c50198005e2e04a4a77844a77914df96c2cab32656dbb59b99abe4c",
+              "locator": "page:1",
+              "quote": "Claimed amount (JPY): 34,800"
+            }
+          ],
+          "content_line": 9
+        },
+        "exception_note": {
+          "value": "The attached folio records the company prepayment and my card payment.",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "915a7d923c50198005e2e04a4a77844a77914df96c2cab32656dbb59b99abe4c",
+              "locator": "page:1",
+              "quote": "Employee note: The attached folio records the company prepayment and my card payment."
+            }
+          ],
+          "content_line": 11
+        },
+        "receipt_addressee_name": {
+          "value": "Cedarline Services",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "915a7d923c50198005e2e04a4a77844a77914df96c2cab32656dbb59b99abe4c",
+              "locator": "page:2",
+              "quote": "Bill to: Cedarline Services"
+            }
+          ],
+          "content_line": 3
+        },
+        "receipt_guest_name": {
+          "value": "Aya Mori",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "915a7d923c50198005e2e04a4a77844a77914df96c2cab32656dbb59b99abe4c",
+              "locator": "page:2",
+              "quote": "Guest: Aya Mori"
+            }
+          ],
+          "content_line": 4
+        },
+        "receipt_stay_start": {
+          "value": "2026-09-08",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "915a7d923c50198005e2e04a4a77844a77914df96c2cab32656dbb59b99abe4c",
+              "locator": "page:2",
+              "quote": "Stay start: 2026-09-08"
+            }
+          ],
+          "content_line": 5
+        },
+        "receipt_stay_end": {
+          "value": "2026-09-10",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "915a7d923c50198005e2e04a4a77844a77914df96c2cab32656dbb59b99abe4c",
+              "locator": "page:2",
+              "quote": "Stay end: 2026-09-10"
+            }
+          ],
+          "content_line": 6
+        },
+        "receipt_total_jpy": {
+          "value": 52800,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "915a7d923c50198005e2e04a4a77844a77914df96c2cab32656dbb59b99abe4c",
+              "locator": "page:2",
+              "quote": "Total lodging charge (JPY): 52,800"
+            }
+          ],
+          "content_line": 7
+        },
+        "company_payment_amount_jpy": {
+          "value": 18000,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "915a7d923c50198005e2e04a4a77844a77914df96c2cab32656dbb59b99abe4c",
+              "locator": "page:2",
+              "quote": "Company prepayment (JPY): 18,000"
+            }
+          ],
+          "content_line": 8
+        },
+        "employee_payment_amount_jpy": {
+          "value": 34800,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "915a7d923c50198005e2e04a4a77844a77914df96c2cab32656dbb59b99abe4c",
+              "locator": "page:2",
+              "quote": "Employee card payment (JPY): 34,800"
+            }
+          ],
+          "content_line": 9
+        },
+        "employee_payment_status": {
+          "value": "PAID",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "915a7d923c50198005e2e04a4a77844a77914df96c2cab32656dbb59b99abe4c",
+              "locator": "page:2",
+              "quote": "Employee card payment status: PAID"
+            }
+          ],
+          "content_line": 10
+        }
+      }
+    },
+    {
+      "case_id": "expense_review_dev_03",
+      "claim_id": "EXP-261003",
+      "source_id": "expense_document_261003",
+      "filename": "EXP-261003.pdf",
+      "relative_path": "case_inputs/dev/EXP-261003.pdf",
+      "version_hash": "11f42e292c9a3110cb8a9b7f257ba0d74f74c2c20b63c0d78e435ed7edc17c48",
+      "pages": [
+        {
+          "page": 1,
+          "organization": "Cedarline Services",
+          "title": "Expense reimbursement request",
+          "lines": [
+            "Claim ID: EXP-261003",
+            "Submitted: 2026-09-15",
+            "Claimant: Jun Aoki",
+            "Expense category: Business-trip accommodation",
+            "Business purpose: Internal process planning meeting",
+            "Approved trip reference: TRIP-261003",
+            "Approved stay start: 2026-09-12",
+            "Approved stay end: 2026-09-14",
+            "Claimed amount (JPY): 31,200",
+            "Attached payment document: FOLIO-H4103",
+            "Employee note: The hotel supplied a statement showing only the total payment."
+          ]
+        },
+        {
+          "page": 2,
+          "organization": "Birchhaven Court Hotel",
+          "title": "Hotel payment statement",
+          "lines": [
+            "Document ID: FOLIO-H4103",
+            "Issued: 2026-09-14",
+            "Bill to: Cedarline Services",
+            "Guest: Jun Aoki",
+            "Stay start: 2026-09-12",
+            "Stay end: 2026-09-14",
+            "Total lodging charge (JPY): 49,200",
+            "Company prepayment (JPY): Not stated",
+            "Employee card payment (JPY): Not stated",
+            "Employee card payment status: Not stated",
+            "Total settlement status: PAID"
+          ]
+        }
+      ],
+      "field_evidence": {
+        "claimant_name": {
+          "value": "Jun Aoki",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "11f42e292c9a3110cb8a9b7f257ba0d74f74c2c20b63c0d78e435ed7edc17c48",
+              "locator": "page:1",
+              "quote": "Claimant: Jun Aoki"
+            }
+          ],
+          "content_line": 3
+        },
+        "approved_stay_start": {
+          "value": "2026-09-12",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "11f42e292c9a3110cb8a9b7f257ba0d74f74c2c20b63c0d78e435ed7edc17c48",
+              "locator": "page:1",
+              "quote": "Approved stay start: 2026-09-12"
+            }
+          ],
+          "content_line": 7
+        },
+        "approved_stay_end": {
+          "value": "2026-09-14",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "11f42e292c9a3110cb8a9b7f257ba0d74f74c2c20b63c0d78e435ed7edc17c48",
+              "locator": "page:1",
+              "quote": "Approved stay end: 2026-09-14"
+            }
+          ],
+          "content_line": 8
+        },
+        "claimed_amount_jpy": {
+          "value": 31200,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "11f42e292c9a3110cb8a9b7f257ba0d74f74c2c20b63c0d78e435ed7edc17c48",
+              "locator": "page:1",
+              "quote": "Claimed amount (JPY): 31,200"
+            }
+          ],
+          "content_line": 9
+        },
+        "exception_note": {
+          "value": "The hotel supplied a statement showing only the total payment.",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "11f42e292c9a3110cb8a9b7f257ba0d74f74c2c20b63c0d78e435ed7edc17c48",
+              "locator": "page:1",
+              "quote": "Employee note: The hotel supplied a statement showing only the total payment."
+            }
+          ],
+          "content_line": 11
+        },
+        "receipt_addressee_name": {
+          "value": "Cedarline Services",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "11f42e292c9a3110cb8a9b7f257ba0d74f74c2c20b63c0d78e435ed7edc17c48",
+              "locator": "page:2",
+              "quote": "Bill to: Cedarline Services"
+            }
+          ],
+          "content_line": 3
+        },
+        "receipt_guest_name": {
+          "value": "Jun Aoki",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "11f42e292c9a3110cb8a9b7f257ba0d74f74c2c20b63c0d78e435ed7edc17c48",
+              "locator": "page:2",
+              "quote": "Guest: Jun Aoki"
+            }
+          ],
+          "content_line": 4
+        },
+        "receipt_stay_start": {
+          "value": "2026-09-12",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "11f42e292c9a3110cb8a9b7f257ba0d74f74c2c20b63c0d78e435ed7edc17c48",
+              "locator": "page:2",
+              "quote": "Stay start: 2026-09-12"
+            }
+          ],
+          "content_line": 5
+        },
+        "receipt_stay_end": {
+          "value": "2026-09-14",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "11f42e292c9a3110cb8a9b7f257ba0d74f74c2c20b63c0d78e435ed7edc17c48",
+              "locator": "page:2",
+              "quote": "Stay end: 2026-09-14"
+            }
+          ],
+          "content_line": 6
+        },
+        "receipt_total_jpy": {
+          "value": 49200,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "11f42e292c9a3110cb8a9b7f257ba0d74f74c2c20b63c0d78e435ed7edc17c48",
+              "locator": "page:2",
+              "quote": "Total lodging charge (JPY): 49,200"
+            }
+          ],
+          "content_line": 7
+        },
+        "company_payment_amount_jpy": {
+          "value": null,
+          "status": "UNRESOLVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "11f42e292c9a3110cb8a9b7f257ba0d74f74c2c20b63c0d78e435ed7edc17c48",
+              "locator": "page:2",
+              "quote": "Company prepayment (JPY): Not stated"
+            }
+          ],
+          "content_line": 8
+        },
+        "employee_payment_amount_jpy": {
+          "value": null,
+          "status": "UNRESOLVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "11f42e292c9a3110cb8a9b7f257ba0d74f74c2c20b63c0d78e435ed7edc17c48",
+              "locator": "page:2",
+              "quote": "Employee card payment (JPY): Not stated"
+            }
+          ],
+          "content_line": 9
+        },
+        "employee_payment_status": {
+          "value": null,
+          "status": "UNRESOLVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "11f42e292c9a3110cb8a9b7f257ba0d74f74c2c20b63c0d78e435ed7edc17c48",
+              "locator": "page:2",
+              "quote": "Employee card payment status: Not stated"
+            }
+          ],
+          "content_line": 10
+        }
+      }
+    },
+    {
+      "case_id": "expense_review_dev_04",
+      "claim_id": "EXP-261004",
+      "source_id": "expense_document_261004",
+      "filename": "EXP-261004.pdf",
+      "relative_path": "case_inputs/dev/EXP-261004.pdf",
+      "version_hash": "745cf4910380d827d2f95dbf7a8c2265936d55f8fa72c7cd227700a8de495edf",
+      "pages": [
+        {
+          "page": 1,
+          "organization": "Cedarline Services",
+          "title": "Expense reimbursement request",
+          "lines": [
+            "Claim ID: EXP-261004",
+            "Submitted: 2026-09-21",
+            "Claimant: Ren Kato",
+            "Expense category: Business-trip accommodation",
+            "Business purpose: Internal process planning meeting",
+            "Approved trip reference: TRIP-261004",
+            "Approved stay start: 2026-09-18",
+            "Approved stay end: 2026-09-19",
+            "Claimed amount (JPY): 39,600",
+            "Attached payment document: RECEIPT-H4104",
+            "Employee note: An additional night was needed after the meeting was rescheduled. Approval for the extension is pending."
+          ]
+        },
+        {
+          "page": 2,
+          "organization": "Linden Crest Inn",
+          "title": "Hotel payment statement",
+          "lines": [
+            "Document ID: RECEIPT-H4104",
+            "Issued: 2026-09-20",
+            "Bill to: Ren Kato",
+            "Guest: Ren Kato",
+            "Stay start: 2026-09-18",
+            "Stay end: 2026-09-20",
+            "Total lodging charge (JPY): 39,600",
+            "Company prepayment (JPY): 0",
+            "Employee card payment (JPY): 39,600",
+            "Employee card payment status: PAID",
+            "Total settlement status: PAID"
+          ]
+        }
+      ],
+      "field_evidence": {
+        "claimant_name": {
+          "value": "Ren Kato",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "745cf4910380d827d2f95dbf7a8c2265936d55f8fa72c7cd227700a8de495edf",
+              "locator": "page:1",
+              "quote": "Claimant: Ren Kato"
+            }
+          ],
+          "content_line": 3
+        },
+        "approved_stay_start": {
+          "value": "2026-09-18",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "745cf4910380d827d2f95dbf7a8c2265936d55f8fa72c7cd227700a8de495edf",
+              "locator": "page:1",
+              "quote": "Approved stay start: 2026-09-18"
+            }
+          ],
+          "content_line": 7
+        },
+        "approved_stay_end": {
+          "value": "2026-09-19",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "745cf4910380d827d2f95dbf7a8c2265936d55f8fa72c7cd227700a8de495edf",
+              "locator": "page:1",
+              "quote": "Approved stay end: 2026-09-19"
+            }
+          ],
+          "content_line": 8
+        },
+        "claimed_amount_jpy": {
+          "value": 39600,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "745cf4910380d827d2f95dbf7a8c2265936d55f8fa72c7cd227700a8de495edf",
+              "locator": "page:1",
+              "quote": "Claimed amount (JPY): 39,600"
+            }
+          ],
+          "content_line": 9
+        },
+        "exception_note": {
+          "value": "An additional night was needed after the meeting was rescheduled. Approval for the extension is pending.",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "745cf4910380d827d2f95dbf7a8c2265936d55f8fa72c7cd227700a8de495edf",
+              "locator": "page:1",
+              "quote": "Employee note: An additional night was needed after the meeting was rescheduled.\nApproval for the extension is pending."
+            }
+          ],
+          "content_line": 11
+        },
+        "receipt_addressee_name": {
+          "value": "Ren Kato",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "745cf4910380d827d2f95dbf7a8c2265936d55f8fa72c7cd227700a8de495edf",
+              "locator": "page:2",
+              "quote": "Bill to: Ren Kato"
+            }
+          ],
+          "content_line": 3
+        },
+        "receipt_guest_name": {
+          "value": "Ren Kato",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "745cf4910380d827d2f95dbf7a8c2265936d55f8fa72c7cd227700a8de495edf",
+              "locator": "page:2",
+              "quote": "Guest: Ren Kato"
+            }
+          ],
+          "content_line": 4
+        },
+        "receipt_stay_start": {
+          "value": "2026-09-18",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "745cf4910380d827d2f95dbf7a8c2265936d55f8fa72c7cd227700a8de495edf",
+              "locator": "page:2",
+              "quote": "Stay start: 2026-09-18"
+            }
+          ],
+          "content_line": 5
+        },
+        "receipt_stay_end": {
+          "value": "2026-09-20",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "745cf4910380d827d2f95dbf7a8c2265936d55f8fa72c7cd227700a8de495edf",
+              "locator": "page:2",
+              "quote": "Stay end: 2026-09-20"
+            }
+          ],
+          "content_line": 6
+        },
+        "receipt_total_jpy": {
+          "value": 39600,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "745cf4910380d827d2f95dbf7a8c2265936d55f8fa72c7cd227700a8de495edf",
+              "locator": "page:2",
+              "quote": "Total lodging charge (JPY): 39,600"
+            }
+          ],
+          "content_line": 7
+        },
+        "company_payment_amount_jpy": {
+          "value": 0,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "745cf4910380d827d2f95dbf7a8c2265936d55f8fa72c7cd227700a8de495edf",
+              "locator": "page:2",
+              "quote": "Company prepayment (JPY): 0"
+            }
+          ],
+          "content_line": 8
+        },
+        "employee_payment_amount_jpy": {
+          "value": 39600,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "745cf4910380d827d2f95dbf7a8c2265936d55f8fa72c7cd227700a8de495edf",
+              "locator": "page:2",
+              "quote": "Employee card payment (JPY): 39,600"
+            }
+          ],
+          "content_line": 9
+        },
+        "employee_payment_status": {
+          "value": "PAID",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "745cf4910380d827d2f95dbf7a8c2265936d55f8fa72c7cd227700a8de495edf",
+              "locator": "page:2",
+              "quote": "Employee card payment status: PAID"
+            }
+          ],
+          "content_line": 10
+        }
+      }
+    },
+    {
+      "case_id": "expense_review_holdout_01",
+      "claim_id": "EXP-261005",
+      "source_id": "expense_document_261005",
+      "filename": "EXP-261005.pdf",
+      "relative_path": "case_inputs/holdout/EXP-261005.pdf",
+      "version_hash": "d3a1f4680e322670d993ea2da26138bd96fe4ab4a11bac91dd29d705484c92fa",
+      "pages": [
+        {
+          "page": 1,
+          "organization": "Cedarline Services",
+          "title": "Expense reimbursement request",
+          "lines": [
+            "Claim ID: EXP-261005",
+            "Submitted: 2026-09-26",
+            "Claimant: Nao Ito",
+            "Expense category: Business-trip accommodation",
+            "Business purpose: Internal process planning meeting",
+            "Approved trip reference: TRIP-261005",
+            "Approved stay start: 2026-09-23",
+            "Approved stay end: 2026-09-25",
+            "Claimed amount (JPY): 27,600",
+            "Attached payment document: FOLIO-H4105",
+            "Employee note: My card payment is listed separately from the company prepayment."
+          ]
+        },
+        {
+          "page": 2,
+          "organization": "Cloverstone Rooms",
+          "title": "Hotel payment statement",
+          "lines": [
+            "Document ID: FOLIO-H4105",
+            "Issued: 2026-09-25",
+            "Bill to: Cedarline Services",
+            "Guest: Nao Ito",
+            "Stay start: 2026-09-23",
+            "Stay end: 2026-09-25",
+            "Total lodging charge (JPY): 47,600",
+            "Company prepayment (JPY): 20,000",
+            "Employee card payment (JPY): 27,600",
+            "Employee card payment status: PAID",
+            "Total settlement status: PAID"
+          ]
+        }
+      ],
+      "field_evidence": {
+        "claimant_name": {
+          "value": "Nao Ito",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "d3a1f4680e322670d993ea2da26138bd96fe4ab4a11bac91dd29d705484c92fa",
+              "locator": "page:1",
+              "quote": "Claimant: Nao Ito"
+            }
+          ],
+          "content_line": 3
+        },
+        "approved_stay_start": {
+          "value": "2026-09-23",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "d3a1f4680e322670d993ea2da26138bd96fe4ab4a11bac91dd29d705484c92fa",
+              "locator": "page:1",
+              "quote": "Approved stay start: 2026-09-23"
+            }
+          ],
+          "content_line": 7
+        },
+        "approved_stay_end": {
+          "value": "2026-09-25",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "d3a1f4680e322670d993ea2da26138bd96fe4ab4a11bac91dd29d705484c92fa",
+              "locator": "page:1",
+              "quote": "Approved stay end: 2026-09-25"
+            }
+          ],
+          "content_line": 8
+        },
+        "claimed_amount_jpy": {
+          "value": 27600,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "d3a1f4680e322670d993ea2da26138bd96fe4ab4a11bac91dd29d705484c92fa",
+              "locator": "page:1",
+              "quote": "Claimed amount (JPY): 27,600"
+            }
+          ],
+          "content_line": 9
+        },
+        "exception_note": {
+          "value": "My card payment is listed separately from the company prepayment.",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "d3a1f4680e322670d993ea2da26138bd96fe4ab4a11bac91dd29d705484c92fa",
+              "locator": "page:1",
+              "quote": "Employee note: My card payment is listed separately from the company prepayment."
+            }
+          ],
+          "content_line": 11
+        },
+        "receipt_addressee_name": {
+          "value": "Cedarline Services",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "d3a1f4680e322670d993ea2da26138bd96fe4ab4a11bac91dd29d705484c92fa",
+              "locator": "page:2",
+              "quote": "Bill to: Cedarline Services"
+            }
+          ],
+          "content_line": 3
+        },
+        "receipt_guest_name": {
+          "value": "Nao Ito",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "d3a1f4680e322670d993ea2da26138bd96fe4ab4a11bac91dd29d705484c92fa",
+              "locator": "page:2",
+              "quote": "Guest: Nao Ito"
+            }
+          ],
+          "content_line": 4
+        },
+        "receipt_stay_start": {
+          "value": "2026-09-23",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "d3a1f4680e322670d993ea2da26138bd96fe4ab4a11bac91dd29d705484c92fa",
+              "locator": "page:2",
+              "quote": "Stay start: 2026-09-23"
+            }
+          ],
+          "content_line": 5
+        },
+        "receipt_stay_end": {
+          "value": "2026-09-25",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "d3a1f4680e322670d993ea2da26138bd96fe4ab4a11bac91dd29d705484c92fa",
+              "locator": "page:2",
+              "quote": "Stay end: 2026-09-25"
+            }
+          ],
+          "content_line": 6
+        },
+        "receipt_total_jpy": {
+          "value": 47600,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "d3a1f4680e322670d993ea2da26138bd96fe4ab4a11bac91dd29d705484c92fa",
+              "locator": "page:2",
+              "quote": "Total lodging charge (JPY): 47,600"
+            }
+          ],
+          "content_line": 7
+        },
+        "company_payment_amount_jpy": {
+          "value": 20000,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "d3a1f4680e322670d993ea2da26138bd96fe4ab4a11bac91dd29d705484c92fa",
+              "locator": "page:2",
+              "quote": "Company prepayment (JPY): 20,000"
+            }
+          ],
+          "content_line": 8
+        },
+        "employee_payment_amount_jpy": {
+          "value": 27600,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "d3a1f4680e322670d993ea2da26138bd96fe4ab4a11bac91dd29d705484c92fa",
+              "locator": "page:2",
+              "quote": "Employee card payment (JPY): 27,600"
+            }
+          ],
+          "content_line": 9
+        },
+        "employee_payment_status": {
+          "value": "PAID",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "d3a1f4680e322670d993ea2da26138bd96fe4ab4a11bac91dd29d705484c92fa",
+              "locator": "page:2",
+              "quote": "Employee card payment status: PAID"
+            }
+          ],
+          "content_line": 10
+        }
+      }
+    },
+    {
+      "case_id": "expense_review_holdout_02",
+      "claim_id": "EXP-261006",
+      "source_id": "expense_document_261006",
+      "filename": "EXP-261006.pdf",
+      "relative_path": "case_inputs/holdout/EXP-261006.pdf",
+      "version_hash": "57084d8b6b31c00dd7e46391f5295e30e5890a71382407f1d5284fad5c55d746",
+      "pages": [
+        {
+          "page": 1,
+          "organization": "Cedarline Services",
+          "title": "Expense reimbursement request",
+          "lines": [
+            "Claim ID: EXP-261006",
+            "Submitted: 2026-09-30",
+            "Claimant: Yui Ono",
+            "Expense category: Business-trip accommodation",
+            "Business purpose: Internal process planning meeting",
+            "Approved trip reference: TRIP-261006",
+            "Approved stay start: 2026-09-27",
+            "Approved stay end: 2026-09-29",
+            "Claimed amount (JPY): 42,400",
+            "Attached payment document: FOLIO-H4106",
+            "Employee note: The requested amount was entered from the total lodging charge."
+          ]
+        },
+        {
+          "page": 2,
+          "organization": "Mapleford Terrace Hotel",
+          "title": "Hotel payment statement",
+          "lines": [
+            "Document ID: FOLIO-H4106",
+            "Issued: 2026-09-29",
+            "Bill to: Cedarline Services",
+            "Guest: Yui Ono",
+            "Stay start: 2026-09-27",
+            "Stay end: 2026-09-29",
+            "Total lodging charge (JPY): 42,400",
+            "Company prepayment (JPY): 16,000",
+            "Employee card payment (JPY): 26,400",
+            "Employee card payment status: PAID",
+            "Total settlement status: PAID"
+          ]
+        }
+      ],
+      "field_evidence": {
+        "claimant_name": {
+          "value": "Yui Ono",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "57084d8b6b31c00dd7e46391f5295e30e5890a71382407f1d5284fad5c55d746",
+              "locator": "page:1",
+              "quote": "Claimant: Yui Ono"
+            }
+          ],
+          "content_line": 3
+        },
+        "approved_stay_start": {
+          "value": "2026-09-27",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "57084d8b6b31c00dd7e46391f5295e30e5890a71382407f1d5284fad5c55d746",
+              "locator": "page:1",
+              "quote": "Approved stay start: 2026-09-27"
+            }
+          ],
+          "content_line": 7
+        },
+        "approved_stay_end": {
+          "value": "2026-09-29",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "57084d8b6b31c00dd7e46391f5295e30e5890a71382407f1d5284fad5c55d746",
+              "locator": "page:1",
+              "quote": "Approved stay end: 2026-09-29"
+            }
+          ],
+          "content_line": 8
+        },
+        "claimed_amount_jpy": {
+          "value": 42400,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "57084d8b6b31c00dd7e46391f5295e30e5890a71382407f1d5284fad5c55d746",
+              "locator": "page:1",
+              "quote": "Claimed amount (JPY): 42,400"
+            }
+          ],
+          "content_line": 9
+        },
+        "exception_note": {
+          "value": "The requested amount was entered from the total lodging charge.",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "57084d8b6b31c00dd7e46391f5295e30e5890a71382407f1d5284fad5c55d746",
+              "locator": "page:1",
+              "quote": "Employee note: The requested amount was entered from the total lodging charge."
+            }
+          ],
+          "content_line": 11
+        },
+        "receipt_addressee_name": {
+          "value": "Cedarline Services",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "57084d8b6b31c00dd7e46391f5295e30e5890a71382407f1d5284fad5c55d746",
+              "locator": "page:2",
+              "quote": "Bill to: Cedarline Services"
+            }
+          ],
+          "content_line": 3
+        },
+        "receipt_guest_name": {
+          "value": "Yui Ono",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "57084d8b6b31c00dd7e46391f5295e30e5890a71382407f1d5284fad5c55d746",
+              "locator": "page:2",
+              "quote": "Guest: Yui Ono"
+            }
+          ],
+          "content_line": 4
+        },
+        "receipt_stay_start": {
+          "value": "2026-09-27",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "57084d8b6b31c00dd7e46391f5295e30e5890a71382407f1d5284fad5c55d746",
+              "locator": "page:2",
+              "quote": "Stay start: 2026-09-27"
+            }
+          ],
+          "content_line": 5
+        },
+        "receipt_stay_end": {
+          "value": "2026-09-29",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "57084d8b6b31c00dd7e46391f5295e30e5890a71382407f1d5284fad5c55d746",
+              "locator": "page:2",
+              "quote": "Stay end: 2026-09-29"
+            }
+          ],
+          "content_line": 6
+        },
+        "receipt_total_jpy": {
+          "value": 42400,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "57084d8b6b31c00dd7e46391f5295e30e5890a71382407f1d5284fad5c55d746",
+              "locator": "page:2",
+              "quote": "Total lodging charge (JPY): 42,400"
+            }
+          ],
+          "content_line": 7
+        },
+        "company_payment_amount_jpy": {
+          "value": 16000,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "57084d8b6b31c00dd7e46391f5295e30e5890a71382407f1d5284fad5c55d746",
+              "locator": "page:2",
+              "quote": "Company prepayment (JPY): 16,000"
+            }
+          ],
+          "content_line": 8
+        },
+        "employee_payment_amount_jpy": {
+          "value": 26400,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "57084d8b6b31c00dd7e46391f5295e30e5890a71382407f1d5284fad5c55d746",
+              "locator": "page:2",
+              "quote": "Employee card payment (JPY): 26,400"
+            }
+          ],
+          "content_line": 9
+        },
+        "employee_payment_status": {
+          "value": "PAID",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "57084d8b6b31c00dd7e46391f5295e30e5890a71382407f1d5284fad5c55d746",
+              "locator": "page:2",
+              "quote": "Employee card payment status: PAID"
+            }
+          ],
+          "content_line": 10
+        }
+      }
+    }
+  ]
+}

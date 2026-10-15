@@ -7,6 +7,8 @@ import tempfile
 from pathlib import Path
 from core.models import JTError
 
+DELETE = object()
+
 def token(key): return key[0] + '/' + key[1]
 
 class LocalRepository:
@@ -22,7 +24,8 @@ class LocalRepository:
             values = {k: copy.deepcopy(db.get(token(k))) for k in keys}
             result = callback(values)
             for k, v in values.items():
-                if v is not None: db[token(k)] = v
+                if v is DELETE: db.pop(token(k), None)
+                elif v is not None: db[token(k)] = v
             fd, temporary = tempfile.mkstemp(dir=self.directory)
             with os.fdopen(fd, 'w') as file:
                 json.dump(db, file, ensure_ascii=False, allow_nan=False)
@@ -57,7 +60,9 @@ class FirestoreRepository:
             original = copy.deepcopy(values)
             result = callback(values)
             for key, value in values.items():
-                if value is not None and value != original[key]:
+                if value is DELETE:
+                    if original[key] is not None: tx.delete(self.ref(key))
+                elif value is not None and value != original[key]:
                     data = json.dumps(value, ensure_ascii=False, allow_nan=False)
                     if len(data.encode()) > 850000: raise JTError('INPUT_TOO_LARGE', 'Stored record exceeds the prototype limit.', 413)
                     tx.set(self.ref(key), {'payload': data})

@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "checks": [
+    "name required for fixation",
+    "missing name creates no record",
+    "whitespace name rejected",
+    "control characters in name rejected",
+    "oversized memo rejected",
+    "name memo timestamp recorded",
+    "record digest covers snapshot and attribution",
+    "finalized record unchanged after source replacement",
+    "original source bytes remain accessible",
+    "stale review cannot be finalized",
+    "new revision links to previous fixed record",
+    "previous review remains distinct",
+    "another owner cannot read fixed record",
+    "nonadministrator grant rejected",
+    "40 calls and 24 decisions from current usage",
+    "grant does not alter counters",
+    "reauthorization cannot reset or enlarge grant",
+    "new preparation call charged cumulatively",
+    "fifth new retry refused",
+    "old grant and consumed retries unchanged",
+    "40-call allowance stops",
+    "24-decision allowance stops",
+    "100-dollar ceiling enforced"
+  ],
+  "real_model_calls": 0,
+  "cloud_writes": 0,
+  "runtime": "actual service/history and AST-loaded unchanged Budget class; local temporary repository"
+}

@@ -6,3 +6,8 @@
 app/**/__pycache__/
 app/**/domain_v1_reference.json
 app/**/teaching_response_mock.json
+app/**/rules_v1_reference.json
+app/fixtures/expense_review/case_documents.json
+app/fixtures/expense_review/cases.json
+app/fixtures/expense_review/expected_private_to_scorer.json
+app/fixtures/expense_review/expert_teaching_reference.txt

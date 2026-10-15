@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "checks": [
+    "deletion requires explicit confirmation",
+    "unconfirmed deletion leaves both records",
+    "foreign owner cannot delete",
+    "record cannot be deleted through another workspace",
+    "selected record physically removed",
+    "deleted record unavailable by identifier",
+    "remaining snapshot unchanged including prior linkage",
+    "history listing excludes deleted record",
+    "current evidence retained",
+    "stale reset preserves newly finalized record",
+    "stale reset changed no records",
+    "duplicate reset identifiers rejected",
+    "transaction rejects concurrent history append",
+    "reset removes all selected snapshots",
+    "empty history listed after reset",
+    "reset retains all other workspace state",
+    "reset retains usage counters",
+    "reset retains test results and approvals",
+    "new history starts after reset",
+    "Firestore transaction physically deletes snapshot",
+    "Firestore transaction updates workspace index",
+    "history_delete uses existing mutation guard",
+    "history_reset uses existing mutation guard"
+  ],
+  "real_model_calls": 0,
+  "cloud_writes": 0,
+  "runtime": "Actual history/service and local storage; actual Firestore transaction method with explicit SDK double."
+}

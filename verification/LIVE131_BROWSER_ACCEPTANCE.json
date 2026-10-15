@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-15",
+  "package_version": "1.0.31",
+  "status": "PASSED_WITH_STATED_SCOPE",
+  "provenance": {
+    "deployment_gate": "Owner-supplied Cloud Shell output, after-deployment PASSED, 2026-10-15",
+    "browser_walkthrough": "Assistant-operated actual deployed browser UI; no API doubles"
+  },
+  "deployed_app": "https://judgment-transfer-unql76xapq-an.a.run.app/",
+  "verified_demo_url": "https://judgment-transfer-unql76xapq-an.a.run.app/assets/demo/index.html?lang=en#2",
+  "owner_reported_gate": {
+    "verified_cases": 6,
+    "saved_results_preserved": true,
+    "display_evidence_matches_live_records": true,
+    "comparison_endpoint_verified": true,
+    "new_model_calls": 0,
+    "judgment_calls": 0,
+    "ledger": {
+      "calls": 538,
+      "decisions": 14,
+      "day": "2026-10-15",
+      "spent_usd": 17.925671999999985
+    }
+  },
+  "browser_checks": [
+    "Main page visibly reports Version 1.0.31 and connected AI testing mode.",
+    "Sources, task-owner explanation and Results navigation open without generation.",
+    "Initial Sources page and demo rendered text contain zero Japanese characters.",
+    "At 1363 by 936 viewport, page scrollWidth is 1348; no horizontal overflow.",
+    "Three demo steps and all four development-case buttons show their corresponding facts and measured actions.",
+    "Personal receipt remains ready; company-addressed receipt changes from hold to ready; missing payment and changed stay remain held.",
+    "Two first-use holdouts show ready and return for correction; Yui Ono evidence shows 42400 claimed versus 26400 employee paid, with recorded trace.",
+    "Evidence and scope disclosure identifies exact baseline/after versions, run IDs and limited six-case scope.",
+    "Handover checklist download completes and contains the approved payment, mismatch, missing-evidence and manager-decision checks.",
+    "An existing fictional EXP-261001.pdf fixture uploads through the visible Upload file control.",
+    "A clearly labeled fictional acceptance comment saves as task-owner-explanation.txt without becoming approved guidance.",
+    "After reload, Continue saved work restores both PDF and explanation with No case has been started status.",
+    "Responsible person field, optional note disclosure and Decision history/Open history entry are visible after material save."
+  ],
+  "cloud_effects": {
+    "read_only_walkthrough": false,
+    "isolated_browser_workspace": "One new source-only fictional browser workspace; PDF and explanation saved, no guidance approved, no case started. Existing owner workspace was not opened or changed by the browser.",
+    "model_action_buttons_clicked": 0,
+    "new_model_calls": 0,
+    "new_judgment_calls": 0
+  },
+  "limits": [
+    "Owner-specific saved-run comparison and existing histories are covered by the owner-supplied after-deployment gate, not by a privileged browser session.",
+    "No new live AI run, repeated reliability benchmark, mobile viewport test, video or entry submission is claimed.",
+    "Six expense cases do not establish stability across every workflow."
+  ],
+  "browser_tool_notes": [
+    "Direct click on the visually hidden file input timed out; the documented visible Upload file flow succeeded.",
+    "Full-page screenshot capture timed out; viewport capture succeeded."
+  ],
+  "screenshots": [
+    "verification/browser131/input-saved.jpg",
+    "verification/browser131/before-after.jpg"
+  ],
+  "package_changes": "None. This acceptance record and screenshots are additional repository verification artifacts, outside the released manifest."
+}
