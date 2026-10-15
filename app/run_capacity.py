@@ -20,7 +20,10 @@ def select_cases(service, body, ctx, ws, domain, cases, arm, split):
                 arm != 'C_JT_RULES' or run['arm'] not in ('A_SOURCE_ONLY', 'C_JT_RULES') or
                 run['domain']['version'] >= domain['version'] or not baseline['metrics']['complete'] or baseline['metrics'].get('stale')):
             raise JTError('INVALID_INPUT', 'Choose a completed earlier test from this workspace.')
-        if run['code_hash'] != config.CODE_HASH or run['model_settings'] != config.SETTINGS or run['mode'] != service.adapter.mode:
+        from comparison import preparation_transport_pair
+        compatible_code=(run['code_hash']==config.CODE_HASH or
+                         preparation_transport_pair(run,{'code_hash':config.CODE_HASH}))
+        if not compatible_code or run['model_settings'] != config.SETTINGS or run['mode'] != service.adapter.mode:
             raise JTError('RUN_PROTOCOL_CHANGED', 'Start a baseline with the current application before comparing new guidance.', 409)
         if chosen is not None and chosen != run['case_ids']:
             raise JTError('INVALID_INPUT', 'The comparison must use the saved baseline cases in the same order.')
@@ -48,14 +51,15 @@ def plan(service, body, ctx, inputs):
     if pair and (body.get('baseline_run_id') or split != 'dev' or repeats != 1):
         raise JTError('INVALID_INPUT', 'Plan a comparison from a single development baseline.')
     decisions = len(cases) * repeats * steps * attempts * (2 if pair else 1)
-    # propose_question can use two attempts; draft_rules has one attempt.
-    required = {'judgment_calls': decisions, 'model_calls': decisions + (3 if pair else 0)}
+    # Question and guidance each have at most two generation attempts.
+    preparation_attempts=2*attempts if pair else 0
+    required = {'judgment_calls': decisions, 'model_calls': decisions + preparation_attempts}
     limited = service.adapter.mode == 'LIVE' and not ctx['admin']
     remaining = service.adapter.budget.public_allowance(ctx['owner']) if limited else None
     can_start = not limited or all(required[key] <= remaining[key] for key in required)
     unit = steps * attempts * (2 if pair else 1)
     max_cases = max(0, min(40, remaining['judgment_calls'] // unit,
-                          (remaining['model_calls'] - (3 if pair else 0)) // unit)) if limited else None
+                          (remaining['model_calls'] - preparation_attempts) // unit)) if limited else None
     scope = 'this comparison' if pair else 'this test'
     message = ('Select up to '+str(max_cases)+' cases for '+scope+'.' if max_cases else
                'The remaining allowance is too small for '+scope+'. Ask the application owner to review the test allowance.') if not can_start else ''

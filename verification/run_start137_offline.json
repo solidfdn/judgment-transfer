@@ -1,0 +1,33 @@
+{
+  "status": "PASSED",
+  "passed": 24,
+  "checks": [
+    "actual Service.create_run crosses run_inputs/select_cases/plan and creates the after run",
+    "all four new tasks start from the saved initial state",
+    "baseline record remains separate from new tasks",
+    "unreviewed package still blocks run creation",
+    "unreviewed package creates no run or task",
+    "changed model settings still blocks run creation",
+    "changed model settings creates no run or task",
+    "changed mode still blocks run creation",
+    "changed mode creates no run or task",
+    "other workspace still blocks run creation",
+    "other workspace creates no run or task",
+    "incomplete baseline still blocks run creation",
+    "incomplete baseline creates no run or task",
+    "stale source evidence still blocks run creation",
+    "stale source evidence creates no run or task",
+    "changed case order is still refused",
+    "an unaudited future package is refused",
+    "same-package baseline behavior is retained",
+    "comparison capacity includes two question and two guidance attempts",
+    "capacity no longer undercounts the new preparation retry",
+    "recovery retains question, guidance and approval without a new request",
+    "both previous failures and original checkpoint bytes are preserved",
+    "same recovery checkpoint is reused",
+    "actual continuation sends no question/guidance/approval POST for saved steps"
+  ],
+  "new_model_calls": 0,
+  "cloud_writes": 0,
+  "scope": "Actual Service.create_run through run_inputs/select_cases/plan, actual cached-call and recovery logic with explicit schema/storage/history/API doubles. Live continuation pending."
+}

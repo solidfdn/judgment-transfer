@@ -1,3 +1,10 @@
+## 1.0.37 — audited compatibility at run creation
+
+- Integration defect fix: apply the existing narrowly audited preparation-only compatibility check in run_capacity.select_cases, as well as comparison/publication. Model settings, mode, workspace, case order, source freshness and earlier approved version checks remain mandatory; old unfinished runs remain immutable.
+- Reuse the successful 1.0.36 guidance and approval, saved question and four baseline records. Continue only from failed create-after with a new request key. Preserve the original 504 and run-start failures; no regeneration or repeat approval.
+- Correct ordinary comparison capacity planning to reserve two question plus two guidance attempts, without changing any allowance or budget.
+- Verification exercises actual Service.create_run -> run_inputs -> select_cases -> plan, negative guards and cached recovery using explicit boundary doubles. Live continuation pending.
+
 ## 1.0.36 — bounded preparation transport; resume the saved guidance step
 
 - Transport defect fix: question/guidance generation now use the existing per-attempt streaming path, a 60-second attempt and one bounded transient retry. Business prompts, schemas, exact-source validation and explicit approval are unchanged. Invalid output/nontransient failures do not retry.

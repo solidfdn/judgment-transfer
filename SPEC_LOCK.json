@@ -2,8 +2,8 @@
   "product": "Judgment Transfer",
   "owner": "SOLIFAN",
   "spec_version": "1.0",
-  "package_version": "1.0.36",
-  "app_version": "1.0.36",
+  "package_version": "1.0.37",
+  "app_version": "1.0.37",
   "baseline_spec": {
     "path": "baseline/Judgment_Transfer_Development_Spec_v1.0_20261010.docx",
     "sha256": "8585fe58d7fdf3511771c0214e960ee7c4091209f7cf60ab5826ca984fb82e07"
@@ -424,5 +424,12 @@
     "comparison": "audited exact 1.0.35 to verified current 1.0.36 pair; decision behavior and all other comparability checks unchanged",
     "usd_attempt_ceiling_including_previous": 24,
     "cumulative_usd_ceiling": 100
+  },
+  "run_start_137": {
+    "category": "integration defect fix",
+    "guard": "Reuse audited preparation compatibility at actual run selection/start",
+    "resume": "Reuse saved baseline, question, guidance and approval; start after run only",
+    "unchanged": "Provider invocation, model, decision settings, prompt, schema, evidence validation, executor and scorer",
+    "limits": "24 total USD attempts including previous calls; USD100 cumulative; 60 seconds per attempt"
   }
 }

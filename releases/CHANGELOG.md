@@ -1,3 +1,10 @@
+## 1.0.37 — Run-start compatibility and approved-state continuation
+
+- Apply the same narrowly audited package compatibility at actual run creation, retaining all other protocol/source/case guards.
+- Reuse completed baseline, question, successful guidance and approval; continue only the after/first-use executions. Preserve both previous failure checkpoints.
+- Correct comparison capacity planning to count two question plus two guidance attempts. Provider/decision behavior, budgets, contracts and evidence handling remain unchanged.
+- Offline checks exercise actual Service.create_run -> run_inputs -> select_cases -> plan and cached recovery. Live continuation awaits Cloud Shell execution.
+
 ## 1.0.36 — Preparation transport and saved guidance continuation
 
 - Resolve the inspected draft_rules 504 path: use existing per-attempt streaming, 60-second attempts and one bounded transient retry. Business prompts and decision invocation behavior remain unchanged.

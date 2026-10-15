@@ -85,7 +85,7 @@ def publish(service, body, ctx):
             'decision_origin':task.get('decision_origin','MODEL'),
             'explanation':task['decision']['explanation'],'note':notes[i]})
     traces={t['trace_id']:t for v in (b,h) for t in v.get('traces',[])}
-    data={'demo_version':'1.0.36','currency':'USD','kind':'RECORDED_LIVE_EXECUTION','recorded_at':now(),
+    data={'demo_version':'1.0.37','currency':'USD','kind':'RECORDED_LIVE_EXECUTION','recorded_at':now(),
         'reviewer_name':person['reviewer_name'],'source':policy,'source_id':'expense_sop','source_hash':digest(policy.encode()),
         'human_text':teaching['human_text'],'human_hash':digest(teaching['human_text'].encode()),
         'question':question['text'],'question_id':question['question_id'],'approval_version':1,'cases':rows,
