@@ -1,0 +1,96 @@
+{
+  "provenance": "Owner-provided Cloud Shell result, 2026-10-15 JST; not independently fetched by the assistant.",
+  "status": "TEACHING_DRAFT_READY_FOR_REVIEW",
+  "teaching_id": "teaching_55bf7012a9c6c070c59b3809ef946a2d",
+  "new_model_calls": 0,
+  "approval_created": false,
+  "candidate_checks_passed": 9,
+  "rules_hash": "5366622faf61d8057375d0f4246938f7b14f6b1399ad02ae5aafbfbb2588496d",
+  "proposed_rules": [
+    {
+      "rule_id": "amount_mismatch_cedarline",
+      "priority": 6,
+      "statement": "If the receipt is addressed to Cedarline Services and marked PAID, but the claimed amount does not match the employee-paid amount, return for correction.",
+      "when": {
+        "all": [
+          {
+            "field_id": "receipt_addressed_to",
+            "operator": "eq",
+            "value": "Cedarline Services"
+          },
+          {
+            "field_id": "receipt_payment_status",
+            "operator": "eq",
+            "value": "PAID"
+          },
+          {
+            "field_id": "claimed_amount",
+            "operator": "ne",
+            "rhs_field_id": "receipt_employee_paid_amount"
+          }
+        ],
+        "any": []
+      },
+      "action_id": "return_for_correction",
+      "source_refs": [
+        {
+          "source_id": "human_984b74d04069efe3c4b8f1e6fd4d4a22",
+          "version_hash": "728b2ccda671e7117158025e2c020b623bf016d0f716cdc3abb94a231fdf2181",
+          "locator": "human:1",
+          "quote": "Compare the claimed amount directly with that stated employee-paid amount, not the total lodging charge. A known mismatch is returned for correction."
+        }
+      ],
+      "approved_by": null
+    },
+    {
+      "rule_id": "precheck_complete_cedarline",
+      "priority": 7,
+      "statement": "Mark the precheck complete when claimant and guest match, stay dates match approved dates, the receipt is addressed to Cedarline Services, and the claimed amount equals the employee-paid amount marked PAID.",
+      "when": {
+        "all": [
+          {
+            "field_id": "claimant_name",
+            "operator": "eq",
+            "rhs_field_id": "guest_name"
+          },
+          {
+            "field_id": "actual_start_date",
+            "operator": "eq",
+            "rhs_field_id": "approved_start_date"
+          },
+          {
+            "field_id": "actual_end_date",
+            "operator": "eq",
+            "rhs_field_id": "approved_end_date"
+          },
+          {
+            "field_id": "receipt_addressed_to",
+            "operator": "eq",
+            "value": "Cedarline Services"
+          },
+          {
+            "field_id": "receipt_payment_status",
+            "operator": "eq",
+            "value": "PAID"
+          },
+          {
+            "field_id": "claimed_amount",
+            "operator": "eq",
+            "rhs_field_id": "receipt_employee_paid_amount"
+          }
+        ],
+        "any": []
+      },
+      "action_id": "ready_for_business_approval",
+      "source_refs": [
+        {
+          "source_id": "human_984b74d04069efe3c4b8f1e6fd4d4a22",
+          "version_hash": "728b2ccda671e7117158025e2c020b623bf016d0f716cdc3abb94a231fdf2181",
+          "locator": "human:1",
+          "quote": "A folio addressed to Cedarline Services may be accepted for this precheck when the named guest matches the claimant, the employee-paid amount is explicitly identified, and that employee payment is marked PAID."
+        }
+      ],
+      "approved_by": null
+    }
+  ]
+}
