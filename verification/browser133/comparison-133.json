@@ -1,0 +1,29 @@
+{
+  "status": "PASSED",
+  "version": "1.0.33",
+  "workspace_id": "ws_fe1de7a5189162de7368e33317d0ea8a",
+  "baseline_run_id": "run_73447ac229a95deb7c222e566b9f2ab1",
+  "after_run_id": "run_fcd51a817df94ad093c747a6b3713b80",
+  "same_code": true,
+  "same_case_ids": true,
+  "same_dataset_hash": true,
+  "same_model_settings": true,
+  "before_actions": [
+    "queue_collection",
+    "hold_request",
+    "hold_request"
+  ],
+  "after_actions": [
+    "queue_collection",
+    "queue_collection",
+    "hold_request"
+  ],
+  "new_judgment_attempts": 7,
+  "new_judgment_requests": 6,
+  "transport_failures_preserved": 1,
+  "receipts_each_run": [
+    3,
+    3
+  ],
+  "all_cases_completed": true
+}

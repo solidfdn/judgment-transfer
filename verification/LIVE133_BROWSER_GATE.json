@@ -1,24 +1,46 @@
 {
-  "status": "STOPPED_AT_DECISION_TRANSPORT",
-  "observed_version": "1.0.32",
-  "channel": "Ordinary browser UI",
+  "status": "PASSED",
+  "version": "1.0.33",
   "workspace_id": "ws_fe1de7a5189162de7368e33317d0ea8a",
-  "run_id": "run_9e5d3f037feb5508f246c2baf45a7a0f",
-  "source_review": "PASSED",
-  "workflow_review": "Approved after changing static reason text to refer to the saved per-case decision explanation. No rule or condition changed.",
-  "manual_cases": 3,
-  "completed_cases": 1,
-  "failed_cases": 1,
-  "pending_cases": 1,
-  "failure": {
-    "trace_id": "trace_d95b02fa71404bcc9e5ae94ff3eeb61a",
-    "chunk_count": 0,
-    "first_text_timeout_ms": 35000,
-    "attempts": 1,
-    "error_type": "ReadTimeout"
+  "baseline_run_id": "run_73447ac229a95deb7c222e566b9f2ab1",
+  "after_run_id": "run_fcd51a817df94ad093c747a6b3713b80",
+  "same_code": true,
+  "same_case_ids": true,
+  "same_dataset_hash": true,
+  "same_model_settings": true,
+  "before_actions": [
+    "queue_collection",
+    "hold_request",
+    "hold_request"
+  ],
+  "after_actions": [
+    "queue_collection",
+    "queue_collection",
+    "hold_request"
+  ],
+  "new_judgment_attempts": 7,
+  "new_judgment_requests": 6,
+  "transport_failures_preserved": 1,
+  "receipts_each_run": [
+    3,
+    3
+  ],
+  "all_cases_completed": true,
+  "channel": "Ordinary browser UI",
+  "source_review": "Reused passed source review; no regeneration",
+  "workflow_review": "Reused approved workflow; no regeneration",
+  "question": "Under what conditions, if any, can CONTRACTOR requests join the ordinary collection queue?",
+  "guidance_approval": "Reviewed exact five-condition CONTRACTOR rule, then approved through ordinary UI",
+  "finalized_records": {
+    "responsible_person": "SOLIFAN UI validation",
+    "baseline_recorded_at": "2026-10-15T07:22:01.504268+00:00",
+    "guidance_recorded_at": "2026-10-15T07:23:32.508002+00:00",
+    "after_recorded_at": "2026-10-15T07:26:12.930919+00:00",
+    "after_memo": "Standard UI check: the three-day contractor request changed from held to ready after approval. The seven-day request still requires the desk manager. Same cases and starting states; original records retained.",
+    "side_by_side_history_opened": true
   },
-  "after_run_performed": false,
-  "source_regeneration": false,
-  "scope": "Preserved actual 1.0.32 browser stop. No successful recovery is claimed.",
-  "saved_work_reload": "PASSED: original inputs, three cases and saved work reopened through Continue saved work without model calls."
+  "reload_comparison": "PASSED: Continue saved work followed by Results restored the same before/after labels without running AI",
+  "earlier_stopped_run_preserved": "run_9e5d3f037feb5508f246c2baf45a7a0f",
+  "prior_stop_record": "verification/browser133/gate.json",
+  "scope": "One complete ordinary-UI equipment-loan walkthrough, with six completed case requests and one preserved/recovered transport timeout. Source review and workflow reused from 1.0.32. No broader reliability or performance claim."
 }
