@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "checks": [
+    "six real case confirmations retain PDF evidence",
+    "four baseline decisions, one question and one draft only",
+    "one ready and three held under current rules",
+    "candidate passes four dev cases and five exception checks",
+    "no new teaching approval, freeze or holdout run",
+    "private labels attached without replacing verified values",
+    "held-out identities absent from all new model payloads",
+    "private target labels never enter model payloads",
+    "named immutable baseline FIX exists",
+    "completed restart no writes",
+    "pause lost /cases/confirm",
+    "reuse receipt /cases/confirm",
+    "pause lost /runs",
+    "reuse receipt /runs",
+    "pause lost STEP",
+    "reuse receipt STEP",
+    "pause lost /teachings",
+    "reuse receipt /teachings",
+    "ineffective supplement stops unapproved",
+    "failed baseline case prevents question and teaching",
+    "failed restart no new writes",
+    "case confirmation requires explicit review"
+  ],
+  "real_model_calls": 0,
+  "cloud_writes": 0,
+  "scope": "Actual services and PDF evidence, explicit generated decision/question/teaching doubles; identity pins substituted only for offline tests."
+}

@@ -28,3 +28,15 @@ against the actual pinned PDF. Preserve raw responses and the failed checkpoint;
 resume the three unread files in separate records. No app change or reapproval.
 Changed: recovery controller, focused test/report and INTAKE128_RESUME_STATUS.
 Nineteen offline checks passed; actual continuation remains pending.
+
+## 2026-10-15 — jt_baseline_128.py
+
+Category: existing-runbook progression after all six actual PDF reads passed.
+Explicitly confirm reviewed facts and submit the documented task-owner explanation;
+use existing APIs to preserve six evidence-linked cases, attach private targets,
+execute four baseline cases, FIX the result, ask one question and create one
+unapproved supplement. No app change, deployment, new allowance or holdout run.
+Changed: baseline controller, focused test/report and BASELINE128_STATUS.
+Compare current-rule compliance separately from complete-policy target metrics;
+keep safe baseline holds distinct from unsafe actions. Preserve terminal failures
+and resume lost responses with the same operation keys. Actual execution pending.
