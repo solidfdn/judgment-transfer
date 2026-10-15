@@ -1,0 +1,29 @@
+{
+  "passed": 17,
+  "checks": [
+    "new browser receives a protected non-permanent cookie",
+    "initial browser owner is a fresh 48-character random value",
+    "ordinary browser creates its owned workspace",
+    "cookie signed over an hour ago retains workspace access",
+    "expiry renews csrf and one-hour window without replacing owner",
+    "workspace facts and ownership stay unchanged",
+    "owner allowance global spend and authorization are unchanged",
+    "expired POST rejects its old csrf token",
+    "rejected expired POST writes no application record",
+    "refresh after rejected POST preserves the owner",
+    "new csrf token authorizes a subsequent normal write",
+    "renewed write does not reset any budget or grant",
+    "another browser gets a different owner",
+    "another browser cannot open original workspace",
+    "tampered signed cookie cannot restore ownership",
+    "identity validity remains bounded at 31 days",
+    "session policy leaves cookie security and one-hour csrf window explicit"
+  ],
+  "new_model_calls": 0,
+  "cloud_writes": 0,
+  "runtime": {
+    "Flask": "3.1.3",
+    "Werkzeug": "3.1.9"
+  },
+  "scope": "Actual Flask test client, timestamp-aged signed cookies, and isolated local repository. Browser-owner validity is 31 days; CSRF renews after one hour. Cookies remain non-permanent."
+}

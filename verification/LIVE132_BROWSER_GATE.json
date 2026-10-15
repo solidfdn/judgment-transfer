@@ -55,5 +55,13 @@
   },
   "raw_failed_answer_accessed": false,
   "new_guidance_approved": false,
-  "after_run_performed": false
+  "after_run_performed": false,
+  "saved_work_reopen": {
+    "observed_version": "1.0.31",
+    "action": "Open saved test after the browser session renewal",
+    "code": "NOT_FOUND",
+    "message": "This saved item is not available with your current access.",
+    "saved_baseline_export_preserved": true,
+    "new_model_calls": 0
+  }
 }

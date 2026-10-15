@@ -9,7 +9,7 @@ function paintNotice(){const n=$('notice');n.textContent=operation.message+(oper
 function notify(message,error=false,details=null){operation={message,error,details,started:busy?operation?.started??Date.now():null};$('notice-details').open=false;paintNotice();}
 function serviceError(error={},status=null,path=''){
  const messages={
-  SESSION_EXPIRED:'This session has ended. Reopen this page to start again. Access to earlier work may require the original administrator.',
+  SESSION_EXPIRED:'Refresh this page to renew your session, then reopen your saved work.',
   CSRF_REQUIRED:'Refresh this page, then open your saved work before making changes.',
   UNAUTHORIZED:'Administrator access could not be verified. Check the token with the application owner.',
   ADMIN_REQUIRED:'This option is for the evaluation administrator. Continue with the ordinary example cases, or ask the application owner for access.',

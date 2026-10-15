@@ -19,7 +19,9 @@ def create_app(repo=None, adapter=None, blobs=None, testing=False):
     if config.MODE=='LIVE':app.wsgi_app=ProxyFix(app.wsgi_app,x_proto=1)
     app.config.update(SECRET_KEY=config.secret(),MAX_CONTENT_LENGTH=21*1024*1024,
         SESSION_COOKIE_HTTPONLY=True,SESSION_COOKIE_SECURE=config.MODE=='LIVE' and not testing,
-        SESSION_COOKIE_SAMESITE='Lax',PERMANENT_SESSION_LIFETIME=dt.timedelta(minutes=60),TESTING=testing)
+        # Keep the signed browser owner stable while renewing the one-hour CSRF
+        # window. Flask also uses this age limit for non-permanent cookies.
+        SESSION_COOKIE_SAMESITE='Lax',PERMANENT_SESSION_LIFETIME=dt.timedelta(days=31),TESTING=testing)
     repo=repo or (FirestoreRepository(config.PROJECT) if config.STORE=='firestore' else LocalRepository(config.DATA))
     blobs=blobs or Blobs(config.DATA,config.BUCKET or None,config.PROJECT or None)
     if adapter is None:
@@ -50,8 +52,10 @@ def create_app(repo=None, adapter=None, blobs=None, testing=False):
         admin=bool(actual and supplied and hmac.compare_digest(supplied,actual))
         if supplied and not admin:raise JTError('UNAUTHORIZED','Administrator token is not valid.',401)
         expired=session.get('expires',0)<=time.time()
+        if not session.get('sid'):
+            session['sid']=secrets.token_hex(24)
         if expired:
-            session.clear();session.update(sid=secrets.token_hex(24),csrf=secrets.token_hex(24),expires=time.time()+3600)
+            session.update(csrf=secrets.token_hex(24),expires=time.time()+3600)
         owner='admin:'+digest(actual)[:24] if admin else session['sid']
         if request.method not in ('GET','HEAD','OPTIONS'):
             if not admin and not hmac.compare_digest(request.headers.get('X-CSRF-Token',''),session['csrf']):

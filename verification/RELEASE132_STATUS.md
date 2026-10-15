@@ -1,16 +1,19 @@
 # Release 1.0.32 status
 
-Prepared on 2026-10-15. Category: capacity, teaching-source provenance, and product-entry defect fixes.
+Prepared on 2026-10-15. Category: capacity, teaching-source provenance, browser-session continuity and product-entry defect fixes.
 
 | Focused offline check | Passed |
 |---|---:|
 | Case selection, per-session capacity and owned baseline reuse | 33 |
 | Actual UI functions with explicit DOM/API doubles | 13 |
 | Actual teaching adapter and service with explicit SDK/repository doubles | 26 |
+| Actual Flask signed-cookie expiry, ownership and usage preservation | 17 |
 
 Affected existing checks also passed: history/budget 23 plus 3 schema checks; display131 21; teaching130 citation/recovery 23. Syntax checks and the installer payload/hash check accompany packaging. Tests do not represent new cloud execution.
 
 The ordinary LIVE browser check on 1.0.31 uploaded a new equipment-loan guide, identified the missing contractor condition, finalized its review, approved the workflow and entered three cases through normal fields. All three baseline cases completed with the intended states. Guidance generation then failed strict evidence validation. The stop is preserved without automatic retry; no guidance was approved and no after run occurred. The latest raw failed answer was not accessed, so no particular malformed quote is asserted.
+
+A later ordinary-browser reopen returned `NOT_FOUND` after session renewal. The fix keeps the owner during one-hour CSRF renewal and gives the signed, non-permanent cookie a bounded 31-day validity. Actual Flask tests use timestamp-aged signed cookies and verify unchanged budgets, rejection of stale CSRF writes, and isolation from another browser or an invalid cookie.
 
 New teaching proposals omit model-authored source references. The application verifies the exact persisted explanation, binds it to a derived rule result, records application provenance and retains the original model result. Full Rule/evidence checks and named approval remain required. Existing failed attempts are not rewritten.
 
