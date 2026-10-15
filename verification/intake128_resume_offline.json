@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "checks": [
+    "original gate incorrectly rejects grounded observed null",
+    "remaining three actual PDFs use real service and references with extraction doubles",
+    "original failed checkpoint byte preserved",
+    "original raw model status and null preserved",
+    "only three new case-read calls, no repeated approval or confirmation",
+    "both absence interpretations separately recorded",
+    "completed reentry no new posts",
+    "reject invented absence quote",
+    "reject wrong source",
+    "reject total settlement substituted",
+    "reject amount filled despite absence",
+    "reject wrong page",
+    "lost fourth response pauses",
+    "resume saved fourth receipt without regeneration",
+    "different failure cannot be resumed",
+    "workspace drift blocks restart",
+    "write guard /domains/approve",
+    "write guard /cases/read",
+    "write guard /cases/confirm"
+  ],
+  "real_model_calls": 0,
+  "cloud_writes": 0,
+  "raw_observations_preserved": true,
+  "test_identity_pins": "Explicit local test-double IDs, never used by published controller.",
+  "scope": "Original gate reproduction and bounded recovery against real service/PDF validation with explicit extraction/HTTP doubles."
+}

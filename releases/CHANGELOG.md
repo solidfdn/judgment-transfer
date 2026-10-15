@@ -17,3 +17,14 @@ checks passed; real Gemini extraction and deployed approval remain pending.
 
 The installed root CHANGELOG, SPEC_LOCK, package manifest, all release installers,
 model limits and original 216 historical decisions remain unchanged.
+
+## 2026-10-15 — jt_resume_intake_128.py
+
+Category: standalone verification defect fix. Actual third-document facts were
+null as required, but the verifier rejected OBSERVED/null despite an explicit
+Not stated quotation permitted by the app's observation contract. Accept this
+representation only after validating the employee-specific absence quotation
+against the actual pinned PDF. Preserve raw responses and the failed checkpoint;
+resume the three unread files in separate records. No app change or reapproval.
+Changed: recovery controller, focused test/report and INTAKE128_RESUME_STATUS.
+Nineteen offline checks passed; actual continuation remains pending.
