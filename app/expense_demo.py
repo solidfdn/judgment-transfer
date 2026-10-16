@@ -44,8 +44,13 @@ def publish(service, body, ctx):
     if not ctx['admin'] or body.get('publish_fictional_usd_demo') is not True:
         raise JTError('ADMIN_REQUIRED','Explicit owner approval is required to publish fictional results.',403)
     person=actor(body)
-    cases=json.loads((FIXTURE/'cases.json').read_text())
-    labels=json.loads((FIXTURE/'expected_private_to_scorer.json').read_text())
+    scenario=body.get('scenario_id')
+    if scenario not in (None,'PERSONAL_RECEIPT_139'):
+        raise JTError('INVALID_INPUT','Unknown demonstration scenario.')
+    personal=scenario=='PERSONAL_RECEIPT_139'
+    fixture=Path(__file__).parent/'fixtures/expense_review_usd139' if personal else FIXTURE
+    cases=json.loads((fixture/'cases.json').read_text())
+    labels=json.loads((fixture/'expected_private_to_scorer.json').read_text())
     targets=[v['expected_action_id'] for v in labels]
     views={k:service.run_view(body.get(k+'_run_id',''),ctx,True) for k in ('baseline','after','holdout')}
     a,b,h=[views[k] for k in ('baseline','after','holdout')]
@@ -83,16 +88,34 @@ def publish(service, body, ctx):
                 task['state']!=effects or len(receipts)!=1 or receipts[0]['case_hash']!=digest(case) or
                 receipts[0]['before_state']!=case['initial_state'] or not task.get('trace_ids') or not live_trace):
                 raise JTError('DEMO_RESULT_MISMATCH','A raw decision, executed state or receipt does not match.',409)
-    policy=(FIXTURE/'source_sop.txt').read_text()
+    policy=(fixture/'source_sop.txt').read_text()
     if a['run']['domain']['source_hashes']!={'expense_sop':digest(policy.encode())}:
         raise JTError('DEMO_RESULT_MISMATCH','The USD policy version differs.',409)
     teaching=service.owned('teachings',ws['teaching_ids'][0],ctx)['teaching']
-    expected_text=(FIXTURE/'expert_teaching_reference.txt').read_text().splitlines()[2:]
+    expected_text=(fixture/'expert_teaching_reference.txt').read_text().splitlines()[2:]
     if teaching['human_text']!='\n'.join(expected_text) or teaching['approval_state']!='APPROVED':
         raise JTError('DEMO_RESULT_MISMATCH','The approved explanation differs.',409)
-    question=service.owned('questions',teaching['question_id'],ctx)['question']
+    question_doc=service.owned('questions',teaching['question_id'],ctx)
+    question=question_doc['question']
+    preparation=[]
+    if personal:
+        teaching_doc=service.owned('teachings',ws['teaching_ids'][0],ctx)
+        preparation=[service.repo.get('traces',doc['trace_id']) for doc in (question_doc,teaching_doc)]
+        qtrace,ttrace=preparation
+        if (any(not t or t.get('mode')!='LIVE' or t.get('error') or not t.get('attempts') or t['attempts'][-1].get('status')!='OK' for t in preparation) or
+            qtrace.get('purpose')!='propose_question' or ttrace.get('purpose')!='draft_rules' or
+            qtrace.get('payload',{}).get('domain')!=a['run']['domain'] or ttrace.get('payload',{}).get('domain')!=a['run']['domain'] or
+            [v.get('case_id') for v in qtrace.get('payload',{}).get('development_cases',[])]!=[cases[1]['case_id']] or
+            qtrace.get('result',{}).get('text')!=question['text'] or
+            ttrace.get('payload',{}).get('question')!=question or ttrace.get('payload',{}).get('human_text')!=teaching['human_text'] or
+            qtrace.get('source_hashes')!=a['run']['domain']['source_hashes'] or
+            ttrace.get('source_hashes')!={teaching_doc['source_id']:digest(teaching['human_text'].encode())}):
+            raise JTError('DEMO_RESULT_MISMATCH','The new question and guidance need their matching live generation traces.',409)
     titles=['Personal receipt','Company-addressed receipt','Employee payment missing','Stay extended','New company receipt','Claim exceeds employee payment']
     notes=['The original instructions already covered this receipt.','The owner’s explanation defines when a company-addressed receipt is acceptable.','A paid hotel total does not prove how much the employee paid.','An extra night still needs a manager’s decision.','The new guidance worked on a case excluded from the explanation.','The USD 424.00 claim exceeds the employee-paid amount of USD 264.00 by USD 160.00.']
+    if personal:
+        titles=['Company-addressed receipt','Employee-addressed receipt','Employee payment missing','Stay extended','New employee-addressed receipt','Claim exceeds employee payment']
+        notes=['The original policy covers this company-addressed receipt.','The approved explanation makes this employee-addressed receipt acceptable; the existing payment checks now apply.','The employee-paid amount and payment status are not stated. They remain unknown.','An extra night still needs a manager’s decision.','The approved acceptance condition worked on an employee-addressed receipt excluded from the explanation.','The USD 424.00 claim exceeds the employee-paid amount of USD 264.00 by USD 160.00.']
     rows=[]
     for i,c in enumerate(cases):
         f=c['facts'];task=(b if i<4 else h)['tasks'][i if i<4 else i-4]
@@ -103,7 +126,7 @@ def publish(service, body, ctx):
             'decision_origin':task.get('decision_origin','MODEL'),
             'explanation':task['decision']['explanation'],'note':notes[i]})
     traces={t['trace_id']:t for v in (b,h) for t in v.get('traces',[])}
-    data={'demo_version':'1.0.38','execution_protocol':PROTOCOL,'currency':'USD','kind':'RECORDED_LIVE_EXECUTION','recorded_at':now(),
+    data={'demo_version':'1.0.39' if personal else '1.0.38','execution_protocol':PROTOCOL,'currency':'USD','kind':'RECORDED_LIVE_EXECUTION','recorded_at':now(),
         'reviewer_name':person['reviewer_name'],'source':policy,'source_id':'expense_sop','source_hash':digest(policy.encode()),
         'human_text':teaching['human_text'],'human_hash':digest(teaching['human_text'].encode()),
         'question':question['text'],'question_id':question['question_id'],'approval_version':1,'cases':rows,
@@ -113,7 +136,13 @@ def publish(service, body, ctx):
         'incremental_cost_usd':sum(x.get('cost_usd',0) for t in traces.values() for x in t.get('attempts',[])),
         'scope':'Fictional USD expense-document precheck. Four matched cases and two first-use cases. A person gives final business approval.',
         'protocol_note':'Same approved-rule engine, code, cases and starting states for both saved workflow versions. Gemini generated the recorded question and guidance proposal; the owner approved the conditions. These ten case executions use no model calls. The comparison replays the already-approved versions, not fresh Gemini judgments. Case facts are author-reviewed document transcriptions.'}
-    key=('public_demo','expense_usd134')
+    if personal:
+        data['scenario_id']='PERSONAL_RECEIPT_139'
+        data['preparation_model_attempts']=sum(len(t['attempts']) for t in preparation)
+        data['question_trace_id']=preparation[0]['trace_id']
+        data['guidance_trace_id']=preparation[1]['trace_id']
+        data['protocol_note']='Same approved-rule engine, code, cases and starting states before and after the new explanation. Gemini generated the recorded question and guidance proposal; the owner approved the conditions. These ten case executions use no model calls. Case facts are author-reviewed transcriptions of the supplied PDFs. Final business approval remains human.'
+    key=('public_demo','expense_receipt139' if personal else 'expense_usd134')
     def commit(values):
         if values[key] and values[key]!=data:
             # Retrieval timestamps and cost summaries must not create a new demo.

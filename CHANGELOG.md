@@ -1,3 +1,11 @@
+## 1.0.39 — realistic receipt acceptance, fresh evidence and matched comparison
+
+- Category: user-authorized fictional expense-demo correction. Company-addressed receipts are the initial-policy standard; acceptance of employee-addressed receipts is the missing condition. Sam claims USD348 with his own-name receipt; the approved explanation allows the existing payment checks to apply. No legal/tax claim.
+- New `expense_review_usd139` fixtures: revised policy, owner explanation, six exact two-page PDFs, author-reviewed case transcriptions, source hashes and separate private targets. The main case has one payer; a held-out overclaim separately checks mixed payments. Old fixtures remain unchanged.
+- New workspace and named/timestamped approvals; fresh Gemini question and guidance proposal, development-only acceptance checks, then four before/four after/two held-out executions under the unchanged shared approved-rule engine. No core, schema, prompt, model, dependency, timeout or budget change. At most four new preparation attempts within the existing grant; ten case executions use zero model calls.
+- New immutable public record and scenario-selected UI text. Validate actual source versions, live preparation traces, raw decisions, receipts and frozen cases before switching the displayed story. The old public record and prior successful/failed runs remain intact.
+- Bounded verification: actual JSON schema, PDF/source evidence validation, LocalRepository/Blobs, Service, history, engine/executor, comparison, full controller and publisher, plus old/new renderer checks. Generation and HTTP API are explicit test doubles. Cloud Run and new Gemini validation remain pending until the owner runs the release command.
+
 ## 1.0.38 — approved conditions execute without repeated model judgment
 
 - Category: user-authorized execution-policy revision to meet stable automation requirements. This is not a provider or transport fix and changes the C execution protocol. A/B remain model-proposed study paths; historical results are unchanged.

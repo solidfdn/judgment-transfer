@@ -2,8 +2,8 @@
   "product": "Judgment Transfer",
   "owner": "SOLIFAN",
   "spec_version": "1.0",
-  "package_version": "1.0.38",
-  "app_version": "1.0.38",
+  "package_version": "1.0.39",
+  "app_version": "1.0.39",
   "baseline_spec": {
     "path": "baseline/Judgment_Transfer_Development_Spec_v1.0_20261010.docx",
     "sha256": "8585fe58d7fdf3511771c0214e960ee7c4091209f7cf60ab5826ca984fb82e07"
@@ -441,5 +441,17 @@
     "new_case_executions": 10,
     "preserved": "All old successful/failed/pending tasks, approval/source versions, model configuration and cumulative counters. No new generation, repeat approval, cap increase or timeout extension.",
     "claim_boundary": "Approved workflow execution, not fresh model judgment or proof that silent upstream responses have recovered."
+  },
+  "receipt_scenario_139": {
+    "category": "User-authorized fictional expense scenario correction; generic engine and contracts unchanged",
+    "scenario": "PERSONAL_RECEIPT_139",
+    "fixture": "expense_review_usd139",
+    "initial_policy": "Company-addressed receipts accepted; employee-addressed acceptance unrecorded",
+    "explanation": "Accept own-name receipts with matching claimant/guest, explicit employee payment marked PAID and approved dates; apply existing claim-versus-payment checks",
+    "comparison": "New workspace and approved versions, 4 before + 4 after + 2 held-out executions using APPROVED_RULE_ENGINE_V1 on the same package",
+    "preparation_model_attempts_max": 4,
+    "execution_model_calls": 0,
+    "publication": "New immutable expense_receipt139 record after verification; UI follows record scenario",
+    "preserved": "Old fixtures, sources, workspaces, approvals, successful/failed runs, usage, timeouts, model, dependency pins and cumulative USD100 ceiling"
   }
 }

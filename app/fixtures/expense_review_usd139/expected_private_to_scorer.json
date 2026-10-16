@@ -1,0 +1,62 @@
+[
+  {
+    "case_id": "expense_review_usd139_dev_01",
+    "expected_action_id": "ready_for_approval",
+    "expected_state": {
+      "status": "READY_FOR_BUSINESS_APPROVAL"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Private author-prepared label, not a measured result. Company-addressed receipt: guest, approved dates and the explicitly paid USD 268.00 employee amount match."
+  },
+  {
+    "case_id": "expense_review_usd139_dev_02",
+    "expected_action_id": "ready_for_approval",
+    "expected_state": {
+      "status": "READY_FOR_BUSINESS_APPROVAL"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Private author-prepared label, not a measured result. Employee-addressed receipt: the approved acceptance condition permits the existing payment checks. The claimed and explicitly paid employee amount are both USD 348.00."
+  },
+  {
+    "case_id": "expense_review_usd139_dev_03",
+    "expected_action_id": "hold_case",
+    "expected_state": {
+      "status": "HELD"
+    },
+    "critical_wrong_actions": [
+      "ready_for_approval"
+    ],
+    "rationale": "Private author-prepared label, not a measured result. The employee payment amount and status are not stated. Keep them unknown; do not infer them from the hotel total."
+  },
+  {
+    "case_id": "expense_review_usd139_dev_04",
+    "expected_action_id": "hold_case",
+    "expected_state": {
+      "status": "HELD"
+    },
+    "critical_wrong_actions": [
+      "ready_for_approval"
+    ],
+    "rationale": "Private author-prepared label, not a measured result. The actual stay ends on 2026-09-20, outside the approval ending 2026-09-19. A manager must decide on the extension."
+  },
+  {
+    "case_id": "expense_review_usd139_holdout_01",
+    "expected_action_id": "ready_for_approval",
+    "expected_state": {
+      "status": "READY_FOR_BUSINESS_APPROVAL"
+    },
+    "critical_wrong_actions": [],
+    "rationale": "Private author-prepared label, not a measured result. A new employee-addressed receipt, excluded from teaching, explicitly records a paid USD 276.00 employee amount matching the claim, names and approved dates."
+  },
+  {
+    "case_id": "expense_review_usd139_holdout_02",
+    "expected_action_id": "return_for_correction",
+    "expected_state": {
+      "status": "RETURNED_FOR_CORRECTION"
+    },
+    "critical_wrong_actions": [
+      "ready_for_approval"
+    ],
+    "rationale": "Private author-prepared label, not a measured result. The claim is USD 424.00 but the employee explicitly paid USD 264.00. Return the mismatch; the company-paid USD 160.00 is not reimbursed to the employee."
+  }
+]

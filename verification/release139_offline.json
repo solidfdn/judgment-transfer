@@ -1,0 +1,26 @@
+{
+  "status": "PASSED",
+  "checks": [
+    "unchanged app/core/models.py",
+    "unchanged app/approved_execution.py",
+    "unchanged app/adapters/model.py",
+    "unchanged app/adapters/evidence.py",
+    "unchanged app/service.py",
+    "unchanged app/history.py",
+    "unchanged app/contracts/jt_contracts.schema.json",
+    "unchanged requirements.lock",
+    "no file deleted",
+    "exact baseline accepted",
+    "interrupted update resumes only known old/new bytes",
+    "unexpected local edit stops before applying",
+    "installed package verifies every manifest hash",
+    "unrecognized baseline refused",
+    "all prior USD checkpoints retained",
+    "new controller and reviewer flags connected",
+    "unchanged historical display gate can be read from disk"
+  ],
+  "changed_files": 29,
+  "new_model_calls": 0,
+  "cloud_writes": 0,
+  "scope": "Actual updater payload and baseline/resume/tamper guards. No deploy or model execution."
+}

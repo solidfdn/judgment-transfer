@@ -1,0 +1,152 @@
+[
+  {
+    "case_id": "expense_review_usd139_dev_01",
+    "domain_id": "expense_review_usd139",
+    "split": "dev",
+    "stratum": "normal",
+    "facts": {
+      "claimant_name": "Alex Morgan",
+      "claimed_amount_usd": 268.0,
+      "approved_stay_start": "2026-09-03",
+      "approved_stay_end": "2026-09-05",
+      "receipt_addressee_name": "Cedarline Services",
+      "receipt_guest_name": "Alex Morgan",
+      "receipt_stay_start": "2026-09-03",
+      "receipt_stay_end": "2026-09-05",
+      "employee_payment_amount_usd": 268.0,
+      "employee_payment_status": "PAID",
+      "receipt_total_usd": 268.0,
+      "company_payment_amount_usd": 0.0,
+      "exception_note": "Accommodation cost for the approved trip."
+    },
+    "raw_text": "Page 1: Cedarline Services | Expense reimbursement request\nClaim ID: USD-261001\nSubmitted: 2026-09-06\nClaimant: Alex Morgan\nExpense category: Business-trip accommodation\nBusiness purpose: Internal process planning meeting\nApproved trip reference: TRIP-261001\nApproved stay start: 2026-09-03\nApproved stay end: 2026-09-05\nClaimed amount (USD): 268.00\nAttached payment document: RECEIPT-H4101\nEmployee note: Accommodation cost for the approved trip.\n\nPage 2: Willowmere House Hotel | Hotel payment statement\nDocument ID: RECEIPT-H4101\nIssued: 2026-09-05\nBill to: Cedarline Services\nGuest: Alex Morgan\nStay start: 2026-09-03\nStay end: 2026-09-05\nTotal lodging charge (USD): 268.00\nCompany prepayment (USD): 0.00\nEmployee card payment (USD): 268.00\nEmployee card payment status: PAID\nTotal settlement status: PAID",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "expense_review_usd139_dev_02",
+    "domain_id": "expense_review_usd139",
+    "split": "dev",
+    "stratum": "transfer",
+    "facts": {
+      "claimant_name": "Sam Rivera",
+      "claimed_amount_usd": 348.0,
+      "approved_stay_start": "2026-09-08",
+      "approved_stay_end": "2026-09-10",
+      "receipt_addressee_name": "Sam Rivera",
+      "receipt_guest_name": "Sam Rivera",
+      "receipt_stay_start": "2026-09-08",
+      "receipt_stay_end": "2026-09-10",
+      "employee_payment_amount_usd": 348.0,
+      "employee_payment_status": "PAID",
+      "receipt_total_usd": 348,
+      "company_payment_amount_usd": 0,
+      "exception_note": "My receipt is addressed to me and explicitly records my paid card payment of USD 348.00."
+    },
+    "raw_text": "Page 1: Cedarline Services | Expense reimbursement request\nClaim ID: USD-261002\nSubmitted: 2026-09-11\nClaimant: Sam Rivera\nExpense category: Business-trip accommodation\nBusiness purpose: Internal process planning meeting\nApproved trip reference: TRIP-261002\nApproved stay start: 2026-09-08\nApproved stay end: 2026-09-10\nClaimed amount (USD): 348.00\nAttached payment document: FOLIO-H4102\nEmployee note: My receipt is addressed to me and explicitly records my paid card payment of USD 348.00.\n\nPage 2: Aster Quay Lodge | Hotel payment statement\nDocument ID: FOLIO-H4102\nIssued: 2026-09-10\nBill to: Sam Rivera\nGuest: Sam Rivera\nStay start: 2026-09-08\nStay end: 2026-09-10\nTotal lodging charge (USD): 348.00\nCompany prepayment (USD): 0.00\nEmployee card payment (USD): 348.00\nEmployee card payment status: PAID\nTotal settlement status: PAID",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "expense_review_usd139_dev_03",
+    "domain_id": "expense_review_usd139",
+    "split": "dev",
+    "stratum": "must_hold",
+    "facts": {
+      "claimant_name": "Jordan Chen",
+      "claimed_amount_usd": 312.0,
+      "approved_stay_start": "2026-09-12",
+      "approved_stay_end": "2026-09-14",
+      "receipt_addressee_name": "Jordan Chen",
+      "receipt_guest_name": "Jordan Chen",
+      "receipt_stay_start": "2026-09-12",
+      "receipt_stay_end": "2026-09-14",
+      "employee_payment_amount_usd": null,
+      "employee_payment_status": null,
+      "receipt_total_usd": 312,
+      "company_payment_amount_usd": null,
+      "exception_note": "The hotel statement is addressed to me. My payment amount and its payment status are not stated."
+    },
+    "raw_text": "Page 1: Cedarline Services | Expense reimbursement request\nClaim ID: USD-261003\nSubmitted: 2026-09-15\nClaimant: Jordan Chen\nExpense category: Business-trip accommodation\nBusiness purpose: Internal process planning meeting\nApproved trip reference: TRIP-261003\nApproved stay start: 2026-09-12\nApproved stay end: 2026-09-14\nClaimed amount (USD): 312.00\nAttached payment document: FOLIO-H4103\nEmployee note: The hotel statement is addressed to me. My payment amount and its payment status are not stated.\n\nPage 2: Birchhaven Court Hotel | Hotel payment statement\nDocument ID: FOLIO-H4103\nIssued: 2026-09-14\nBill to: Jordan Chen\nGuest: Jordan Chen\nStay start: 2026-09-12\nStay end: 2026-09-14\nTotal lodging charge (USD): 312.00\nCompany prepayment (USD): Not stated\nEmployee card payment (USD): Not stated\nEmployee card payment status: Not stated\nTotal settlement status: PAID",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "expense_review_usd139_dev_04",
+    "domain_id": "expense_review_usd139",
+    "split": "dev",
+    "stratum": "must_hold",
+    "facts": {
+      "claimant_name": "Taylor Brooks",
+      "claimed_amount_usd": 396.0,
+      "approved_stay_start": "2026-09-18",
+      "approved_stay_end": "2026-09-19",
+      "receipt_addressee_name": "Cedarline Services",
+      "receipt_guest_name": "Taylor Brooks",
+      "receipt_stay_start": "2026-09-18",
+      "receipt_stay_end": "2026-09-20",
+      "employee_payment_amount_usd": 396.0,
+      "employee_payment_status": "PAID",
+      "receipt_total_usd": 396.0,
+      "company_payment_amount_usd": 0.0,
+      "exception_note": "An additional night was needed after the meeting was rescheduled. Approval for the extension is pending."
+    },
+    "raw_text": "Page 1: Cedarline Services | Expense reimbursement request\nClaim ID: USD-261004\nSubmitted: 2026-09-21\nClaimant: Taylor Brooks\nExpense category: Business-trip accommodation\nBusiness purpose: Internal process planning meeting\nApproved trip reference: TRIP-261004\nApproved stay start: 2026-09-18\nApproved stay end: 2026-09-19\nClaimed amount (USD): 396.00\nAttached payment document: RECEIPT-H4104\nEmployee note: An additional night was needed after the meeting was rescheduled. Approval for the extension is pending.\n\nPage 2: Linden Crest Inn | Hotel payment statement\nDocument ID: RECEIPT-H4104\nIssued: 2026-09-20\nBill to: Cedarline Services\nGuest: Taylor Brooks\nStay start: 2026-09-18\nStay end: 2026-09-20\nTotal lodging charge (USD): 396.00\nCompany prepayment (USD): 0.00\nEmployee card payment (USD): 396.00\nEmployee card payment status: PAID\nTotal settlement status: PAID",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "expense_review_usd139_holdout_01",
+    "domain_id": "expense_review_usd139",
+    "split": "holdout",
+    "stratum": "transfer",
+    "facts": {
+      "claimant_name": "Casey Lee",
+      "claimed_amount_usd": 276.0,
+      "approved_stay_start": "2026-09-23",
+      "approved_stay_end": "2026-09-25",
+      "receipt_addressee_name": "Casey Lee",
+      "receipt_guest_name": "Casey Lee",
+      "receipt_stay_start": "2026-09-23",
+      "receipt_stay_end": "2026-09-25",
+      "employee_payment_amount_usd": 276.0,
+      "employee_payment_status": "PAID",
+      "receipt_total_usd": 276,
+      "company_payment_amount_usd": 0,
+      "exception_note": "My receipt records my card payment and is addressed to me."
+    },
+    "raw_text": "Page 1: Cedarline Services | Expense reimbursement request\nClaim ID: USD-261005\nSubmitted: 2026-09-26\nClaimant: Casey Lee\nExpense category: Business-trip accommodation\nBusiness purpose: Internal process planning meeting\nApproved trip reference: TRIP-261005\nApproved stay start: 2026-09-23\nApproved stay end: 2026-09-25\nClaimed amount (USD): 276.00\nAttached payment document: FOLIO-H4105\nEmployee note: My receipt records my card payment and is addressed to me.\n\nPage 2: Cloverstone Rooms | Hotel payment statement\nDocument ID: FOLIO-H4105\nIssued: 2026-09-25\nBill to: Casey Lee\nGuest: Casey Lee\nStay start: 2026-09-23\nStay end: 2026-09-25\nTotal lodging charge (USD): 276.00\nCompany prepayment (USD): 0.00\nEmployee card payment (USD): 276.00\nEmployee card payment status: PAID\nTotal settlement status: PAID",
+    "initial_state": {
+      "status": "NEW"
+    }
+  },
+  {
+    "case_id": "expense_review_usd139_holdout_02",
+    "domain_id": "expense_review_usd139",
+    "split": "holdout",
+    "stratum": "transfer",
+    "facts": {
+      "claimant_name": "Jamie Patel",
+      "claimed_amount_usd": 424.0,
+      "approved_stay_start": "2026-09-27",
+      "approved_stay_end": "2026-09-29",
+      "receipt_addressee_name": "Jamie Patel",
+      "receipt_guest_name": "Jamie Patel",
+      "receipt_stay_start": "2026-09-27",
+      "receipt_stay_end": "2026-09-29",
+      "employee_payment_amount_usd": 264.0,
+      "employee_payment_status": "PAID",
+      "receipt_total_usd": 424.0,
+      "company_payment_amount_usd": 160.0,
+      "exception_note": "The requested amount was entered from the total lodging charge."
+    },
+    "raw_text": "Page 1: Cedarline Services | Expense reimbursement request\nClaim ID: USD-261006\nSubmitted: 2026-09-30\nClaimant: Jamie Patel\nExpense category: Business-trip accommodation\nBusiness purpose: Internal process planning meeting\nApproved trip reference: TRIP-261006\nApproved stay start: 2026-09-27\nApproved stay end: 2026-09-29\nClaimed amount (USD): 424.00\nAttached payment document: FOLIO-H4106\nEmployee note: The requested amount was entered from the total lodging charge.\n\nPage 2: Mapleford Terrace Hotel | Hotel payment statement\nDocument ID: FOLIO-H4106\nIssued: 2026-09-29\nBill to: Jamie Patel\nGuest: Jamie Patel\nStay start: 2026-09-27\nStay end: 2026-09-29\nTotal lodging charge (USD): 424.00\nCompany prepayment (USD): 160.00\nEmployee card payment (USD): 264.00\nEmployee card payment status: PAID\nTotal settlement status: PAID",
+    "initial_state": {
+      "status": "NEW"
+    }
+  }
+]

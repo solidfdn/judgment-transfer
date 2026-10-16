@@ -1,0 +1,8 @@
+DRAFT FOR TASK-OWNER REVIEW | Employee-addressed hotel receipts
+This proposed explanation is not approved and must not activate rules until the task owner reviews and explicitly approves it.
+A receipt addressed to the employee rather than Cedarline Services is acceptable under this company policy when its addressee and named guest both match the claimant, the employee-paid amount is explicitly stated, that employee payment is marked PAID, and both stay dates match the approved dates.
+Once this receipt-acceptance condition is approved, apply the existing payment checks: compare the claimed amount directly with the stated employee-paid amount, not the total lodging charge. A known mismatch is returned for correction.
+The company prepayment is not reimbursed to the employee. Its presence does not replace evidence of the employee's own payment.
+Do not calculate or infer a missing payment allocation. Hold and request evidence that explicitly identifies the employee-paid amount and its payment status.
+Both hotel stay dates must match the approved stay dates. A changed stay still requires a manager's decision; this clarification does not approve an extension.
+Matching evidence permits only READY_FOR_BUSINESS_APPROVAL in the isolated simulation, never final expense approval or payment.

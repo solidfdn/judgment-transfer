@@ -1,0 +1,1309 @@
+{
+  "schema_version": "1.0",
+  "fictional": true,
+  "case_field_origin": "Author-prepared transcription of the exact generated document lines; not model extraction.",
+  "documents": [
+    {
+      "case_id": "expense_review_usd139_dev_01",
+      "claim_id": "USD-261001",
+      "source_id": "expense_document_261001",
+      "filename": "USD-261001.pdf",
+      "relative_path": "case_inputs/dev/USD-261001.pdf",
+      "version_hash": "00183e5b2f2937f7899ffb17e210d1a45759806feb4dc26836d41a34c3a50dfe",
+      "pages": [
+        {
+          "page": 1,
+          "organization": "Cedarline Services",
+          "title": "Expense reimbursement request",
+          "lines": [
+            "Claim ID: USD-261001",
+            "Submitted: 2026-09-06",
+            "Claimant: Alex Morgan",
+            "Expense category: Business-trip accommodation",
+            "Business purpose: Internal process planning meeting",
+            "Approved trip reference: TRIP-261001",
+            "Approved stay start: 2026-09-03",
+            "Approved stay end: 2026-09-05",
+            "Claimed amount (USD): 268.00",
+            "Attached payment document: RECEIPT-H4101",
+            "Employee note: Accommodation cost for the approved trip."
+          ]
+        },
+        {
+          "page": 2,
+          "organization": "Willowmere House Hotel",
+          "title": "Hotel payment statement",
+          "lines": [
+            "Document ID: RECEIPT-H4101",
+            "Issued: 2026-09-05",
+            "Bill to: Cedarline Services",
+            "Guest: Alex Morgan",
+            "Stay start: 2026-09-03",
+            "Stay end: 2026-09-05",
+            "Total lodging charge (USD): 268.00",
+            "Company prepayment (USD): 0.00",
+            "Employee card payment (USD): 268.00",
+            "Employee card payment status: PAID",
+            "Total settlement status: PAID"
+          ]
+        }
+      ],
+      "field_evidence": {
+        "claimant_name": {
+          "value": "Alex Morgan",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "00183e5b2f2937f7899ffb17e210d1a45759806feb4dc26836d41a34c3a50dfe",
+              "locator": "page:1",
+              "quote": "Claimant: Alex Morgan"
+            }
+          ],
+          "content_line": 3
+        },
+        "approved_stay_start": {
+          "value": "2026-09-03",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "00183e5b2f2937f7899ffb17e210d1a45759806feb4dc26836d41a34c3a50dfe",
+              "locator": "page:1",
+              "quote": "Approved stay start: 2026-09-03"
+            }
+          ],
+          "content_line": 7
+        },
+        "approved_stay_end": {
+          "value": "2026-09-05",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "00183e5b2f2937f7899ffb17e210d1a45759806feb4dc26836d41a34c3a50dfe",
+              "locator": "page:1",
+              "quote": "Approved stay end: 2026-09-05"
+            }
+          ],
+          "content_line": 8
+        },
+        "claimed_amount_usd": {
+          "value": 268.0,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "00183e5b2f2937f7899ffb17e210d1a45759806feb4dc26836d41a34c3a50dfe",
+              "locator": "page:1",
+              "quote": "Claimed amount (USD): 268.00"
+            }
+          ],
+          "content_line": 9
+        },
+        "exception_note": {
+          "value": "Accommodation cost for the approved trip.",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "00183e5b2f2937f7899ffb17e210d1a45759806feb4dc26836d41a34c3a50dfe",
+              "locator": "page:1",
+              "quote": "Employee note: Accommodation cost for the approved trip."
+            }
+          ],
+          "content_line": 11
+        },
+        "receipt_addressee_name": {
+          "value": "Cedarline Services",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "00183e5b2f2937f7899ffb17e210d1a45759806feb4dc26836d41a34c3a50dfe",
+              "locator": "page:2",
+              "quote": "Bill to: Cedarline Services"
+            }
+          ],
+          "content_line": 3
+        },
+        "receipt_guest_name": {
+          "value": "Alex Morgan",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "00183e5b2f2937f7899ffb17e210d1a45759806feb4dc26836d41a34c3a50dfe",
+              "locator": "page:2",
+              "quote": "Guest: Alex Morgan"
+            }
+          ],
+          "content_line": 4
+        },
+        "receipt_stay_start": {
+          "value": "2026-09-03",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "00183e5b2f2937f7899ffb17e210d1a45759806feb4dc26836d41a34c3a50dfe",
+              "locator": "page:2",
+              "quote": "Stay start: 2026-09-03"
+            }
+          ],
+          "content_line": 5
+        },
+        "receipt_stay_end": {
+          "value": "2026-09-05",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "00183e5b2f2937f7899ffb17e210d1a45759806feb4dc26836d41a34c3a50dfe",
+              "locator": "page:2",
+              "quote": "Stay end: 2026-09-05"
+            }
+          ],
+          "content_line": 6
+        },
+        "receipt_total_usd": {
+          "value": 268.0,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "00183e5b2f2937f7899ffb17e210d1a45759806feb4dc26836d41a34c3a50dfe",
+              "locator": "page:2",
+              "quote": "Total lodging charge (USD): 268.00"
+            }
+          ],
+          "content_line": 7
+        },
+        "company_payment_amount_usd": {
+          "value": 0.0,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "00183e5b2f2937f7899ffb17e210d1a45759806feb4dc26836d41a34c3a50dfe",
+              "locator": "page:2",
+              "quote": "Company prepayment (USD): 0.00"
+            }
+          ],
+          "content_line": 8
+        },
+        "employee_payment_amount_usd": {
+          "value": 268.0,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "00183e5b2f2937f7899ffb17e210d1a45759806feb4dc26836d41a34c3a50dfe",
+              "locator": "page:2",
+              "quote": "Employee card payment (USD): 268.00"
+            }
+          ],
+          "content_line": 9
+        },
+        "employee_payment_status": {
+          "value": "PAID",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261001",
+              "version_hash": "00183e5b2f2937f7899ffb17e210d1a45759806feb4dc26836d41a34c3a50dfe",
+              "locator": "page:2",
+              "quote": "Employee card payment status: PAID"
+            }
+          ],
+          "content_line": 10
+        }
+      }
+    },
+    {
+      "case_id": "expense_review_usd139_dev_02",
+      "claim_id": "USD-261002",
+      "source_id": "expense_document_261002",
+      "filename": "USD-261002.pdf",
+      "relative_path": "case_inputs/dev/USD-261002.pdf",
+      "version_hash": "3361f8d795701c83ad6265ff22e54b2e777dedb6a8691e7c2c3c3fe3d4ea201c",
+      "pages": [
+        {
+          "page": 1,
+          "organization": "Cedarline Services",
+          "title": "Expense reimbursement request",
+          "lines": [
+            "Claim ID: USD-261002",
+            "Submitted: 2026-09-11",
+            "Claimant: Sam Rivera",
+            "Expense category: Business-trip accommodation",
+            "Business purpose: Internal process planning meeting",
+            "Approved trip reference: TRIP-261002",
+            "Approved stay start: 2026-09-08",
+            "Approved stay end: 2026-09-10",
+            "Claimed amount (USD): 348.00",
+            "Attached payment document: FOLIO-H4102",
+            "Employee note: My receipt is addressed to me and explicitly records my paid card payment of USD 348.00."
+          ]
+        },
+        {
+          "page": 2,
+          "organization": "Aster Quay Lodge",
+          "title": "Hotel payment statement",
+          "lines": [
+            "Document ID: FOLIO-H4102",
+            "Issued: 2026-09-10",
+            "Bill to: Sam Rivera",
+            "Guest: Sam Rivera",
+            "Stay start: 2026-09-08",
+            "Stay end: 2026-09-10",
+            "Total lodging charge (USD): 348.00",
+            "Company prepayment (USD): 0.00",
+            "Employee card payment (USD): 348.00",
+            "Employee card payment status: PAID",
+            "Total settlement status: PAID"
+          ]
+        }
+      ],
+      "field_evidence": {
+        "claimant_name": {
+          "value": "Sam Rivera",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "3361f8d795701c83ad6265ff22e54b2e777dedb6a8691e7c2c3c3fe3d4ea201c",
+              "locator": "page:1",
+              "quote": "Claimant: Sam Rivera"
+            }
+          ],
+          "content_line": 3
+        },
+        "approved_stay_start": {
+          "value": "2026-09-08",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "3361f8d795701c83ad6265ff22e54b2e777dedb6a8691e7c2c3c3fe3d4ea201c",
+              "locator": "page:1",
+              "quote": "Approved stay start: 2026-09-08"
+            }
+          ],
+          "content_line": 7
+        },
+        "approved_stay_end": {
+          "value": "2026-09-10",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "3361f8d795701c83ad6265ff22e54b2e777dedb6a8691e7c2c3c3fe3d4ea201c",
+              "locator": "page:1",
+              "quote": "Approved stay end: 2026-09-10"
+            }
+          ],
+          "content_line": 8
+        },
+        "claimed_amount_usd": {
+          "value": 348.0,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "3361f8d795701c83ad6265ff22e54b2e777dedb6a8691e7c2c3c3fe3d4ea201c",
+              "locator": "page:1",
+              "quote": "Claimed amount (USD): 348.00"
+            }
+          ],
+          "content_line": 9
+        },
+        "exception_note": {
+          "value": "My receipt is addressed to me and explicitly records my paid card payment of USD 348.00.",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "3361f8d795701c83ad6265ff22e54b2e777dedb6a8691e7c2c3c3fe3d4ea201c",
+              "locator": "page:1",
+              "quote": "Employee note: My receipt is addressed to me and explicitly records my paid card payment\nof USD 348.00."
+            }
+          ],
+          "content_line": 11
+        },
+        "receipt_addressee_name": {
+          "value": "Sam Rivera",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "3361f8d795701c83ad6265ff22e54b2e777dedb6a8691e7c2c3c3fe3d4ea201c",
+              "locator": "page:2",
+              "quote": "Bill to: Sam Rivera"
+            }
+          ],
+          "content_line": 3
+        },
+        "receipt_guest_name": {
+          "value": "Sam Rivera",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "3361f8d795701c83ad6265ff22e54b2e777dedb6a8691e7c2c3c3fe3d4ea201c",
+              "locator": "page:2",
+              "quote": "Guest: Sam Rivera"
+            }
+          ],
+          "content_line": 4
+        },
+        "receipt_stay_start": {
+          "value": "2026-09-08",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "3361f8d795701c83ad6265ff22e54b2e777dedb6a8691e7c2c3c3fe3d4ea201c",
+              "locator": "page:2",
+              "quote": "Stay start: 2026-09-08"
+            }
+          ],
+          "content_line": 5
+        },
+        "receipt_stay_end": {
+          "value": "2026-09-10",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "3361f8d795701c83ad6265ff22e54b2e777dedb6a8691e7c2c3c3fe3d4ea201c",
+              "locator": "page:2",
+              "quote": "Stay end: 2026-09-10"
+            }
+          ],
+          "content_line": 6
+        },
+        "receipt_total_usd": {
+          "value": 348,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "3361f8d795701c83ad6265ff22e54b2e777dedb6a8691e7c2c3c3fe3d4ea201c",
+              "locator": "page:2",
+              "quote": "Total lodging charge (USD): 348.00"
+            }
+          ],
+          "content_line": 7
+        },
+        "company_payment_amount_usd": {
+          "value": 0,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "3361f8d795701c83ad6265ff22e54b2e777dedb6a8691e7c2c3c3fe3d4ea201c",
+              "locator": "page:2",
+              "quote": "Company prepayment (USD): 0.00"
+            }
+          ],
+          "content_line": 8
+        },
+        "employee_payment_amount_usd": {
+          "value": 348.0,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "3361f8d795701c83ad6265ff22e54b2e777dedb6a8691e7c2c3c3fe3d4ea201c",
+              "locator": "page:2",
+              "quote": "Employee card payment (USD): 348.00"
+            }
+          ],
+          "content_line": 9
+        },
+        "employee_payment_status": {
+          "value": "PAID",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261002",
+              "version_hash": "3361f8d795701c83ad6265ff22e54b2e777dedb6a8691e7c2c3c3fe3d4ea201c",
+              "locator": "page:2",
+              "quote": "Employee card payment status: PAID"
+            }
+          ],
+          "content_line": 10
+        }
+      }
+    },
+    {
+      "case_id": "expense_review_usd139_dev_03",
+      "claim_id": "USD-261003",
+      "source_id": "expense_document_261003",
+      "filename": "USD-261003.pdf",
+      "relative_path": "case_inputs/dev/USD-261003.pdf",
+      "version_hash": "0ada1b1772c56688ba3ef2ea3c1a7db89008a1cc4babf4c0e66d0b39a1c59742",
+      "pages": [
+        {
+          "page": 1,
+          "organization": "Cedarline Services",
+          "title": "Expense reimbursement request",
+          "lines": [
+            "Claim ID: USD-261003",
+            "Submitted: 2026-09-15",
+            "Claimant: Jordan Chen",
+            "Expense category: Business-trip accommodation",
+            "Business purpose: Internal process planning meeting",
+            "Approved trip reference: TRIP-261003",
+            "Approved stay start: 2026-09-12",
+            "Approved stay end: 2026-09-14",
+            "Claimed amount (USD): 312.00",
+            "Attached payment document: FOLIO-H4103",
+            "Employee note: The hotel statement is addressed to me. My payment amount and its payment status are not stated."
+          ]
+        },
+        {
+          "page": 2,
+          "organization": "Birchhaven Court Hotel",
+          "title": "Hotel payment statement",
+          "lines": [
+            "Document ID: FOLIO-H4103",
+            "Issued: 2026-09-14",
+            "Bill to: Jordan Chen",
+            "Guest: Jordan Chen",
+            "Stay start: 2026-09-12",
+            "Stay end: 2026-09-14",
+            "Total lodging charge (USD): 312.00",
+            "Company prepayment (USD): Not stated",
+            "Employee card payment (USD): Not stated",
+            "Employee card payment status: Not stated",
+            "Total settlement status: PAID"
+          ]
+        }
+      ],
+      "field_evidence": {
+        "claimant_name": {
+          "value": "Jordan Chen",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "0ada1b1772c56688ba3ef2ea3c1a7db89008a1cc4babf4c0e66d0b39a1c59742",
+              "locator": "page:1",
+              "quote": "Claimant: Jordan Chen"
+            }
+          ],
+          "content_line": 3
+        },
+        "approved_stay_start": {
+          "value": "2026-09-12",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "0ada1b1772c56688ba3ef2ea3c1a7db89008a1cc4babf4c0e66d0b39a1c59742",
+              "locator": "page:1",
+              "quote": "Approved stay start: 2026-09-12"
+            }
+          ],
+          "content_line": 7
+        },
+        "approved_stay_end": {
+          "value": "2026-09-14",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "0ada1b1772c56688ba3ef2ea3c1a7db89008a1cc4babf4c0e66d0b39a1c59742",
+              "locator": "page:1",
+              "quote": "Approved stay end: 2026-09-14"
+            }
+          ],
+          "content_line": 8
+        },
+        "claimed_amount_usd": {
+          "value": 312.0,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "0ada1b1772c56688ba3ef2ea3c1a7db89008a1cc4babf4c0e66d0b39a1c59742",
+              "locator": "page:1",
+              "quote": "Claimed amount (USD): 312.00"
+            }
+          ],
+          "content_line": 9
+        },
+        "exception_note": {
+          "value": "The hotel statement is addressed to me. My payment amount and its payment status are not stated.",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "0ada1b1772c56688ba3ef2ea3c1a7db89008a1cc4babf4c0e66d0b39a1c59742",
+              "locator": "page:1",
+              "quote": "Employee note: The hotel statement is addressed to me. My payment amount and its\npayment status are not stated."
+            }
+          ],
+          "content_line": 11
+        },
+        "receipt_addressee_name": {
+          "value": "Jordan Chen",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "0ada1b1772c56688ba3ef2ea3c1a7db89008a1cc4babf4c0e66d0b39a1c59742",
+              "locator": "page:2",
+              "quote": "Bill to: Jordan Chen"
+            }
+          ],
+          "content_line": 3
+        },
+        "receipt_guest_name": {
+          "value": "Jordan Chen",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "0ada1b1772c56688ba3ef2ea3c1a7db89008a1cc4babf4c0e66d0b39a1c59742",
+              "locator": "page:2",
+              "quote": "Guest: Jordan Chen"
+            }
+          ],
+          "content_line": 4
+        },
+        "receipt_stay_start": {
+          "value": "2026-09-12",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "0ada1b1772c56688ba3ef2ea3c1a7db89008a1cc4babf4c0e66d0b39a1c59742",
+              "locator": "page:2",
+              "quote": "Stay start: 2026-09-12"
+            }
+          ],
+          "content_line": 5
+        },
+        "receipt_stay_end": {
+          "value": "2026-09-14",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "0ada1b1772c56688ba3ef2ea3c1a7db89008a1cc4babf4c0e66d0b39a1c59742",
+              "locator": "page:2",
+              "quote": "Stay end: 2026-09-14"
+            }
+          ],
+          "content_line": 6
+        },
+        "receipt_total_usd": {
+          "value": 312,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "0ada1b1772c56688ba3ef2ea3c1a7db89008a1cc4babf4c0e66d0b39a1c59742",
+              "locator": "page:2",
+              "quote": "Total lodging charge (USD): 312.00"
+            }
+          ],
+          "content_line": 7
+        },
+        "company_payment_amount_usd": {
+          "value": null,
+          "status": "UNRESOLVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "0ada1b1772c56688ba3ef2ea3c1a7db89008a1cc4babf4c0e66d0b39a1c59742",
+              "locator": "page:2",
+              "quote": "Company prepayment (USD): Not stated"
+            }
+          ],
+          "content_line": 8
+        },
+        "employee_payment_amount_usd": {
+          "value": null,
+          "status": "UNRESOLVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "0ada1b1772c56688ba3ef2ea3c1a7db89008a1cc4babf4c0e66d0b39a1c59742",
+              "locator": "page:2",
+              "quote": "Employee card payment (USD): Not stated"
+            }
+          ],
+          "content_line": 9
+        },
+        "employee_payment_status": {
+          "value": null,
+          "status": "UNRESOLVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261003",
+              "version_hash": "0ada1b1772c56688ba3ef2ea3c1a7db89008a1cc4babf4c0e66d0b39a1c59742",
+              "locator": "page:2",
+              "quote": "Employee card payment status: Not stated"
+            }
+          ],
+          "content_line": 10
+        }
+      }
+    },
+    {
+      "case_id": "expense_review_usd139_dev_04",
+      "claim_id": "USD-261004",
+      "source_id": "expense_document_261004",
+      "filename": "USD-261004.pdf",
+      "relative_path": "case_inputs/dev/USD-261004.pdf",
+      "version_hash": "8a35191037e7b0e654bde4fdd4a8ea10e0428bd0adb3e0b8f4c61dbae02336c3",
+      "pages": [
+        {
+          "page": 1,
+          "organization": "Cedarline Services",
+          "title": "Expense reimbursement request",
+          "lines": [
+            "Claim ID: USD-261004",
+            "Submitted: 2026-09-21",
+            "Claimant: Taylor Brooks",
+            "Expense category: Business-trip accommodation",
+            "Business purpose: Internal process planning meeting",
+            "Approved trip reference: TRIP-261004",
+            "Approved stay start: 2026-09-18",
+            "Approved stay end: 2026-09-19",
+            "Claimed amount (USD): 396.00",
+            "Attached payment document: RECEIPT-H4104",
+            "Employee note: An additional night was needed after the meeting was rescheduled. Approval for the extension is pending."
+          ]
+        },
+        {
+          "page": 2,
+          "organization": "Linden Crest Inn",
+          "title": "Hotel payment statement",
+          "lines": [
+            "Document ID: RECEIPT-H4104",
+            "Issued: 2026-09-20",
+            "Bill to: Cedarline Services",
+            "Guest: Taylor Brooks",
+            "Stay start: 2026-09-18",
+            "Stay end: 2026-09-20",
+            "Total lodging charge (USD): 396.00",
+            "Company prepayment (USD): 0.00",
+            "Employee card payment (USD): 396.00",
+            "Employee card payment status: PAID",
+            "Total settlement status: PAID"
+          ]
+        }
+      ],
+      "field_evidence": {
+        "claimant_name": {
+          "value": "Taylor Brooks",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "8a35191037e7b0e654bde4fdd4a8ea10e0428bd0adb3e0b8f4c61dbae02336c3",
+              "locator": "page:1",
+              "quote": "Claimant: Taylor Brooks"
+            }
+          ],
+          "content_line": 3
+        },
+        "approved_stay_start": {
+          "value": "2026-09-18",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "8a35191037e7b0e654bde4fdd4a8ea10e0428bd0adb3e0b8f4c61dbae02336c3",
+              "locator": "page:1",
+              "quote": "Approved stay start: 2026-09-18"
+            }
+          ],
+          "content_line": 7
+        },
+        "approved_stay_end": {
+          "value": "2026-09-19",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "8a35191037e7b0e654bde4fdd4a8ea10e0428bd0adb3e0b8f4c61dbae02336c3",
+              "locator": "page:1",
+              "quote": "Approved stay end: 2026-09-19"
+            }
+          ],
+          "content_line": 8
+        },
+        "claimed_amount_usd": {
+          "value": 396.0,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "8a35191037e7b0e654bde4fdd4a8ea10e0428bd0adb3e0b8f4c61dbae02336c3",
+              "locator": "page:1",
+              "quote": "Claimed amount (USD): 396.00"
+            }
+          ],
+          "content_line": 9
+        },
+        "exception_note": {
+          "value": "An additional night was needed after the meeting was rescheduled. Approval for the extension is pending.",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "8a35191037e7b0e654bde4fdd4a8ea10e0428bd0adb3e0b8f4c61dbae02336c3",
+              "locator": "page:1",
+              "quote": "Employee note: An additional night was needed after the meeting was rescheduled.\nApproval for the extension is pending."
+            }
+          ],
+          "content_line": 11
+        },
+        "receipt_addressee_name": {
+          "value": "Cedarline Services",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "8a35191037e7b0e654bde4fdd4a8ea10e0428bd0adb3e0b8f4c61dbae02336c3",
+              "locator": "page:2",
+              "quote": "Bill to: Cedarline Services"
+            }
+          ],
+          "content_line": 3
+        },
+        "receipt_guest_name": {
+          "value": "Taylor Brooks",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "8a35191037e7b0e654bde4fdd4a8ea10e0428bd0adb3e0b8f4c61dbae02336c3",
+              "locator": "page:2",
+              "quote": "Guest: Taylor Brooks"
+            }
+          ],
+          "content_line": 4
+        },
+        "receipt_stay_start": {
+          "value": "2026-09-18",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "8a35191037e7b0e654bde4fdd4a8ea10e0428bd0adb3e0b8f4c61dbae02336c3",
+              "locator": "page:2",
+              "quote": "Stay start: 2026-09-18"
+            }
+          ],
+          "content_line": 5
+        },
+        "receipt_stay_end": {
+          "value": "2026-09-20",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "8a35191037e7b0e654bde4fdd4a8ea10e0428bd0adb3e0b8f4c61dbae02336c3",
+              "locator": "page:2",
+              "quote": "Stay end: 2026-09-20"
+            }
+          ],
+          "content_line": 6
+        },
+        "receipt_total_usd": {
+          "value": 396.0,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "8a35191037e7b0e654bde4fdd4a8ea10e0428bd0adb3e0b8f4c61dbae02336c3",
+              "locator": "page:2",
+              "quote": "Total lodging charge (USD): 396.00"
+            }
+          ],
+          "content_line": 7
+        },
+        "company_payment_amount_usd": {
+          "value": 0.0,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "8a35191037e7b0e654bde4fdd4a8ea10e0428bd0adb3e0b8f4c61dbae02336c3",
+              "locator": "page:2",
+              "quote": "Company prepayment (USD): 0.00"
+            }
+          ],
+          "content_line": 8
+        },
+        "employee_payment_amount_usd": {
+          "value": 396.0,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "8a35191037e7b0e654bde4fdd4a8ea10e0428bd0adb3e0b8f4c61dbae02336c3",
+              "locator": "page:2",
+              "quote": "Employee card payment (USD): 396.00"
+            }
+          ],
+          "content_line": 9
+        },
+        "employee_payment_status": {
+          "value": "PAID",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261004",
+              "version_hash": "8a35191037e7b0e654bde4fdd4a8ea10e0428bd0adb3e0b8f4c61dbae02336c3",
+              "locator": "page:2",
+              "quote": "Employee card payment status: PAID"
+            }
+          ],
+          "content_line": 10
+        }
+      }
+    },
+    {
+      "case_id": "expense_review_usd139_holdout_01",
+      "claim_id": "USD-261005",
+      "source_id": "expense_document_261005",
+      "filename": "USD-261005.pdf",
+      "relative_path": "case_inputs/holdout/USD-261005.pdf",
+      "version_hash": "01190cd0865aaa82252efeb2f7e16d7a1d3e2a1e67015e5a8ea882811d0b32ed",
+      "pages": [
+        {
+          "page": 1,
+          "organization": "Cedarline Services",
+          "title": "Expense reimbursement request",
+          "lines": [
+            "Claim ID: USD-261005",
+            "Submitted: 2026-09-26",
+            "Claimant: Casey Lee",
+            "Expense category: Business-trip accommodation",
+            "Business purpose: Internal process planning meeting",
+            "Approved trip reference: TRIP-261005",
+            "Approved stay start: 2026-09-23",
+            "Approved stay end: 2026-09-25",
+            "Claimed amount (USD): 276.00",
+            "Attached payment document: FOLIO-H4105",
+            "Employee note: My receipt records my card payment and is addressed to me."
+          ]
+        },
+        {
+          "page": 2,
+          "organization": "Cloverstone Rooms",
+          "title": "Hotel payment statement",
+          "lines": [
+            "Document ID: FOLIO-H4105",
+            "Issued: 2026-09-25",
+            "Bill to: Casey Lee",
+            "Guest: Casey Lee",
+            "Stay start: 2026-09-23",
+            "Stay end: 2026-09-25",
+            "Total lodging charge (USD): 276.00",
+            "Company prepayment (USD): 0.00",
+            "Employee card payment (USD): 276.00",
+            "Employee card payment status: PAID",
+            "Total settlement status: PAID"
+          ]
+        }
+      ],
+      "field_evidence": {
+        "claimant_name": {
+          "value": "Casey Lee",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "01190cd0865aaa82252efeb2f7e16d7a1d3e2a1e67015e5a8ea882811d0b32ed",
+              "locator": "page:1",
+              "quote": "Claimant: Casey Lee"
+            }
+          ],
+          "content_line": 3
+        },
+        "approved_stay_start": {
+          "value": "2026-09-23",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "01190cd0865aaa82252efeb2f7e16d7a1d3e2a1e67015e5a8ea882811d0b32ed",
+              "locator": "page:1",
+              "quote": "Approved stay start: 2026-09-23"
+            }
+          ],
+          "content_line": 7
+        },
+        "approved_stay_end": {
+          "value": "2026-09-25",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "01190cd0865aaa82252efeb2f7e16d7a1d3e2a1e67015e5a8ea882811d0b32ed",
+              "locator": "page:1",
+              "quote": "Approved stay end: 2026-09-25"
+            }
+          ],
+          "content_line": 8
+        },
+        "claimed_amount_usd": {
+          "value": 276.0,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "01190cd0865aaa82252efeb2f7e16d7a1d3e2a1e67015e5a8ea882811d0b32ed",
+              "locator": "page:1",
+              "quote": "Claimed amount (USD): 276.00"
+            }
+          ],
+          "content_line": 9
+        },
+        "exception_note": {
+          "value": "My receipt records my card payment and is addressed to me.",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "01190cd0865aaa82252efeb2f7e16d7a1d3e2a1e67015e5a8ea882811d0b32ed",
+              "locator": "page:1",
+              "quote": "Employee note: My receipt records my card payment and is addressed to me."
+            }
+          ],
+          "content_line": 11
+        },
+        "receipt_addressee_name": {
+          "value": "Casey Lee",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "01190cd0865aaa82252efeb2f7e16d7a1d3e2a1e67015e5a8ea882811d0b32ed",
+              "locator": "page:2",
+              "quote": "Bill to: Casey Lee"
+            }
+          ],
+          "content_line": 3
+        },
+        "receipt_guest_name": {
+          "value": "Casey Lee",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "01190cd0865aaa82252efeb2f7e16d7a1d3e2a1e67015e5a8ea882811d0b32ed",
+              "locator": "page:2",
+              "quote": "Guest: Casey Lee"
+            }
+          ],
+          "content_line": 4
+        },
+        "receipt_stay_start": {
+          "value": "2026-09-23",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "01190cd0865aaa82252efeb2f7e16d7a1d3e2a1e67015e5a8ea882811d0b32ed",
+              "locator": "page:2",
+              "quote": "Stay start: 2026-09-23"
+            }
+          ],
+          "content_line": 5
+        },
+        "receipt_stay_end": {
+          "value": "2026-09-25",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "01190cd0865aaa82252efeb2f7e16d7a1d3e2a1e67015e5a8ea882811d0b32ed",
+              "locator": "page:2",
+              "quote": "Stay end: 2026-09-25"
+            }
+          ],
+          "content_line": 6
+        },
+        "receipt_total_usd": {
+          "value": 276,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "01190cd0865aaa82252efeb2f7e16d7a1d3e2a1e67015e5a8ea882811d0b32ed",
+              "locator": "page:2",
+              "quote": "Total lodging charge (USD): 276.00"
+            }
+          ],
+          "content_line": 7
+        },
+        "company_payment_amount_usd": {
+          "value": 0,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "01190cd0865aaa82252efeb2f7e16d7a1d3e2a1e67015e5a8ea882811d0b32ed",
+              "locator": "page:2",
+              "quote": "Company prepayment (USD): 0.00"
+            }
+          ],
+          "content_line": 8
+        },
+        "employee_payment_amount_usd": {
+          "value": 276.0,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "01190cd0865aaa82252efeb2f7e16d7a1d3e2a1e67015e5a8ea882811d0b32ed",
+              "locator": "page:2",
+              "quote": "Employee card payment (USD): 276.00"
+            }
+          ],
+          "content_line": 9
+        },
+        "employee_payment_status": {
+          "value": "PAID",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261005",
+              "version_hash": "01190cd0865aaa82252efeb2f7e16d7a1d3e2a1e67015e5a8ea882811d0b32ed",
+              "locator": "page:2",
+              "quote": "Employee card payment status: PAID"
+            }
+          ],
+          "content_line": 10
+        }
+      }
+    },
+    {
+      "case_id": "expense_review_usd139_holdout_02",
+      "claim_id": "USD-261006",
+      "source_id": "expense_document_261006",
+      "filename": "USD-261006.pdf",
+      "relative_path": "case_inputs/holdout/USD-261006.pdf",
+      "version_hash": "2faf746db71d2eca97082baaefdbd3e460fbadb38410b6e47e481fe235fdd9a1",
+      "pages": [
+        {
+          "page": 1,
+          "organization": "Cedarline Services",
+          "title": "Expense reimbursement request",
+          "lines": [
+            "Claim ID: USD-261006",
+            "Submitted: 2026-09-30",
+            "Claimant: Jamie Patel",
+            "Expense category: Business-trip accommodation",
+            "Business purpose: Internal process planning meeting",
+            "Approved trip reference: TRIP-261006",
+            "Approved stay start: 2026-09-27",
+            "Approved stay end: 2026-09-29",
+            "Claimed amount (USD): 424.00",
+            "Attached payment document: FOLIO-H4106",
+            "Employee note: The requested amount was entered from the total lodging charge."
+          ]
+        },
+        {
+          "page": 2,
+          "organization": "Mapleford Terrace Hotel",
+          "title": "Hotel payment statement",
+          "lines": [
+            "Document ID: FOLIO-H4106",
+            "Issued: 2026-09-29",
+            "Bill to: Jamie Patel",
+            "Guest: Jamie Patel",
+            "Stay start: 2026-09-27",
+            "Stay end: 2026-09-29",
+            "Total lodging charge (USD): 424.00",
+            "Company prepayment (USD): 160.00",
+            "Employee card payment (USD): 264.00",
+            "Employee card payment status: PAID",
+            "Total settlement status: PAID"
+          ]
+        }
+      ],
+      "field_evidence": {
+        "claimant_name": {
+          "value": "Jamie Patel",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "2faf746db71d2eca97082baaefdbd3e460fbadb38410b6e47e481fe235fdd9a1",
+              "locator": "page:1",
+              "quote": "Claimant: Jamie Patel"
+            }
+          ],
+          "content_line": 3
+        },
+        "approved_stay_start": {
+          "value": "2026-09-27",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "2faf746db71d2eca97082baaefdbd3e460fbadb38410b6e47e481fe235fdd9a1",
+              "locator": "page:1",
+              "quote": "Approved stay start: 2026-09-27"
+            }
+          ],
+          "content_line": 7
+        },
+        "approved_stay_end": {
+          "value": "2026-09-29",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "2faf746db71d2eca97082baaefdbd3e460fbadb38410b6e47e481fe235fdd9a1",
+              "locator": "page:1",
+              "quote": "Approved stay end: 2026-09-29"
+            }
+          ],
+          "content_line": 8
+        },
+        "claimed_amount_usd": {
+          "value": 424.0,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "2faf746db71d2eca97082baaefdbd3e460fbadb38410b6e47e481fe235fdd9a1",
+              "locator": "page:1",
+              "quote": "Claimed amount (USD): 424.00"
+            }
+          ],
+          "content_line": 9
+        },
+        "exception_note": {
+          "value": "The requested amount was entered from the total lodging charge.",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "2faf746db71d2eca97082baaefdbd3e460fbadb38410b6e47e481fe235fdd9a1",
+              "locator": "page:1",
+              "quote": "Employee note: The requested amount was entered from the total lodging charge."
+            }
+          ],
+          "content_line": 11
+        },
+        "receipt_addressee_name": {
+          "value": "Jamie Patel",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "2faf746db71d2eca97082baaefdbd3e460fbadb38410b6e47e481fe235fdd9a1",
+              "locator": "page:2",
+              "quote": "Bill to: Jamie Patel"
+            }
+          ],
+          "content_line": 3
+        },
+        "receipt_guest_name": {
+          "value": "Jamie Patel",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "2faf746db71d2eca97082baaefdbd3e460fbadb38410b6e47e481fe235fdd9a1",
+              "locator": "page:2",
+              "quote": "Guest: Jamie Patel"
+            }
+          ],
+          "content_line": 4
+        },
+        "receipt_stay_start": {
+          "value": "2026-09-27",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "2faf746db71d2eca97082baaefdbd3e460fbadb38410b6e47e481fe235fdd9a1",
+              "locator": "page:2",
+              "quote": "Stay start: 2026-09-27"
+            }
+          ],
+          "content_line": 5
+        },
+        "receipt_stay_end": {
+          "value": "2026-09-29",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "2faf746db71d2eca97082baaefdbd3e460fbadb38410b6e47e481fe235fdd9a1",
+              "locator": "page:2",
+              "quote": "Stay end: 2026-09-29"
+            }
+          ],
+          "content_line": 6
+        },
+        "receipt_total_usd": {
+          "value": 424.0,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "2faf746db71d2eca97082baaefdbd3e460fbadb38410b6e47e481fe235fdd9a1",
+              "locator": "page:2",
+              "quote": "Total lodging charge (USD): 424.00"
+            }
+          ],
+          "content_line": 7
+        },
+        "company_payment_amount_usd": {
+          "value": 160.0,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "2faf746db71d2eca97082baaefdbd3e460fbadb38410b6e47e481fe235fdd9a1",
+              "locator": "page:2",
+              "quote": "Company prepayment (USD): 160.00"
+            }
+          ],
+          "content_line": 8
+        },
+        "employee_payment_amount_usd": {
+          "value": 264.0,
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "2faf746db71d2eca97082baaefdbd3e460fbadb38410b6e47e481fe235fdd9a1",
+              "locator": "page:2",
+              "quote": "Employee card payment (USD): 264.00"
+            }
+          ],
+          "content_line": 9
+        },
+        "employee_payment_status": {
+          "value": "PAID",
+          "status": "OBSERVED",
+          "source_refs": [
+            {
+              "source_id": "expense_document_261006",
+              "version_hash": "2faf746db71d2eca97082baaefdbd3e460fbadb38410b6e47e481fe235fdd9a1",
+              "locator": "page:2",
+              "quote": "Employee card payment status: PAID"
+            }
+          ],
+          "content_line": 10
+        }
+      }
+    }
+  ]
+}

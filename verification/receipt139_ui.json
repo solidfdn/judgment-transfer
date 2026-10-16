@@ -1,0 +1,10 @@
+{
+  "status": "PASSED",
+  "checks": [
+    "Old records retain the old story",
+    "New scenario uses employee-addressed receipt and USD348",
+    "Guidance reuses existing payment checks",
+    "Handover checklist reflects the approved receipt conditions"
+  ],
+  "scope": "Actual renderer with explicit DOM/data doubles; no browser or cloud request."
+}

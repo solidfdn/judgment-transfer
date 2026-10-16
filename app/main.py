@@ -175,7 +175,7 @@ def create_app(repo=None, adapter=None, blobs=None, testing=False):
     def who():return jsonify({'csrf':session['csrf'],'mode':adapter.mode,'admin':g.ctx['admin'],'expires':session['expires'],'version':config.VERSION,'code_hash':config.CODE_HASH})
     @app.get('/api/v1/demo/expense')
     def expense_demo():
-        value=repo.get('public_demo','expense_usd134')
+        value=repo.get('public_demo','expense_receipt139') or repo.get('public_demo','expense_usd134')
         if not value:raise JTError('NOT_FOUND','The USD demonstration is not published yet.',404)
         return jsonify(value)
     @app.post('/api/v1/demo/expense/publish')
