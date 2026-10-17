@@ -4,7 +4,7 @@
 
 Judgment Transfer identifies missing information and decisions that need a person. Test the instructions, add the task owner’s explanation, and compare what changes. The findings also help improve the handover to the next task owner.
 
-[Open the application](https://judgment-transfer-unql76xapq-an.a.run.app/) · [Explore the recorded example](https://judgment-transfer-unql76xapq-an.a.run.app/assets/demo/index.html)
+[Open the application](https://judgment-transfer-unql76xapq-an.a.run.app/) · [Explore the recorded example](https://judgment-transfer-unql76xapq-an.a.run.app/assets/demo/index.html) · [Architecture](#architecture)
 
 ## From instructions to an evidence-backed result
 
@@ -58,6 +58,63 @@ Open the application and enter **Job and intended result**. Use **Upload file** 
 Supported materials are TXT, text PDF, PNG/JPEG and short MP4. The input accepts up to five files and 20 MiB in total; individual limits appear beside the upload control. Cases can be read from a file or entered through fields generated for the approved workflow. Review extracted facts before confirming them. Missing facts remain unknown.
 
 Use **Responsible person** when approving or finalizing work. **Decision history** opens saved evidence and judgments; **Saved tests** opens execution results. All test actions affect isolated case state.
+
+## Architecture
+
+**Current cloud application · v1.0.39.** The diagram follows the approved-workflow path used by the application and the current recorded example.
+
+```mermaid
+flowchart TD
+    USER["Task owner · browser"]
+
+    subgraph CLOUD["Google Cloud"]
+        subgraph RUN["Cloud Run · Python / Flask"]
+            API["Web interface and API"]
+            PREP["Material review and guidance preparation"]
+            GATE["Approval and version checks"]
+            ENGINE["Approved-rule engine and executor"]
+            DATA["Evidence and record storage"]
+
+            API -->|"Materials, explanations and cases"| PREP
+            PREP -->|"Validated proposals"| GATE
+            API -->|"Human approval and confirmed facts"| GATE
+            GATE -->|"Approved conditions and case state"| ENGINE
+            PREP <--> DATA
+            GATE <--> DATA
+            ENGINE -->|"Atomic case state and receipt"| DATA
+            DATA -->|"Saved results, comparisons and history"| API
+        end
+
+        GEMINI["Gemini · global"]
+        FIRESTORE[("Firestore Native")]
+        FILES[("Private Cloud Storage")]
+
+        PREP <-->|"Google GenAI SDK"| GEMINI
+        DATA <-->|"Versions, approvals, runs and traces"| FIRESTORE
+        DATA <-->|"Source files"| FILES
+        FILES -.->|"Image and video URI input"| GEMINI
+    end
+
+    USER <-->|"HTTPS"| API
+
+    classDef interface fill:#102A43,color:#FFFFFF,stroke:#102A43
+    classDef application fill:#EFF6FC,color:#102A43,stroke:#557B9D
+    classDef approval fill:#DCEBFA,color:#102A43,stroke:#2463A6,stroke-width:2px
+    classDef managed fill:#FFFFFF,color:#102A43,stroke:#557B9D
+    class USER,API interface
+    class PREP,ENGINE,DATA application
+    class GATE approval
+    class GEMINI,FIRESTORE,FILES managed
+```
+
+- **Prepare, then approve.** Gemini reviews materials and proposes workflow conditions, questions and guidance. The application validates source references; the task owner reviews and approves the conditions and confirms case facts before execution.
+- **Execute approved conditions.** The shared engine evaluates confirmed facts and frozen starting states against the approved version. Unknown or conflicting required conditions keep a case on hold. Case state and its execution receipt are committed together in Firestore; traces are saved separately.
+- **Inspect saved evidence.** The API retrieves saved results for comparison, history and export. The recorded demo reads a separately published snapshot through a read-only endpoint. Viewing these records does not run cases or call Gemini.
+- **Keep the source connection visible.** TXT and text PDF content is supplied as extracted text. Images and short videos are supplied through private Cloud Storage URIs. The dotted arrow denotes media input to Gemini; the application controls source-file and record writes.
+
+The original A/B model-evaluation paths are retained separately in the repository. The diagram shows the current `C_JT_RULES` path, whose case execution uses `APPROVED_RULE_ENGINE_V1` without model calls.
+
+**Inspect the implementation:** [Web/API](app/main.py) · [Preparation and approvals](app/service.py) · [Approved-rule engine](app/approved_execution.py) · [Model and evidence input](app/adapters/model.py) · [Persistence](app/storage/repository.py) · [Comparison](app/comparison.py)
 
 ## Why Google Cloud
 

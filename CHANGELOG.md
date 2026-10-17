@@ -1,3 +1,11 @@
+## 2026-10-17 — document the current cloud architecture
+
+- Category: user-requested documentation addition. Add an editable Mermaid architecture diagram to README and a direct link near the application/demo links.
+- The diagram maps the Cloud Run web/API, Gemini-assisted preparation, human approval and version checks, the approved-rule engine, Firestore and private Cloud Storage to the current implementation.
+- Clarify source transport, the atomic case-state/receipt commit, separately stored traces, and read-only inspection of results and the recorded demo. Scope the diagram to the current C_JT_RULES path while preserving the original A/B evaluation documentation.
+- Verification: diagram connections and explanatory text reviewed against the implementation; Mermaid syntax and repository links checked.
+- Documentation only; application code, deployment and recorded evidence are unchanged.
+
 ## 2026-10-17 — align public documentation with the recorded 1.0.39 demo
 
 - Category: user-requested documentation correction. README still described the older company-addressed-receipt scenario and linked its comparison record, while the application publishes PERSONAL_RECEIPT_139.
