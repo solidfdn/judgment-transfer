@@ -1,3 +1,11 @@
+## 2026-10-17 — add recorded-demo screenshots
+
+- Category: user-requested documentation addition. Add three real browser captures to docs/screenshots and a Screenshots section near the top of README.
+- Show the missing receipt-acceptance condition and source-linked question, Sam’s before/after result, and the two additional cases with the handover-checklist control. Captions identify the recorded fictional example and preserve the business-approval boundary.
+- Add direct demo-step links, descriptive image text, capture provenance and a top navigation link.
+- Verification: displayed screens and captions checked against the current demo; JPEG files, image sizes, repository paths and links checked; existing README content retained.
+- Documentation and images only; no application, deployment, approval, case execution or recorded-result change.
+
 ## 2026-10-17 — document the current cloud architecture
 
 - Category: user-requested documentation addition. Add an editable Mermaid architecture diagram to README and a direct link near the application/demo links.

@@ -4,7 +4,7 @@
 
 Judgment Transfer identifies missing information and decisions that need a person. Test the instructions, add the task owner’s explanation, and compare what changes. The findings also help improve the handover to the next task owner.
 
-[Open the application](https://judgment-transfer-unql76xapq-an.a.run.app/) · [Explore the recorded example](https://judgment-transfer-unql76xapq-an.a.run.app/assets/demo/index.html) · [Architecture](#architecture)
+[Open the application](https://judgment-transfer-unql76xapq-an.a.run.app/) · [Explore the recorded example](https://judgment-transfer-unql76xapq-an.a.run.app/assets/demo/index.html) · [Screenshots](#screenshots) · [Architecture](#architecture)
 
 ## From instructions to an evidence-backed result
 
@@ -14,6 +14,30 @@ Judgment Transfer identifies missing information and decisions that need a perso
 4. **Compare the change.** Try the same cases from the same starting states. See which can proceed, which need information, and which still require a person.
 
 Finalized records retain the responsible person, timestamp, optional note, source versions and judgment. Open earlier records and compare them with later work. Deleting a record or resetting its history requires confirmation.
+
+## Screenshots
+
+Three screens from the **recorded v1.0.39 example**, using six fictional USD expense claims. Select an image to open that step of the demo.
+
+### 1. Find the missing rule
+
+The recorded demo identifies the missing acceptance condition for Sam’s employee-addressed receipt and shows the question linked to the original instructions.
+
+[![Original instructions beside the missing employee-addressed receipt condition and the source-linked question](docs/screenshots/01-missing-rule.jpg)](https://judgment-transfer-unql76xapq-an.a.run.app/assets/demo/index.html#1)
+
+### 2. Verify the change
+
+Saved results show Sam’s $348 claim moving from hold to precheck complete after the approved clarification and existing amount check, with business approval still required.
+
+[![Sam Rivera’s same-case comparison, showing the change from Needs a person to Precheck complete and the matching 348-dollar claim and payment](docs/screenshots/02-verify-change.jpg)](https://judgment-transfer-unql76xapq-an.a.run.app/assets/demo/index.html#2)
+
+### 3. Check new cases
+
+Two cases excluded from guidance preparation show both completion and a correction request; the approved checks can also be saved as a handover checklist.
+
+[![Casey Lee completes the precheck, Jamie Patel is returned for a 160-dollar correction, and the handover checklist can be saved](docs/screenshots/03-new-cases-handover.jpg)](https://judgment-transfer-unql76xapq-an.a.run.app/assets/demo/index.html#3)
+
+Captured on 17 October 2026. These screens display saved results; viewing the demo does not run cases or call Gemini. [Screenshot provenance](docs/screenshots/README.md).
 
 ## A concrete example: expense document checks
 
