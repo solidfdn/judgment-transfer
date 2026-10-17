@@ -14,13 +14,13 @@ Owner: SOLIFAN. This package implements the accepted Judgment Transfer v1.0 spec
 
 ## Distinguish fixes from requirement changes
 
-Routine implementation fixes already within the user's requested scope can proceed. Cloud Shell packaging, quoting and transport adjustments may change how an existing step is executed; they may not change what it produces. For each code change, record the cause, affected files, category (environment adjustment / defect fix / requirement change), and relevant verification in CHANGELOG. A requirement change needs the user's authorization; do all unaffected work first.
+Routine implementation fixes already within the user's requested scope can proceed. Cloud Shell packaging, quoting and transport adjustments may change how an existing step is executed; they may not change what it produces. Keep the public CHANGELOG focused on product changes and operational effects. Do not publish cosmetic editing notes, development error or recovery narratives, or internal progress reports. A requirement change needs the user's authorization; do all unaffected work first.
 
 Never edit a manifest merely to conceal a change. Issue a traceable new package version with updated hashes after the change is reviewed. Preserve original `.jt` state. Do not delete checkpoints to force success or silently adopt an unrelated project. No subagent delegation is requested by this file.
 
 ## Bound the work and verification
 
-- Use the fixed acceptance mapping T01–T27 in the baseline. Offline tests, the single LIVE source-read gate, the frozen 216-call benchmark and one browser walkthrough are the planned gates.
+- Use the baseline acceptance mapping T01–T27 where it applies to the current change. Select checks from the affected behavior and the active execution protocol.
 - Reuse passed checks for unchanged code. Repeat only checks affected by an actual change, a concrete remaining defect, or a required gate. Do not invent load tests, extra models, alternative benchmarks, repeated full rehearsals or cosmetic rewrites.
 - Before adding verification, state the concrete risk it resolves, its bounded scope and the stop condition. Do not turn an unavailable browser or cloud account into an open-ended environment investigation.
 - Stop on an IAM/organization-policy denial. Do not loosen organization policy, grant Owner, create service-account keys, change providers or increase quotas/budgets as a workaround.

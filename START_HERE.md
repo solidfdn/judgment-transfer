@@ -1,6 +1,8 @@
 # Setup and operation
 
-To try Judgment Transfer, [open the application](https://judgment-transfer-unql76xapq-an.a.run.app/). The [recorded example](https://judgment-transfer-unql76xapq-an.a.run.app/assets/demo/index.html) shows the current v1.0.39 expense-document comparison and supporting records without making model calls. It demonstrates how approved conditions for employee-addressed receipts change Sam’s result while missing payment evidence and changed stays remain on hold. See the [case summary and method](README.md#a-concrete-example-expense-document-checks).
+[日本語の運用ガイド](START_HERE_ja.md)
+
+To try Judgment Transfer, [open the application](https://judgment-transfer-unql76xapq-an.a.run.app/). The [recorded example](https://judgment-transfer-unql76xapq-an.a.run.app/assets/demo/index.html) shows saved results from the v1.0.39 expense-document comparison. It demonstrates how approved conditions for employee-addressed receipts change Sam’s result while missing payment evidence and changed stays remain on hold. See the [case summary and method](README.md#a-concrete-example-expense-document-checks).
 
 ## Use the application
 
@@ -10,7 +12,9 @@ To try Judgment Transfer, [open the application](https://judgment-transfer-unql7
 4. Select **Try the original instructions**. In step 2, select **Find what needs explaining**, answer the question, and select **Draft the guidance**. Review and approve the proposed guidance.
 5. Select **Try the same cases with the guidance**, then inspect the comparison and each case’s evidence. **Finalize this result** records the result with the responsible person, timestamp and optional note.
 
-**Continue saved work** reopens work previously used in the same tab. **Saved tests** opens earlier runs. **Decision history** lets you inspect finalized records, compare versions, and delete a selected record or reset its history after confirmation.
+Supported materials are TXT, text PDF, PNG/JPEG and short MP4, up to five files and 20 MiB in total. Individual file limits appear beside the upload control. Review extracted facts before confirming them; missing facts remain unknown. Test actions affect only the isolated practice workspace.
+
+**Continue saved work** reopens work previously used in the same tab. **Saved tests** opens earlier runs. **Decision history** lets you inspect finalized records and compare versions. Finalized records cannot be edited; deleting a selected record or resetting its history requires confirmation.
 
 ## Run a local simulation
 
@@ -57,6 +61,8 @@ The runbook saves configuration and progress in `.jt/`. Completed steps are skip
 Steps 07 and 08 implement the original formal evaluation and its evidence export. They are separate from trying a new workflow in the application. Existing evaluation results are available in [evaluation/](evaluation/).
 
 For an existing installation, use the versioned update script supplied for that installation. Its checks preserve the deployment configuration, saved evidence and usage counters.
+
+Package and application versions are recorded separately in [SPEC_LOCK.json](SPEC_LOCK.json). A documentation update can change the package version while retaining the application version.
 
 ## Resume and support
 

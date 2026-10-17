@@ -1,15 +1,12 @@
-# Receipt-acceptance revision 139
+# Recorded demo: receipt acceptance
 
-Category: user-authorized correction of the fictional demo scenario, not a change to JT's shared architecture or evaluation protocol.
+The **v1.0.39 / PERSONAL_RECEIPT_139** example uses six fictional Cedarline Services accommodation claims in USD.
 
 ## Business setting
 
-Cedarline Services is fictional. Its initial accommodation-reimbursement procedure accepts company-addressed receipts. Acceptance conditions for employee-addressed receipts are deliberately absent from the supplied instructions. This is a gap in the supplied procedure, not a claim about tax law or general accounting practice.
+Cedarline Services' initial accommodation-reimbursement procedure accepts company-addressed receipts. The supplied instructions do not define when an employee-addressed receipt is acceptable.
 
 The task owner explains that an employee-addressed receipt is acceptable when the addressee and guest match the claimant, the employee-paid amount and PAID status are explicit, and both stay dates match the approval. The already-recorded claim-versus-employee-payment checks then apply. A company prepayment is not reimbursed to the employee. Missing values stay unknown; changed stays still need a manager.
-
-Authoritative user explanation:
-> 会社宛ではない本人宛ての領収書でも、従業員本人が支払った金額と支払済みであることが明記され、氏名と承認済みの宿泊日程が一致していれば、社内規定として問題なく受け付けられます。担当者がこの条件を承認することで、既存の支払確認のルールを適用できるようになります。
 
 ## Six-case design
 
@@ -22,20 +19,15 @@ Authoritative user explanation:
 | Casey Lee | Own-name addressee; claim/payment USD276; PAID; dates match | Excluded from teaching | Precheck complete |
 | Jamie Patel | Own-name addressee; claim USD424; employee paid USD264; company paid USD160; PAID | Excluded from teaching | Return for correction |
 
-The main Sam example has one payer and a USD348 total. Split payments are checked separately in Jamie's case. All six start from NEW. No case can approve an expense, execute a payment or send a message.
+Sam's claim has one payer and a USD348 total. Split payments are checked separately in Jamie's case. All six cases start from NEW. **Precheck complete** means that the documents are ready for a person's business approval.
 
-## Environment and evidence
+## Materials and comparison method
 
-- New fixture/domain namespace `expense_review_usd139`; a separate workspace, source hash, initial approval and explanation approval. Original fixtures, workspaces, successes, failures and approvals remain unchanged.
-- Six deterministic two-page PDFs, matching exact author-reviewed transcriptions, field references and private expected labels. The model does not receive private labels or held-out cases in its question/guidance inputs. PDF re-extraction is not claimed.
-- Initial workflow is human-prepared from the supplied procedure. Gemini generates a fresh question and guidance proposal from the revised sources. No old model result is relabelled.
-- Existing `APPROVED_RULE_ENGINE_V1` executes 4 baseline + 4 after + 2 held-out cases. Same package, engine, cases and starting states for the before/after comparison. No model calls during these ten case executions.
-- The initial rules cannot be replaced by the guidance. A development-only gate checks all four cases, missing/unpaid evidence, changed dates, third-party addressee and known amount mismatch before approval. Held-out outcomes do not repair the proposal.
-- Every approval and fixed result includes reviewer name and timestamp. Original runs and their source references are retained.
-- Publish to a new immutable `expense_receipt139` record only after raw decisions, exact cases, traces, receipts, frozen targets and source hashes pass. The endpoint prefers that record when it exists; until then, the old verified story remains visible. UI copy follows the scenario marker, so new labels never decorate old results.
+- **Materials:** the `expense_review_usd139` fixtures contain six two-page PDFs. Case facts are author-reviewed transcriptions with references to the supplied documents.
+- **Preparation:** the initial workflow was prepared from the supplied procedure. Gemini prepared the question and guidance proposal; the task owner approved the conditions. Expected labels and the two additional cases were excluded from the question and guidance inputs.
+- **Execution:** `APPROVED_RULE_ENGINE_V1` applied the original and approved conditions in **4 before + 4 after + 2 additional case executions**. The before/after comparison uses the same code, engine, case facts and starting states. These ten executions make no model calls.
+- **Evidence:** approvals and finalized results include the responsible person's name and timestamp. Saved runs retain source versions, decisions, execution receipts and traces.
 
-## Cost and release
+The comparison shows how the approved explanation changes these documented cases. Its scope is six fictional claims, rather than a measurement of general AI accuracy or handover-time savings.
 
-Use only the remaining existing authorization and cumulative USD100 ceiling. Question and guidance each make one request with the existing maximum of two bounded internal attempts; at most four new model attempts in total. No timeout, model, dependency, allowance or budget change. A failure saves the checkpoint and stops; it does not trigger a new generation request automatically.
-
-Bounded verification: source/PDF consistency, actual schema/evidence validators, existing engine/executor, Service approvals/run creation/steps/freeze, history, full new controller, comparison and publisher, prior/new UI copy and installer payload checks. Storage and generation test doubles are explicit. No 216-case benchmark replay. Cloud Run validation is performed by the owner-operated release command and is not represented as completed offline.
+[Recorded evidence](RELEASE139_STATUS.md) · [Published comparison record](https://judgment-transfer-unql76xapq-an.a.run.app/api/v1/demo/expense)

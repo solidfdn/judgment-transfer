@@ -2,7 +2,7 @@
   "product": "Judgment Transfer",
   "owner": "SOLIFAN",
   "spec_version": "1.0",
-  "package_version": "1.0.39",
+  "package_version": "1.0.39+docs.1",
   "app_version": "1.0.39",
   "baseline_spec": {
     "path": "baseline/Judgment_Transfer_Development_Spec_v1.0_20261010.docx",
@@ -32,13 +32,18 @@
       "MOCK",
       "RECORDED read-only"
     ],
-    "approval": "explicit human approval, immutable versions, CAS",
-    "evaluation": "24 unique holdout cases x 3 arms x 3 repeats = 216 nominal judgments",
-    "targets_not_results": {
-      "c_minus_a_percentage_points": 25,
-      "critical_errors": 0,
-      "expert_corrections_total_max": 3
-    }
+    "approval": "explicit human approval, immutable versions, CAS"
+  },
+  "current_execution": {
+    "protocol": "APPROVED_RULE_ENGINE_V1",
+    "preparation": "Gemini proposes material reviews, questions, workflows and guidance; people review and approve the conditions.",
+    "execution": "The shared three-valued rule engine applies approved declarative conditions to confirmed facts and a frozen starting state.",
+    "commit": "Approval, source versions and case-state freshness are checked; case state and execution receipt are committed atomically.",
+    "comparison": "Original and revised conditions use the same engine, code, cases, facts and starting states.",
+    "hold_conditions": [
+      "A required condition is unknown.",
+      "Applicable actions conflict."
+    ]
   },
   "implementation_bounds": {
     "case_step_cap": 8,
@@ -53,405 +58,26 @@
     "browser_owner_cookie_max_age_days": 31,
     "admin_judgment_allowance_including_preparation_and_retries": 320
   },
-  "authorized_recovery_111": {
-    "request_tier": "Priority PayGo, same model and global location",
-    "additional_decisions_max": 234,
-    "development_gate": 18,
-    "formal_decisions": 216,
-    "cumulative_model_budget_usd": 20,
-    "grant": "One-time owner-bound addition from the current decision count; no reset. Existing total-call and daily caps remain.",
-    "dataset": "New synthetic records under the unchanged policies; not independent blind or new-policy generalization evidence."
-  },
-  "change_control": "Requirements need user authorization. Fixes/environment adjustments retain product behavior and are logged as a new package revision.",
-  "replacement_112": {
-    "status": "Requires explicit administrator opt-in before first preparation; not previously authorized.",
-    "additional_decisions_max_after_opt_in": 235,
-    "prior_calls_preserved": 3,
-    "development_gate": {
-      "total_checks": 18,
-      "reused_passed_checks": 2,
-      "remaining_checks": 16
-    },
-    "formal_decisions": 216,
-    "cumulative_model_budget_usd": 20,
-    "actual_traffic": "Priority requested uniformly; documented ON_DEMAND fallback accepted, priced and disclosed."
-  },
-  "bounded_recovery_113": {
-    "status": "Explicit administrator opt-in required before deploying or running this new policy.",
-    "generation_attempts_total_from_original_grant_max": 242,
-    "already_used": 8,
-    "remaining_decisions": 228,
-    "remaining_development_checks": 12,
-    "formal_decisions": 216,
-    "additional_retry_attempts_max": 6,
-    "generation_attempts_per_decision_max": 2,
-    "model_window_seconds": 20,
-    "generation_timeout_seconds": 9,
-    "retry_backoff_seconds": 1,
-    "retryable": "429, 500, 502, 503, 504 and transport timeout/network errors only",
-    "formal_stop": "3 consecutive technical failures; any safety/protocol/access/budget failure stops immediately",
-    "cumulative_model_budget_usd": 20,
-    "session_model_call_cap": 500,
-    "daily_decision_attempt_cap": 600,
-    "reused_development_checks": 6,
-    "prompt_model_rules_dataset_labels": "unchanged"
-  },
-  "streamed_revalidation_114": {
-    "status": "Explicit administrator opt-in required before deployment or the cap amendment.",
-    "generation_attempts_total_from_original_grant_max": 251,
-    "already_used": 12,
-    "remaining_development_checks": 18,
-    "reused_development_checks": 0,
-    "formal_decisions": 216,
-    "remaining_retry_attempts_max": 5,
-    "original_retry_allowance_total": 6,
-    "original_retries_used": 1,
-    "generation_attempts_per_decision_max": 2,
-    "model_window_seconds": 20,
-    "generation_timeout_seconds": "remaining part of the same 20-second window",
-    "decision_transport": "streamGenerateContent, complete stream and STOP required before decision validation",
-    "decision_schema_location": "API response_json_schema only; business instruction text unchanged",
-    "cumulative_model_budget_usd": 20,
-    "session_model_call_cap_for_grant_owner": 509,
-    "session_model_call_cap_for_other_admins": 500,
-    "daily_decision_attempt_cap": 600,
-    "formal_stop": "Three consecutive technical failures; safety/protocol/access/budget/uncertain lease failure stops immediately.",
-    "preserved": "Original grant baseline, retry_used, approvals, freeze records, historical runs, 00-08 and original outputs."
-  },
-  "watchdog_fix_115": {
-    "category": "transport defect fix within existing authorized limits",
-    "first_text_soft_timeout_seconds": 10,
-    "model_window_seconds": 20,
-    "generation_attempts_max": 2,
-    "backoff_seconds": 1,
-    "reused_unaffected_development_checks": 3,
-    "new_development_checks": 15,
-    "formal_decisions": 216,
-    "already_consumed_grant_attempts": 16,
-    "grant_attempt_cap_unchanged": 251,
-    "session_call_cap_unchanged": 509,
-    "retry_reserve_total_unchanged": 6,
-    "retry_already_used": 1,
-    "previous_failed_check_replacement_consumes_retry_slot": 1,
-    "remaining_extra_retries_after_replacement": 4,
-    "cumulative_model_budget_usd_unchanged": 20,
-    "model_prompt_schema_approvals_cases_labels": "unchanged"
-  },
-  "evidence_viewer_116": {
-    "category": "UI evidence-inspection defect fix",
-    "evaluation_version": "1.0.15",
-    "static_saved_live_evidence": true,
-    "model_calls": 0,
-    "backend_change": "VERSION only",
-    "preserved": "All existing judgments, receipts, approvals, freezes, source hashes, caps and budget counters."
-  },
-  "recorded_explanation_fix_117": {
-    "category": "UI defect fix",
-    "source": "shared preparation human_text verified against source_metadata.version_hash",
-    "model_calls": 0,
-    "judgment_logic": "unchanged"
-  },
-  "product_experience_118": {
-    "category": "user-authorized product presentation and usability revision",
-    "primary_purpose": "Use the current task owner’s materials and explanations to examine which parts of a job AI can handle in tested cases.",
-    "secondary_purpose": "Review the completeness of instructions for the next person doing the work.",
-    "screens": "Sources / Teach / Results semantics retained; readable labels and case entry added.",
-    "demo": "Read-only guided presentation of existing recorded results, separate from the operational application.",
-    "evidence_version": "1.0.15",
-    "new_model_calls": 0,
-    "formal_replays": 0,
-    "preserved": "Original sources, contracts, rules, approvals, frozen cases, all 216 saved decisions including four failures, receipts, traces, code provenance, .jt state, grant 251, session 509, retries 6 and cumulative USD 20 budget.",
-    "backend_change": "Displayed VERSION only; no judgment, API, model, prompt, dependency or budget behavior changes.",
-    "claim_boundary": "Results describe the tested examples. They do not establish whole-job automation, superiority to explanation-only input or award readiness."
-  },
-  "product_experience_119": {
-    "category": "user-authorized product-wide wording and data-entry presentation correction",
-    "primary_purpose": "Use the current task owner’s materials and explanations to examine which parts of a job AI can handle in tested cases.",
-    "secondary_purpose": "Review the completeness of handover materials for the next person.",
-    "entry": "No automatic reopening of a prior workspace; explicit continuation only.",
-    "sample_copy": "Readable labels apply only to verified unchanged sample definitions. Custom definitions and values remain verbatim.",
-    "errors": "Plain problem and next action with original diagnostic details separately available.",
-    "history": "Past evaluation records remain separate and immutable. They are not new assessment results.",
-    "installer_baselines": [
-      "1.0.17",
-      "1.0.18"
-    ],
-    "new_model_calls": 0,
-    "formal_replays": 0,
-    "backend_change": "VERSION only; API, judgment, model, prompt, schema, dependency and budget behavior unchanged.",
-    "preserved": "Original .jt state, source and approval provenance, frozen cases, 216 saved decisions including four failures, receipts, traces and all usage counters.",
-    "product_statement": {
-      "ja": "担当者が確認・提供した内容を検証し、その判断の再現性と有効性を確かめる。",
-      "en": "Verify the task owner’s information. Test whether their judgment is reproducible and effective."
-    }
-  },
-  "product_copy_120": {
-    "category": "user-authorized assessment presentation and source-extraction contract defect fix",
-    "product_statement_ja": [
-      "専任担当者の資料や説明をもとに、AIに任せられる範囲を確かめます。",
-      "足りない情報や、人の判断が必要な箇所を明らかにし、後任担当者への引継ぎにも活かせます。"
-    ],
-    "review_perspectives_ja": [
-      "業務の目的と範囲",
-      "必要な情報",
-      "手順と操作",
-      "判断条件と根拠",
-      "例外と人への確認",
-      "完了条件"
-    ],
-    "review_perspectives_behavior": "Static review questions, not six calculated scores.",
-    "result_groups_ja": [
-      "AIで進められた範囲",
-      "情報を補えば再検証できる範囲",
-      "人の判断・承認が必要な範囲",
-      "未検証の範囲"
-    ],
-    "result_group_labels_en": [
-      "AI proceeded",
-      "Information to clarify",
-      "Needs a person’s review",
-      "Not verified"
-    ],
-    "result_group_behavior": "Display based on observed case state, missing fields and existing decisions; no dedicated four-class model. Untested work outside these cases remains unverified.",
-    "evaluation_metrics_ja": [
-      "正しい自動完了率",
-      "判断正解率（正しく保留した案件を含む）",
-      "重大誤実行数",
-      "人への補足回数",
-      "使用トークン",
-      "経過時間"
-    ],
-    "evaluation_metrics_en": [
-      "Correct autonomous completion",
-      "Correct decisions, including hold",
-      "Critical errors",
-      "Task owner’s supplements",
-      "Tokens used",
-      "AI processing time"
-    ],
-    "measurement_bounds": {
-      "supplements": "Approved task-owner supplements.",
-      "tokens": "Deduplicated input/output/thinking usage, including retries; unreported usage stays unknown; shared preparation shown separately.",
-      "time": "Cumulative decision-trace duration, not end-to-end elapsed time.",
-      "held_cases": "Correct holds count toward correct decisions, not autonomous completion."
-    },
-    "handover_scope": "Review whether the materials and explanations provide what a successor needs; do not assess the successor’s capability.",
-    "demo": "Three recorded stages: material gaps, before/after the explanation, handover findings.",
-    "source_observation_display": "Keep OBSERVED, INFERRED and UNRESOLVED distinct and show recorded source locations.",
-    "source_extraction_fix": {
-      "previous_contract_sha256": "998724f56a7bb63cb42d94df573a74fbd53a438ec4bd2c71bbf5018d84e10d50",
-      "contract_sha256": "d90b53ce33b856f156214bd437e5d789b0b4e4d5e5abd43af236465982586af4",
-      "Observation.source_refs.minItems": 0,
-      "OBSERVED_and_INFERRED": "At least one valid source reference remains mandatory.",
-      "UNRESOLVED": "Value must be null; no reference may be supplied when no valid location exists.",
-      "conflicting_sources": "Keep unresolved null with the valid conflicting references; do not silently select one fact.",
-      "validation": "Existing validation of every supplied source reference unchanged."
-    },
-    "installer_baselines": [
-      "1.0.17",
-      "1.0.18",
-      "1.0.19"
-    ],
-    "new_model_calls": 0,
-    "formal_replays": 0,
-    "backend_changes": [
-      "app/config.py VERSION",
-      "app/contracts/jt_contracts.schema.json Observation references",
-      "app/core/models.py Observation validation",
-      "app/adapters/model.py extraction instruction"
-    ],
-    "evaluation_boundary": "The archived 216 decisions evaluated holdout cases separate from the development cases used for the task owner’s explanation. Policies were known and evaluation ran on 1.0.15; this does not establish transfer to unknown jobs or policies. Existing development/holdout mechanisms remain; no additional execution was performed in this release.",
-    "preserved": "All original sources and approvals, 216 historical decisions including four failures, .jt records, usage counters, workflow execution, model and dependencies."
-  },
-  "product_layout_121": {
-    "category": "user-authorized presentation layout refinement",
-    "scope": "Operational application, three-stage guided demo and past evaluation viewer; consistent palette, spacing and information hierarchy.",
-    "product_behavior": "Product wording, six review perspectives, four observed result groups, six measurement definitions and source-evidence access retained.",
-    "backend_change": "Displayed VERSION only relative to 1.0.20; its source-extraction fix is included unchanged when updating from older packages.",
-    "installer_baselines": [
-      "1.0.17",
-      "1.0.18",
-      "1.0.19",
-      "1.0.20"
-    ],
-    "new_model_calls": 0,
-    "formal_replays": 0,
-    "preserved": "Previously issued installers, all sources and approvals, 216 archived decisions including four failures, .jt state and all usage counters.",
-    "presentation": {
-      "palette": "Warm white and green, with semantic status colors.",
-      "surfaces": "Consistent spacing and grouping; no shadows or animation.",
-      "hierarchy": "One main next action for the current state; supporting details remain available separately.",
-      "demo": "Three compact stage controls, before/after comparison first, case facts beside it, supporting conditions and roles in expandable detail."
-    }
-  },
-  "product_entry_122": {
-    "category": "user-authorized first-screen input and demo clarity revision",
-    "entry": "File upload and task-owner explanation use the existing source API; explanation text is a TXT source. No automatic model operation on opening or preparing the entry form.",
-    "demo": "Reduce visual density; Japanese is an optional explanatory aid for the recorded demo, with the immutable English originals available separately.",
-    "backend_change": "Displayed VERSION only relative to 1.0.21.",
-    "workflow": "Existing extraction, draft review and explicit approval remain; entry does not automatically activate rules.",
-    "installer_baselines": [
-      "1.0.17",
-      "1.0.18",
-      "1.0.19",
-      "1.0.20",
-      "1.0.21"
-    ],
-    "new_model_calls": 0,
-    "formal_replays": 0,
-    "preserved": "All source facts and hashes, original approvals, 216 archived decisions including four failures, .jt records, call counters, budgets and previously issued installers.",
-    "main_language": "English; no Japanese localization of the working application."
-  },
-  "document_validation_123": {
-    "category": "User-authorized requirement extension and defect fixes",
-    "requirements_review": "Six source-grounded perspectives plus concrete owner questions; no numerical readiness score. Any job can be submitted; useful model behavior remains to be verified per job.",
-    "case_intake": "One case file per read; up to40 draft files /20MiB separately from five shared policy sources. OBSERVED values only populate draft facts. Explicit named confirmation required.",
-    "conditions": "value XOR rhs_field_id; same-type scalar equality and numeric ordering; UNKNOWN remains HOLD. Existing literal conditions retained.",
-    "history": "Named non-editable finalized snapshots, optional note, automatic UTC timestamp, evidence versions retained, previous record linkage and side-by-side viewing. Owner-confirmed single deletion or current-workspace history reset is supported. Current materials, approved workflows and run results remain. Prior missing actor names are not invented.",
-    "sample": "Six wholly fictional expense claim PDFs; four development/two reserved cases. Labels and reference rules excluded from public input pack and LIVE prompts.",
-    "authorization": "User instruction on2026-10-14: necessary meaningful validation, cumulative USD100 maximum.",
-    "validation_limits": {
-      "additional_generation_attempts": 40,
-      "additional_judgment_attempts": 24,
-      "retry_attempts": 4,
-      "cumulative_model_budget_usd": 100,
-      "reset_counters": false
-    },
-    "preserved": "Original216 decisions, source evidence, approvals, recovery allowance history and prior installer bytes. No old comparison rerun.",
-    "pending": "LIVE end-to-end validation and rendered browser acceptance. Proposed implementation/code/architecture export is not part of this release."
-  },
-  "source_review_fix_124": {
-    "category": "Defect fix and bounded deployed verification",
-    "observed_failure": "1.0.23 source review: provider400 INVALID_ARGUMENT; exact field undisclosed. Not a budget-limit error.",
-    "change": "Compact extraction-only provider schema; unchanged original strict server contract and evidence validation. Extraction schema is provided only through the API.",
-    "preserved": "Business semantics, six review aspects, model, dependencies, decision path, approvals, earlier source evidence and all usage/grant counters.",
-    "deployment_gate": "Explicit --verify-source: one real source-review invocation, at most two generations through existing policy, named verification record, no workflow approval/judgment/replay. Same idempotency key on resume.",
-    "provider_acceptance": "Pending execution in deployed environment."
-  },
-  "source_citation_fix_125": {
-    "category": "Defect fix; restore literal source quotations without changing evidence or decisions",
-    "scope": "Requirements review only. Existing exact validator remains unchanged.",
-    "format_recovery": "Same source ID/hash/locator; unique ordered literal match within the specified location. Restore whitespace. Expand explicit ellipses to the complete original span for findings/questions only; retain original response and repair provenance.",
-    "rejection": "Changed words, numbers, negation, source/hash/location; reordered, ambiguous or oversized alignment. No semantic inference or business-value repair.",
-    "preflight": "Read the diagnosed saved 1.0.24 response and validate in memory before deployment. No model call or cloud write.",
-    "live_gate": "One new versioned request on the same source/workspace, at most two generation attempts, same existing allowance and USD100 ceiling. Prior failures/counters retained.",
-    "status": "Local targeted tests passed; complete cloud-saved answer and new deployed review pending."
-  },
-  "workflow_stream_fix_126": {
-    "category": "Transport and diagnostic defect fix",
-    "observed_failure": "One workflow proposal cancelled by provider with 499 after 32530 ms; exact cause undisclosed. Source review passed.",
-    "scope": "draft_domain uses existing per-request async stream receiver; exact response schema is API-only, without prompt duplication.",
-    "limits": {
-      "generation_attempts": 1,
-      "model_window_seconds": 120,
-      "first_text_timeout_seconds": 35,
-      "http_request_lease_seconds": 180
-    },
-    "acceptance": "Complete stream plus STOP, unchanged strict contract and source evidence validation; human approval still required.",
-    "diagnostics": "Bounded administrator timing and stream progress; raw provider answer retained, partial text never activated.",
-    "preserved": "Source review, decision behavior, model, dependencies, approvals, original 216 results including four failures, previous installers and all grants/counters.",
-    "validation": "Reuse the exact saved 1.0.25 review; one new journalled workflow proposal after deployment, no approval or case execution.",
-    "live_status": "Pending deployed verification."
-  },
-  "decision_wait_129": {
-    "category": "bounded transport correction",
-    "attempts": 1,
-    "first_text_seconds": 35,
-    "total_seconds": 60,
-    "previous_runs": "read-only preserved; new run required for new protocol",
-    "model_schema_prompts_rules": "unchanged",
-    "authorized_budget_usd": 100
-  },
-  "teaching_citation_fix_130": {
-    "category": "defect fix",
-    "scope": "Human TXT line citations become human:1 only after exact original line/hash/quotation validation; raw answer and original reference retained.",
-    "saved_recovery": "Administrator-only owned failed request, exact question/domain/source/answer matching, named dated unapproved draft, no generation.",
-    "decision_protocol": "Model, prompts, settings, decision source validator and execution path unchanged; completed 1.0.29 baseline preserved."
-  },
-  "saved_comparison_ui_131": {
-    "category": "Read-only result presentation defect fix",
-    "before_after": "Original instructions or an earlier approved rule version versus later guidance, same cases/settings/source versions.",
-    "cross_package": "Only the exact audited 1.0.29/1.0.30 teaching patch pair, with visible disclosure; all other unequal package hashes are rejected.",
-    "preserved": "Execution, validation, model, settings, histories, usage and frozen experiments.",
-    "demo": "English-only recorded expense example, verified against all six saved live results before deployment; reading it creates no model call."
-  },
-  "completion_fixes_132": {
-    "category": "Case-selection, execution-capacity, teaching-source provenance and browser-session continuity defect fixes",
-    "ordinary_session_limits": {
-      "judgment_calls": 12,
-      "model_calls": 24
-    },
-    "capacity": "Read-only preflight estimates selected before/after cases, maximum action steps, configured attempts and question/guidance generation. Existing per-call atomic limits remain authoritative.",
-    "teaching": "The model proposes conditions; the application binds each proposal to the exact persisted human explanation. Raw model output is preserved. Strict evidence and domain validation and named approval remain required.",
-    "session": "One-hour CSRF renewal retains the owner and its allowance. Signed browser-owner cookie validity is bounded at 31 days; the cookie remains non-permanent with unchanged HttpOnly, SameSite and Secure policy. No cross-browser ownership recovery is added.",
-    "preserved": "Original contracts, prior runs including failures, approvals, source versions, model identity, decision generation settings, cumulative USD100 ceiling, allowance grants and counters.",
-    "documentation": "English product entry and operation guide aligned with current functionality."
-  },
-  "bounded_transport_133": {
-    "category": "Transient decision transport recovery defect fix",
-    "observed_failure": "1.0.32 ordinary browser case received zero chunks for 35 seconds, then stopped after one attempt. Saved export retained.",
-    "generation_seconds_per_attempt": 60,
-    "maximum_attempts": 2,
-    "total_model_window_seconds": 125,
-    "retry_delay_seconds": 1,
-    "retry_only": "HTTP/network timeouts, network/protocol errors, HTTP429/500/502/503/504. No retry of invalid JSON, schema, source evidence, permissions or budget errors.",
-    "ordinary_limits": {
-      "model_calls": 24,
-      "judgment_attempts": 24,
-      "change": "Align decision sublimit with the existing 24-model-call cap; retain all consumed calls and decisions."
-    },
-    "preserved": "Model, prompts, contracts, approval, validation, execution, cumulative USD100 deployment ceiling, administrator grants, usage and every prior run.",
-    "comparison": "New runs pin this new transport protocol. Old runs are read-only; no cross-version pairing exception added."
-  },
-  "approved_stops_135": {
-    "category": "defect fix",
-    "scope": "C_JT_RULES: explicit matched human-approved default/HOLD rule before model dispatch",
-    "origin": "APPROVED_RULE / RULE_ENGINE; no generation attempts",
-    "preserve": "Unknown/default holds and positive actions use the model; A/B arms unchanged; errors are never converted to business holds.",
-    "validation": "Zero-model changed-stay check, then separate same-package USD 4+4+2 within the original total 24-attempt and USD100 ceilings."
-  },
-  "preparation_transport_136": {
-    "category": "transport defect fix",
-    "purposes": [
-      "propose_question",
-      "draft_rules"
-    ],
-    "per_attempt_seconds": 60,
-    "attempts_max": 2,
-    "total_window_seconds": 125,
-    "retry": "one transient transport/provider retry only",
-    "resume": "saved 1.0.35 four-case baseline and question; regenerate only failed guidance",
-    "comparison": "audited exact 1.0.35 to verified current 1.0.36 pair; decision behavior and all other comparability checks unchanged",
-    "usd_attempt_ceiling_including_previous": 24,
-    "cumulative_usd_ceiling": 100
-  },
-  "run_start_137": {
-    "category": "integration defect fix",
-    "guard": "Reuse audited preparation compatibility at actual run selection/start",
-    "resume": "Reuse saved baseline, question, guidance and approval; start after run only",
-    "unchanged": "Provider invocation, model, decision settings, prompt, schema, evidence validation, executor and scorer",
-    "limits": "24 total USD attempts including previous calls; USD100 cumulative; 60 seconds per attempt"
-  },
-  "approved_execution_138": {
-    "category": "User-authorized execution-policy revision for stable approved-condition automation; not a transport-only patch.",
-    "engine": "C_JT_RULES executes approved declarative conditions through the shared three-valued engine. Gemini still proposes materials/questions/guidance; A/B retain original model paths.",
-    "protocol": "APPROVED_RULE_ENGINE_V1",
-    "comparison": "Replay saved approved versions 0 and 1 under the same current implementation, cases and starting states. Do not compare the old model baseline against the new engine as a guidance-only experiment.",
-    "generation_calls_in_usd_gate": 0,
-    "new_case_executions": 10,
-    "preserved": "All old successful/failed/pending tasks, approval/source versions, model configuration and cumulative counters. No new generation, repeat approval, cap increase or timeout extension.",
-    "claim_boundary": "Approved workflow execution, not fresh model judgment or proof that silent upstream responses have recovered."
-  },
-  "receipt_scenario_139": {
-    "category": "User-authorized fictional expense scenario correction; generic engine and contracts unchanged",
+  "current_demo": {
     "scenario": "PERSONAL_RECEIPT_139",
-    "fixture": "expense_review_usd139",
-    "initial_policy": "Company-addressed receipts accepted; employee-addressed acceptance unrecorded",
-    "explanation": "Accept own-name receipts with matching claimant/guest, explicit employee payment marked PAID and approved dates; apply existing claim-versus-payment checks",
-    "comparison": "New workspace and approved versions, 4 before + 4 after + 2 held-out executions using APPROVED_RULE_ENGINE_V1 on the same package",
-    "preparation_model_attempts_max": 4,
+    "fixture": "app/fixtures/expense_review_usd139",
+    "case_executions": {
+      "before": 4,
+      "after": 4,
+      "additional": 2
+    },
     "execution_model_calls": 0,
-    "publication": "New immutable expense_receipt139 record after verification; UI follows record scenario",
-    "preserved": "Old fixtures, sources, workspaces, approvals, successful/failed runs, usage, timeouts, model, dependency pins and cumulative USD100 ceiling"
+    "design": "verification/RECEIPT139_DESIGN.md",
+    "evidence": "verification/RELEASE139_STATUS.md"
+  },
+  "original_evaluation": {
+    "application_version": "1.0.15",
+    "design": "24 unique holdout cases x 3 arms x 3 repeats = 216 nominal judgments",
+    "report": "evaluation/EVALUATION_REPORT.md"
+  },
+  "distribution_revision": {
+    "scope": "public documentation and package metadata",
+    "source_commit": "71efc3cc6178d996fb62bbc78543aeb5c38a986a",
+    "application_code_sha256": "285bf2e577cecbcece2c9a178975d0fd908f4d9818d8109f1e149c861543b76b"
   }
 }

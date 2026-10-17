@@ -1,6 +1,6 @@
 # Official references checked 2026-10-10
 
-These references informed the fixed Cloud Shell and Google Cloud bindings. They are not evidence of a deployment having succeeded.
+Official documentation for the Cloud Shell runbook and Google Cloud services used by Judgment Transfer.
 
 - [Cloud Shell file upload and download](https://docs.cloud.google.com/shell/docs/uploading-and-downloading-files)
 - [Cloud Shell authentication](https://docs.cloud.google.com/shell/docs/auth)
@@ -15,4 +15,4 @@ These references informed the fixed Cloud Shell and Google Cloud bindings. They 
 - [Controlled JSON output](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/control-generated-output)
 - [Google Cloud model pricing](https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing)
 
-The configured global Gemini 3.5 Flash token prices are $1.50 / million input tokens and $9.00 / million output tokens, including thinking output, based on the check date. Infrastructure billing is separate. A later model, price or API change requires an explicit package/configuration revision; the scripts do not silently select a fallback.
+The application’s model and cost-accounting settings are defined in [app/config.py](app/config.py). Consult the official pricing page for current rates; infrastructure billing is separate.

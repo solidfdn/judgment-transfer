@@ -1,28 +1,26 @@
-# Judgment Transfer：担当者向け運用手順
+# Judgment Transfer：操作・運用ガイド
 
-**専任担当者の資料や説明をもとに、AIに任せられる範囲を確かめます。**
+[English setup and operation guide](START_HERE.md)
 
-足りない情報や、人の判断が必要な箇所を明らかにし、後任担当者への引継ぎにも活かせます。
-
-- [アプリ](https://judgment-transfer-unql76xapq-an.a.run.app/)
-- [保存済みの結果を使った説明用デモ](https://judgment-transfer-unql76xapq-an.a.run.app/assets/demo/index.html)
-- [英語の操作・環境構築ガイド](START_HERE.md)
-
-## 保存済みデモで確かめられること
-
-現行デモは **v1.0.39** の架空のUSD建て宿泊費申請6件です。元の手順で不足していたのは、**社員個人宛て領収書を受け入れる条件**です。宛名・宿泊者と申請者の一致、承認済みの両日付との一致、本人支払額の明記とPAID表示を担当者が承認し、その後に既存の金額チェックを適用します。
-
-Samの348ドルの申請は事前確認完了へ進みます。Jordanの支払証拠不足とTaylorの滞在変更は保留を続けます。追加2件ではCaseyの276ドルは事前確認完了、Jamieは申請424ドルに対して本人支払い264ドルのため修正差戻しになります。
-
-Geminiが質問・条件案を準備し、人が承認後、同じルールエンジンで前後の同じ案件を比較した記録です。デモには確認手順をまとめた引継ぎチェックリストの保存機能があります。事前確認完了は最終的な経費承認・支払いではありません。[事例と検証方法](README.md#a-concrete-example-expense-document-checks)から根拠を確認できます。
+Judgment Transferを試すには、[アプリ](https://judgment-transfer-unql76xapq-an.a.run.app/)を開いてください。[説明用デモ](https://judgment-transfer-unql76xapq-an.a.run.app/assets/demo/index.html)では、v1.0.39で記録した経費書類の比較結果を確認できます。社員個人宛て領収書の受入条件を担当者が承認するとSamの案件が進む一方、支払情報の不足や滞在日程の変更がある案件は保留を続けます。詳細は[事例と検証方法](README.md#a-concrete-example-expense-document-checks)をご覧ください。
 
 ## 画面での操作
 
-1. **Job and intended result** に対象業務と目的を記入します。**Upload file** で資料を入れ、**Explanation or comment** に補足を書いて **Add explanation** で保存します。
-2. **Organize the work** で確認事項を読みます。**Prepare a practice test** から検証条件を作り、内容を確認して承認します。
-3. 案件の事実・初期状態を確認して保存し、**Try the original instructions** で試します。
-4. **Find what needs explaining** の質問に回答し、作成された補足条件を確認・承認します。**Try the same cases with the guidance** で変化を確かめます。
-5. **Responsible person** に担当者名を記入します。任意のメモを添えて結果を確定すると、資料・説明・判断・日時を版として保存できます。**Decision history** から以前の記録を開き、比較や確認付き削除を行えます。
+1. **Job and intended result** に対象業務と目的を記入します。**Upload file** で資料を入れるか、**Explanation or comment** に説明を書いて **Add explanation** で保存します。
+2. **Organize the work** で確認事項と根拠を読みます。**Prepare a practice test** から検証条件の案を作成します。
+3. **Responsible person** に担当者名を記入し、条件を確認して承認します。案件ファイルを読み込むか手入力で例を追加し、各案件の事実と初期状態を確認・確定します。
+4. **Try the original instructions** で試します。画面のステップ2に進み、**Find what needs explaining** の質問に回答して **Draft the guidance** を選びます。作成された補足条件を確認・承認します。
+5. **Try the same cases with the guidance** で前後の結果と各案件の根拠を確認します。**Finalize this result** で確定すると、担当者名・日時・任意のメモとともに結果を記録できます。
+
+資料はTXT、テキストPDF、PNG/JPEG、短いMP4に対応し、合計5ファイル・20 MiBまで追加できます。ファイル別の上限はアップロード欄に表示されます。読み取られた事実は確定前に確認し、不明な項目は不明のまま扱います。検証中の操作は、隔離された練習用の案件状態に反映されます。
+
+**Continue saved work** は同じタブで以前開いた作業を再開します。**Saved tests** は過去の検証結果を開きます。**Decision history** では確定済みの記録と版の比較を確認できます。確定済みの記録は編集できず、選択した記録の削除や履歴のリセットには確認が必要です。
+
+## ローカル実行・新規環境の構築
+
+Python 3.12によるローカルのシミュレーションと、Google Cloud Shellによる新規環境の構築手順は [START_HERE.md](START_HERE.md) にまとめています。Geminiによる資料の確認や条件案の作成にはLIVE環境を使います。承認後の案件には、アプリ内のルールエンジンで条件を適用します。
+
+モデル利用とCloud Run等の基盤利用には料金が発生します。モデルの利用上限は、各環境に保存された設定に従います。
 
 ## 既存環境を更新する
 
@@ -30,7 +28,9 @@ Geminiが質問・条件案を準備し、人が承認後、同じルールエ�
 
 更新プログラムは元のファイルを照合し、変更対象をバックアップしてデプロイします。`.jt`、既存の資料・承認・検証結果・利用量を保持します。デプロイ後の照合結果と表示URLを確認してください。
 
-既存の完了済み環境の更新には、初期構築の00〜08を繰り返し実行する必要はありません。新規環境の構築手順は [START_HERE.md](START_HERE.md) にまとめています。
+既存の完了済み環境の更新には、初期構築の00〜08を繰り返し実行する必要はありません。
+
+配布パッケージとアプリの版は [SPEC_LOCK.json](SPEC_LOCK.json) に分けて記録しています。資料のみの更新では、アプリの版を維持したままパッケージの版が変わることがあります。
 
 ## 状態確認と停止時の対応
 
@@ -44,8 +44,4 @@ bash jt support
 
 初期構築の番号付き工程が失敗した場合のみ、例えば04なら `bash jt 04 --retry` で再開します。更新スクリプトの失敗には、その更新スクリプトの再開手順を使います。
 
-現環境のモデル利用上限は、承認済みの累計100ドルです。保存済みの利用量を引き継ぎます。Cloud Run等の基盤費用は別です。公開アクセスを停止する場合は `bash jt close` を実行します。
-
-## 提出物の確認
-
-完成した画面と実行結果に合わせて、公開アプリURL、公開GitHub、3分未満の実画面動画、英語PDFを揃えます。提出後は受付結果を確認します。詳細な変更・検証記録は [CHANGELOG.md](CHANGELOG.md) と [verification/](verification/) にあります。
+`bash jt close` はアプリのデータを削除せず、アクセスを認証必須に戻します。`.jt/`、認証情報、個人の資料、クラウドの生ログをソース管理に含めないでください。
