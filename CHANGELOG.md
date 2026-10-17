@@ -1,3 +1,9 @@
+## 2026-10-17 — remove cursor artifacts from demo screenshots
+
+- Category: user-requested documentation correction. Recapture the three images in docs/screenshots without mouse pointers or blue cursor highlights.
+- Preserve the displayed questions, source reference, case amounts, outcomes, approval boundary and handover controls; retain the existing image paths and README captions.
+- Verification: inspect all three replacement images for cursor artifacts and content consistency; verify the published image blobs match the reviewed files.
+
 ## 2026-10-17 — add recorded-demo screenshots
 
 - Category: user-requested documentation addition. Add three real browser captures to docs/screenshots and a Screenshots section near the top of README.
