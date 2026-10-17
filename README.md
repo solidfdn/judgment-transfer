@@ -17,18 +17,39 @@ Finalized records retain the responsible person, timestamp, optional note, sourc
 
 ## A concrete example: expense document checks
 
-The recorded example uses fictional **Cedarline Services** hotel claims. The original policy does not explain when a company-addressed receipt is acceptable. The task owner adds that explanation, including how to identify the employee’s own payment.
+The current recorded example (**v1.0.39**, `PERSONAL_RECEIPT_139`) uses six fictional **Cedarline Services** hotel claims in **USD**. The original procedure covers company-addressed receipts, but does not define when a receipt addressed to the employee can be accepted. Sam Rivera’s $348 claim is held because that acceptance condition is missing.
 
-| Case | Original instructions | With approved explanation |
-|---|---|---|
-| Matching personal receipt | Ready for business approval | Ready for business approval |
-| Company receipt with the employee’s payment identified | Held for clarification | Ready for business approval |
-| Employee payment details missing | Held for evidence | Held for evidence |
-| Stay dates changed | Held for a manager’s decision | Held for a manager’s decision |
+**Shinji Okada approved these receipt-acceptance conditions in guidance version 1:**
 
-Two additional cases, unused when preparing the explanation, check its application: a matching claim proceeds to business approval; a claim for 42,400 against an employee payment of 26,400 is returned for correction. The document check advances work to the person responsible for business approval.
+- The receipt addressee and named guest both match the claimant.
+- Both stay dates match the approved dates.
+- The employee-paid amount is explicitly stated, and that payment is marked **PAID**.
 
-The [three-step demo](https://judgment-transfer-unql76xapq-an.a.run.app/assets/demo/index.html) presents these saved results, their supporting records and a downloadable handover checklist. Opening it makes no model calls. [Comparison record](verification/LIVE130_COMPARISON.json) · [Display and comparison verification](verification/comparison131_offline.json)
+Once the receipt is accepted, the **existing amount check** compares the claim with the stated employee-paid amount. A known mismatch is returned for correction. Missing payment details stay unknown: do not subtract a company prepayment from a total or infer who paid. A changed stay still needs a manager’s decision.
+
+| Case | Original instructions | After approved guidance | What the result shows |
+|---|---|---|---|
+| Alex Morgan | Precheck complete | Precheck complete | The original company-receipt path remains valid. |
+| Sam Rivera | Hold | Precheck complete | His employee-addressed receipt meets the approved criteria; the $348 claim matches his explicit PAID amount. |
+| Jordan Chen | Hold | Hold | The employee-paid amount and payment status are still missing. |
+| Taylor Brooks | Hold | Hold | The stay ends one day after approval; a manager must decide the exception. |
+
+Two additional cases, excluded from preparing the question and guidance, were then checked:
+
+- **Casey Lee:** the $276 claim matches the stated employee payment marked PAID and the other required checks pass; the precheck completes.
+- **Jamie Patel:** the $424 claim exceeds the stated employee payment of $264 by **$160**; the claim is returned for correction.
+
+**Precheck complete means the documents are ready for a person’s business approval.** These isolated review states do not approve expenditure, execute payment or send a message.
+
+### How the comparison was made
+
+Gemini prepared the question and guidance proposal; the task owner approved the conditions. The same approved-rule engine and code applied the original and revised conditions to the same four cases, facts and starting states. The record contains **4 before + 4 after + 2 additional case executions**, with **zero model calls during case execution** and **two model attempts during preparation**. Case facts are author-reviewed transcriptions of the supplied PDFs.
+
+The six cases demonstrate how an approved explanation changes what can proceed while necessary holds remain. They do not establish general AI accuracy, reliability across all workflows or measured handover-time savings.
+
+The [three-step demo](https://judgment-transfer-unql76xapq-an.a.run.app/assets/demo/index.html) presents the saved results and supporting records. It also provides a downloadable handover checklist with the approved criteria, payment checks, evidence requests and manager-decision boundaries. Opening the recorded demo makes no model calls.
+
+[Current comparison record](https://judgment-transfer-unql76xapq-an.a.run.app/api/v1/demo/expense) · [Scenario design and six cases](verification/RECEIPT139_DESIGN.md) · [Published-record status](verification/RELEASE139_STATUS.md)
 
 ## Try your own work
 
@@ -42,12 +63,13 @@ Use **Responsible person** when approving or finalizing work. **Decision history
 
 | Component | Role in Judgment Transfer |
 |---|---|
-| Gemini through the Google GenAI SDK | Reads multimodal materials, identifies clarification questions, proposes workflow conditions and explains case decisions |
+| Gemini through the Google GenAI SDK | Reads multimodal materials, identifies missing information and questions, and proposes workflow conditions and guidance |
 | Cloud Run | Hosts the Python/Flask application and its English browser interface |
+| Approved-rule engine in the application | Applies approved conditions to confirmed cases and records outcomes and required next actions |
 | Firestore Native | Stores versioned workflows, approvals, runs and history; commits case state and execution receipts atomically |
 | Private Cloud Storage | Retains source files and evidence tied to the recorded versions |
 
-AI proposes and interprets. Application checks validate source references, require approval before guidance becomes active, and control which declared state changes can execute. Unknown or conflicting required conditions keep a case on hold. Workflow fields, actions and conditions are declarations shared by the same core across business domains.
+AI proposes and interprets. After the task owner approves the conditions, the application’s shared rule engine applies them to confirmed cases. Application checks validate source references, require approval before guidance becomes active, and control which declared state changes can execute. Unknown or conflicting required conditions keep a case on hold. Workflow fields, actions and conditions are declarations shared by the same core across business domains.
 
 ## Run and inspect
 

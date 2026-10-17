@@ -1,6 +1,6 @@
 # Setup and operation
 
-To try Judgment Transfer, [open the application](https://judgment-transfer-unql76xapq-an.a.run.app/). The [recorded example](https://judgment-transfer-unql76xapq-an.a.run.app/assets/demo/index.html) shows the expense-document comparison and supporting records without making model calls.
+To try Judgment Transfer, [open the application](https://judgment-transfer-unql76xapq-an.a.run.app/). The [recorded example](https://judgment-transfer-unql76xapq-an.a.run.app/assets/demo/index.html) shows the current v1.0.39 expense-document comparison and supporting records without making model calls. It demonstrates how approved conditions for employee-addressed receipts change Sam’s result while missing payment evidence and changed stays remain on hold. See the [case summary and method](README.md#a-concrete-example-expense-document-checks).
 
 ## Use the application
 
@@ -22,7 +22,7 @@ python3.12 -m venv .venv
 JT_MODE=MOCK .venv/bin/python app/main.py
 ```
 
-Open `http://127.0.0.1:8080`. The **Simulation** label identifies the offline mode. Use the LIVE application for Gemini document reading and case execution.
+Open `http://127.0.0.1:8080`. The **Simulation** label identifies the offline mode. Use the LIVE application for Gemini-assisted material review and guidance preparation. Approved workflow cases execute through the application’s rule engine.
 
 Run the fixed offline acceptance suite with:
 

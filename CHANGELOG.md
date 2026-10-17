@@ -1,3 +1,12 @@
+## 2026-10-17 — align public documentation with the recorded 1.0.39 demo
+
+- Category: user-requested documentation correction. README still described the older company-addressed-receipt scenario and linked its comparison record, while the application publishes PERSONAL_RECEIPT_139.
+- Changed README to explain the employee-addressed receipt acceptance criteria, the existing amount check, the four matched cases and two additional USD cases. Current evidence links replace the old example’s links; archived reports remain available.
+- Clarified Gemini preparation versus approved-rule case execution in README and START_HERE.md. Added the same current-demo explanation to START_HERE_ja.md and replaced its obsolete 1.0.33 update example with version-appropriate update guidance.
+- Added a dated observation of the existing public comparison record to verification/RELEASE139_STATUS.md, retaining its original preparation notes and distinguishing recorded results from a new verification run.
+- Verification: document diff and relative links checked against the repository tree; criteria, amounts, outcomes, reviewer, version, execution protocol and counters compared with the public record and scenario design.
+- Documentation only: no runtime, dependency, model, deployment, package version, manifest, approval, result, budget or historical-record change.
+
 ## 1.0.39 — realistic receipt acceptance, fresh evidence and matched comparison
 
 - Category: user-authorized fictional expense-demo correction. Company-addressed receipts are the initial-policy standard; acceptance of employee-addressed receipts is the missing condition. Sam claims USD348 with his own-name receipt; the approved explanation allows the existing payment checks to apply. No legal/tax claim.
